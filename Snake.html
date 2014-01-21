@@ -17,16 +17,24 @@ Your browser does not support the HTML5 canvas tag.
 var c=document.getElementById('myCanvas');
 var ctx=c.getContext('2d');
 
-
-
-
-
-
 var grd=ctx.createLinearGradient(0,0,200,0);
 grd.addColorStop(1,"red");
 grd.addColorStop(0.5,"pink");
 grd.addColorStop(0,"red");
 ctx.fillStyle=grd;
+
+var position=new Array(40);              // 40x40 array to hold snake positions
+	for(i =0; i<40; i++){
+	position[i]=new Array(40);
+	}
+	for (var i=0;i<40;i++)
+	{ 
+		for(var j=0; j<40; j++){
+			
+				position[i][j] = false;
+			
+		}
+	}
 
 function clearCanvas(){
 		// Store the current transformation matrix
@@ -41,18 +49,7 @@ function clearCanvas(){
 
 }
 function printSnake2(){
-	var position=new Array(40);              // 40x40 array to hold snake positions
-	for(i =0; i<40; i++){
-	position[i]=new Array(40);
-	}
-	for (var i=0;i<40;i++)
-	{ 
-		for(var j=0; j<30; j++){
-			
-				position[i][j] = true;
-			
-		}
-	}
+	
 	
 	for (var i=0;i<40;i++)
 	{ 

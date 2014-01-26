@@ -4,7 +4,7 @@
 
 
 <H1 align="center">
-<canvas id="canvas" width="400" height="400" style="border:10px solid #000000;">
+<canvas id="canvas" width="400" height="400" style="border:10px solid #FFA500;">
 Your browser does not support the HTML5 canvas tag.
 </canvas>
 
@@ -20,6 +20,19 @@ Your browser does not support the HTML5 canvas tag.
 var c=document.getElementById('canvas');
 var ctx=c.getContext('2d');
 
+var SnakeArray=new Array(1600); //array to hold snake bit objects
+var SnakeTail=-1;				//Most recently added SnakeBit
+var d="right";  						//direction
+var delay=500;
+
+window.onload = function(){SnakeInit();};
+function SnakeInit(){
+	for(i=0;i<=5;i++){
+		addSnakeBit(i*10,0);	
+	}
+	paint();
+}
+
 /* 
 var grd=ctx.createLinearGradient(0,0,200,0);
 grd.addColorStop(1,"red");
@@ -28,60 +41,65 @@ grd.addColorStop(0,"red");
 ctx.fillStyle=grd;
 */
 
-var position=new Array(40);              // 40x40 array to hold snake positions
-	for(i =0; i<40; i++){
-	position[i]=new Array(40);
-	}
-	for (var i=0;i<40;i++)
-	{ 
-		for(var j=0; j<40; j++){
-			
-				position[i][j] = false;
-			
-		}
-	}
-
-function clearCanvas(){
-		// Store the current transformation matrix
-	ctx.save();
-
-	// Use the identity matrix while clearing the canvas
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-
-	// Restore the transform
-	ctx.restore();
-
-}
-function printSnake2(){
+function paint(){        				//clears screen and repaints snake in new position
 	
-	
-	for (var i=0;i<40;i++)
-	{ 
-		for(var j=0; j<40; j++){
-			if(position[i][j]){
-				ctx.fillRect(10*i,10*j,9,9);
-			}
-		}
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	printSnake();
+}
+function moveSnake(){
+	for(i=SnakeTail; i>0; i--){
+		SnakeArray[i].x=SnakeArray[i-1].x;
+		SnakeArray[i].y=SnakeArray[i-1].y;
 	}
+	if(d==="right"){SnakeArray[0].x=SnakeArray[0].x+10;}
+	if(d==="up"){SnakeArray[0].y=SnakeArray[0].y-10;}
+	if(d==="left"){SnakeArray[0].x=SnakeArray[0].x-10;}
+	if(d==="down"){SnakeArray[0].y=SnakeArray[0].y+10;}
+	setTimeout(function(){paint();},delay)
 }
-
-
-function printSnake(){
-		
-	printSnake2();
-			
-		
+function printSnake(){	
+	
+	for (i=0;i<SnakeTail;i++)
+	{ 
+		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);		
+	}
+	moveSnake();
 }
-
+function addSnakeBit(nx, ny){	         //adds a new snake bit
+	SnakeArray[++SnakeTail]=new Object();
+	SnakeArray[SnakeTail].x=nx;
+	SnakeArray[SnakeTail].y=ny;
+}
 function counterClockwise(){
-	
+	if(d==="right"){
+		d="up";
+	}
+	else if(d==="down"){
+		d="right";
+	}
+	else if(d==="left"){
+		d="down";
+	}
+	else if(d==="up"){
+		d="left";
+	}	
 	printSnake();
 }
 function clockwise()
 {
+	if(d==="right"){
+		d="down";
+	}
+	else if(d==="down"){
+		d="left";
+	}
+	else if(d==="left"){
+		d="up";
+	}
+	else if(d==="up"){
+		d="right";
+	}
 	printSnake();
-
 }
 </script>
 <br>

@@ -25,8 +25,18 @@ var SnakeArray=new Array(); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
 var delay=100;					//refresh rate (in milliseconds)
+var score = 0; //current score
 
 window.onload = function(){SnakeInit();};
+
+function printScore() {
+  ctx.fillStyle = '#f00';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  score = score + 1;
+  ctx.fillText('score: ' + score, 4, 398);
+}
+
 function SnakeInit(){
 	
 	SnakeTail=-1;				//Most recently added SnakeBit
@@ -53,6 +63,7 @@ ctx.fillStyle=grd;
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printSnake();
+  printScore();
 }
 function moveSnake(){
 	for(i=SnakeTail; i>0; i--){

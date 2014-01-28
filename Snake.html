@@ -17,7 +17,6 @@
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <script>
 
-
 var c=document.getElementById('canvas');
 var ctx=c.getContext('2d');
 
@@ -40,6 +39,16 @@ function addSnakeBit(nx, ny){	         //adds a new snake bit
 	SnakeArray[++SnakeTail]=new Object();
 	SnakeArray[SnakeTail].x=nx;
 	SnakeArray[SnakeTail].y=ny;
+}
+
+function printPopup(){
+  var cx = canvas.width/2;
+  var cy = canvas.height/2;
+  ctx.fillStyle = '#4A4FFF';
+  ctx.font = 'bold 50px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'center';
+  ctx.fillText('Good job!', cx, cy); //add a personalized random message later
 }
 
 /* 

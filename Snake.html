@@ -27,10 +27,12 @@ var d="right";  				//direction
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; //current score
 
-window.onload = function(){SnakeInit();};
+window.onload = function(){SnakeInit(); updateScore();};
+
 
 function updateScore(){
-score = score + 1/2;  
+score = score + 1; //update score as each second passes 
+	setTimeout(function(){updateScore();},1000); //call again to update score
 }
 
 function printScore() {
@@ -66,7 +68,6 @@ ctx.fillStyle=grd;
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printSnake();
-	setTimeout(function(){updateScore();},10000)
   printScore();
 }
 function moveSnake(){

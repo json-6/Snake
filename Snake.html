@@ -5,7 +5,7 @@
 
 <H1 align="center">
 <canvas id="canvas" width="400" height="400" style="border:10px solid #FFA500;">
-Your browser does not support the HTML5 canvas tag.
+	Your browser does not support the HTML5 canvas tag.
 </canvas>
 
 <!--
@@ -63,10 +63,12 @@ function moveSnake(){
 	if(d==="up"){SnakeArray[0].y=SnakeArray[0].y-10;}
 	if(d==="left"){SnakeArray[0].x=SnakeArray[0].x-10;}
 	if(d==="down"){SnakeArray[0].y=SnakeArray[0].y+10;}
-	if(SnakeArray[0].x<0||SnakeArray[0].x>400||SnakeArray[0].y<0||SnakeArray[0].y>400){
+	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
 		deleteSnake();
 	}
-	else{setTimeout(function(){paint();},delay)}
+	else{
+		paint();
+	}
 }
 function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
@@ -90,7 +92,7 @@ var img_snake_head = document.getElementById('snake_head'); //snake head
 			ctx.drawImage(img_snake, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
 		}
     }
-	moveSnake();
+	setTimeout(function(){moveSnake();},delay)
 }
 
 function counterClockwise(){

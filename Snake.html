@@ -10,7 +10,6 @@ Your browser does not support the HTML5 canvas tag.
 
 <!--
 <embed height="0" width="0" src="test.mp3">
-
 //audio if wanted
 -->
 
@@ -22,15 +21,20 @@ var ctx=c.getContext('2d');
 
 var SnakeArray=new Array(1600); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
-var d="right";  						//direction
-var delay=500;
+var d="right";  				//direction
+var delay=100;					//refresh rate (in milliseconds)
 
 window.onload = function(){SnakeInit();};
 function SnakeInit(){
-	for(i=0;i<=5;i++){
+	for(i=5;i>=0;i--){
 		addSnakeBit(i*10,0);	
 	}
 	paint();
+}
+function addSnakeBit(nx, ny){	         //adds a new snake bit
+	SnakeArray[++SnakeTail]=new Object();
+	SnakeArray[SnakeTail].x=nx;
+	SnakeArray[SnakeTail].y=ny;
 }
 
 /* 
@@ -41,8 +45,7 @@ grd.addColorStop(0,"red");
 ctx.fillStyle=grd;
 */
 
-function paint(){        				//clears screen and repaints snake in new position
-	
+function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printSnake();
 }
@@ -55,7 +58,19 @@ function moveSnake(){
 	if(d==="up"){SnakeArray[0].y=SnakeArray[0].y-10;}
 	if(d==="left"){SnakeArray[0].x=SnakeArray[0].x-10;}
 	if(d==="down"){SnakeArray[0].y=SnakeArray[0].y+10;}
-	setTimeout(function(){paint();},delay)
+	if(SnakeArray[0].x<0||SnakeArray[0].x>400||SnakeArray[0].y<0||SnakeArray[0].y>400){
+		deleteSnake();
+	}
+	else{setTimeout(function(){paint();},delay)}
+}
+function deleteSnake(){
+	for(i=0;i<=SnakeTail;i++){
+		SnakeArray[i].x=null;	
+		SnakeArray[i].y=null;
+		SnakeArray[i]=null;
+	}
+	SnakeTail=-1;
+	SnakeInit();
 }
 function printSnake(){	
 	
@@ -65,11 +80,7 @@ function printSnake(){
 	}
 	moveSnake();
 }
-function addSnakeBit(nx, ny){	         //adds a new snake bit
-	SnakeArray[++SnakeTail]=new Object();
-	SnakeArray[SnakeTail].x=nx;
-	SnakeArray[SnakeTail].y=ny;
-}
+
 function counterClockwise(){
 	if(d==="right"){
 		d="up";
@@ -83,7 +94,7 @@ function counterClockwise(){
 	else if(d==="up"){
 		d="left";
 	}	
-	printSnake();
+	
 }
 function clockwise()
 {
@@ -99,12 +110,12 @@ function clockwise()
 	else if(d==="up"){
 		d="right";
 	}
-	printSnake();
+	
 }
 </script>
 <br>
- <img id="leftImage" onclick="counterClockwise()"
-src="images/left.jpg" width="100" height="70">
+ <img id="leftImage" onclick="counterClockwise()"			
+src="images/left.jpg" width="100" height="70"><!--buttons for control-->
 
 &nbsp;&nbsp;&nbsp;
 

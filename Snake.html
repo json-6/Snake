@@ -12,20 +12,25 @@ Your browser does not support the HTML5 canvas tag.
 <embed height="0" width="0" src="test.mp3">
 //audio if wanted
 -->
-
+<img src="images/snake_body.png" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
+<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
+<img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <script>
 
 
 var c=document.getElementById('canvas');
 var ctx=c.getContext('2d');
 
-var SnakeArray=new Array(1600); //array to hold snake bit objects
+var SnakeArray=new Array(); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
 var delay=100;					//refresh rate (in milliseconds)
 
 window.onload = function(){SnakeInit();};
 function SnakeInit(){
+	
+	SnakeTail=-1;				//Most recently added SnakeBit
+	d="right";  				//direction
 	for(i=5;i>=0;i--){
 		addSnakeBit(i*10,0);	
 	}
@@ -64,20 +69,27 @@ function moveSnake(){
 	else{setTimeout(function(){paint();},delay)}
 }
 function deleteSnake(){
-	for(i=0;i<=SnakeTail;i++){
-		SnakeArray[i].x=null;	
-		SnakeArray[i].y=null;
-		SnakeArray[i]=null;
+	for(i=0; i<SnakeTail;i++){
+		delete SnakeArray[i];
 	}
-	SnakeTail=-1;
 	SnakeInit();
 }
 function printSnake(){	
-	
+var img_snake = document.getElementById('snake_body'); //get snake image
+var img_snake_tail = document.getElementById('snake_tail'); //snake tail
+var img_snake_head = document.getElementById('snake_head'); //snake head
 	for (i=0;i<SnakeTail;i++)
-	{ 
-		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);		
-	}
+	{ 		
+		if(i === 0){
+			ctx.drawImage(img_snake_head, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+		}
+		else if (i === SnakeTail - 1 ){ //at tail, SnakeTail -1
+			ctx.drawImage(img_snake_tail, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+		}
+		else{
+			ctx.drawImage(img_snake, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+		}
+    }
 	moveSnake();
 }
 
@@ -93,8 +105,8 @@ function counterClockwise(){
 	}
 	else if(d==="up"){
 		d="left";
-	}	
-	
+	}
+
 }
 function clockwise()
 {
@@ -110,7 +122,6 @@ function clockwise()
 	else if(d==="up"){
 		d="right";
 	}
-	
 }
 </script>
 <br>

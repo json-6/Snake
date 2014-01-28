@@ -13,8 +13,9 @@ Your browser does not support the HTML5 canvas tag.
 
 //audio if wanted
 -->
-<img src="images/snake_body.png" alt="Snake body image" width="9" height="9" id="snake" style="display:none" />
-
+<img src="images/snake_body.png" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
+<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
+<img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <script>
 
 
@@ -59,12 +60,22 @@ function moveSnake(){
 	setTimeout(function(){paint();},delay)
 }
 function printSnake(){	
-var img_snake = document.getElementById('snake'); //get snake image
+var img_snake = document.getElementById('snake_body'); //get snake image
+var img_snake_tail = document.getElementById('snake_tail'); //snake tail
+var img_snake_head = document.getElementById('snake_head'); //snake head
 	for (i=0;i<SnakeTail;i++)
 	{ 
-//		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);	
+//		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);
+    if(i === 0){
+    ctx.drawImage(img_snake_head, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+    }
+    else if (i === SnakeTail - 1 ){ //at tail, SnakeTail -1
+    ctx.drawImage(img_snake_tail, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+    }
+    else{
     ctx.drawImage(img_snake, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-	}
+    }
+    }
 	moveSnake();
 }
 function addSnakeBit(nx, ny){	         //adds a new snake bit

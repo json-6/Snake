@@ -17,7 +17,6 @@
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <script>
 
-
 var c=document.getElementById('canvas');
 var ctx=c.getContext('2d');
 
@@ -25,10 +24,24 @@ var SnakeArray=new Array(); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
 var delay=100;					//refresh rate (in milliseconds)
+var score = 0; //current score
 
-window.onload = function(){SnakeInit();};
+window.onload = function(){SnakeInit(); updateScore();};
+
+function updateScore(){
+  score = score + 1; //update score as each second passes 
+	setTimeout(function(){updateScore();},1000); //call again to update score
+}
+
+function printScore() {
+  ctx.fillStyle = '#808080'; //gray
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('score: ' + score, 4, 398); //display in lower left hand corner
+}
+
 function SnakeInit(){
-	
+score = 0; //reset score to 0	
 	SnakeTail=-1;				//Most recently added SnakeBit
 	d="right";  				//direction
 	for(i=5;i>=0;i--){
@@ -42,17 +55,10 @@ function addSnakeBit(nx, ny){	         //adds a new snake bit
 	SnakeArray[SnakeTail].y=ny;
 }
 
-/* 
-var grd=ctx.createLinearGradient(0,0,200,0);
-grd.addColorStop(1,"red");
-grd.addColorStop(0.5,"pink");
-grd.addColorStop(0,"red");
-ctx.fillStyle=grd;
-*/
-
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printSnake();
+  printScore();
 }
 function moveSnake(){
 	for(i=SnakeTail; i>0; i--){
@@ -134,8 +140,6 @@ src="images/left.jpg" width="100" height="70"><!--buttons for control-->
 
 <img id="rightImage" onclick="clockwise()"
 src="images/right.jpg" width="100" height="70"></H1>
-
-
 
 </body>
 </html>

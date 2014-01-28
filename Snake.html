@@ -13,6 +13,7 @@ Your browser does not support the HTML5 canvas tag.
 
 //audio if wanted
 -->
+<img src="images/snake_body.png" alt="Snake body image" width="9" height="9" id="snake" style="display:none" />
 
 <script>
 
@@ -58,10 +59,11 @@ function moveSnake(){
 	setTimeout(function(){paint();},delay)
 }
 function printSnake(){	
-	
+var img_snake = document.getElementById('snake'); //get snake image
 	for (i=0;i<SnakeTail;i++)
 	{ 
-		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);		
+//		ctx.fillRect(SnakeArray[i].x,SnakeArray[i].y,9,9);	
+    ctx.drawImage(img_snake, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
 	}
 	moveSnake();
 }

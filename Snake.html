@@ -98,6 +98,12 @@ function moveSnake(){
 	if(d==="down"){SnakeArray[0].y=SnakeArray[0].y+10;}
 	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
 		deleteSnake();
+	}	
+	else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){
+		score=score+20;
+		addSnakeBit();
+		makeFood();
+		paint();
 	}
 	else{
 		paint();

@@ -37,6 +37,8 @@ function printScore() {
   ctx.fillStyle = '#808080'; //gray
   ctx.font = 'bold 12px sans-serif';
   ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'left';
+  ctx.textAlign = 'bottom';
   ctx.fillText('score: ' + score, 4, 398); //display in lower left hand corner
 }
 
@@ -69,6 +71,7 @@ function paint(){        				//clears screen and repaints snake in new position
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printSnake();
   printScore();
+//  printPopup();
 }
 function moveSnake(){
 	for(i=SnakeTail; i>0; i--){

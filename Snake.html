@@ -16,10 +16,13 @@
 <img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
+
 <script>
 
 var c=document.getElementById('canvas');
+
 var ctx=c.getContext('2d');
+
 
 var SnakeArray=new Array(); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
@@ -29,8 +32,26 @@ var score = 0; //current score
 var food=new Object();
 
 
-window.onload = function(){SnakeInit(); updateScore();};
+window.onload = function(){SnakeInit(); updateScore(); };
+window.addEventListener("keydown", function (e) {
+    
+	if(e.keyCode===40){
+		d="down";
+	}
+	else if(e.keyCode===39){
+		d="right";
+	}
+	else if(e.keyCode===38){
+		d="up";
+	}
+	else if(e.keyCode===37){
+		d="left";
+	}
+});
+function doKeyDown(e){
+	
 
+}
 function updateScore(){
   score = score + 1; //update score as each second passes 
 	setTimeout(function(){updateScore();},1000); //call again to update score
@@ -73,21 +94,21 @@ function printFood(){
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
 }
 
-function printPopup(){
+function printPopup(text){
   var cx = canvas.width/2;
   var cy = canvas.height/2;
   ctx.fillStyle = '#4A4FFF';
   ctx.font = 'bold 50px sans-serif';
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'center';
-  ctx.fillText('Good job!', cx, cy); //add a personalized random message later
+  ctx.fillText(text, cx, cy); //add a personalized random message later
 }
 
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	printFood();	
 	printSnake();
-  printScore();
+	printScore();
 }
 function moveSnake(){
 	for(i=SnakeTail; i>0; i--){
@@ -166,8 +187,10 @@ function clockwise()
 		d="right";
 	}
 }
+
 </script>
 <br>
+
  <img id="leftImage" onclick="counterClockwise()"			
 src="images/left.jpg" width="100" height="70"><!--buttons for control-->
 

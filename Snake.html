@@ -76,6 +76,7 @@ function SnakeInit(){
 	makeFood();
 	paint();
 }
+
 function addSnakeBit(){	         //adds a new snake bit
 	SnakeArray[++SnakeTail]=new Object();
 	SnakeArray[SnakeTail].x=nx;
@@ -85,10 +86,12 @@ function addSnakeBit(){	         //adds a new snake bit
 function getRandomArbitary (min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
+
 function makeFood(){
 	food.x= getRandomArbitary(0,40)*10;
 	food.y= getRandomArbitary(0,40)*10;
 }
+
 function printFood(){
 	var img_heart = document.getElementById('heart'); //snake head
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
@@ -110,6 +113,7 @@ function paint(){        				//clears screen and repaints snake in new position
 	printSnake();
 	printScore();
 }
+
 function moveSnake(){
 	nx= SnakeArray[SnakeTail].x;
 	ny= SnakeArray[SnakeTail].y;
@@ -118,39 +122,80 @@ function moveSnake(){
 		SnakeArray[i].y=SnakeArray[i-1].y;
 	}
 	
-	//boolean hitCheck=true;		//is false if the snake is going to hit itself
-	if(d==="right"){		
-			SnakeArray[0].x=SnakeArray[0].x+10;		
+	var hitCheck=true;		//is false if the snake is going to hit itself
+	if(d==="right"){
+		for(i=1; i<=SnakeTail; i++){
+			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
+				hitCheck = false;
+				deleteSnake();
+			}			
+		}
+		if(hitCheck){
+				SnakeArray[0].x=SnakeArray[0].x+10;
+				moveSnake2();
+		}
 	}
-	if(d==="up"){		
-		SnakeArray[0].y=SnakeArray[0].y-10;		
+	else if(d==="up"){
+		for(i=1; i<=SnakeTail; i++){
+			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
+				hitCheck = false;
+				deleteSnake();
+			}			
+		}
+		if(hitCheck){
+				SnakeArray[0].y=SnakeArray[0].y-10;
+				moveSnake2();
+		}				
 	}
-	if(d==="left"){		
-			SnakeArray[0].x=SnakeArray[0].x-10;			
+	else if(d==="left"){	
+		for(i=1; i<=SnakeTail; i++){
+			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
+				hitCheck = false;
+				deleteSnake();
+			}			
+		}
+		if(hitCheck){
+				SnakeArray[0].x=SnakeArray[0].x-10;
+				moveSnake2();
+		}						
 	}
 		
-	if(d==="down"){		
-			SnakeArray[0].y=SnakeArray[0].y+10;		
-	}
-	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
-		deleteSnake();
+	else if(d==="down"){	
+		for(i=1; i<=SnakeTail; i++){
+			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
+				hitCheck = false;
+				deleteSnake();
+			}			
+		}
+		if(hitCheck){
+			SnakeArray[0].y=SnakeArray[0].y+10;
+			moveSnake2();
+		}					
 	}	
-	else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){
-		score=score+20;
-		addSnakeBit();
-		makeFood();
-		paint();
-	}
-	else{
-		paint();
-	}
 }
+function moveSnake2(){						//required to stop snake from continuing if it hits itself
+	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
+			deleteSnake();
+		}	
+		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){
+			score=score+20;
+			addSnakeBit();
+			makeFood();
+			paint();
+		}
+		else{
+			paint();
+		}
+
+}
+
 function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
 	SnakeInit();
 }
+
 function printSnake(){	
 	var img_snake = document.getElementById('snake_body'); //get snake image
 	var img_snake_tail = document.getElementById('snake_tail'); //snake tail

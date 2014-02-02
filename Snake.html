@@ -27,6 +27,7 @@ var ctx=c.getContext('2d');
 var SnakeArray=new Array(); //array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
+var dn = d;						// dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; //current score
 var food=new Object();
@@ -36,16 +37,16 @@ var ny=0;
 window.onload = function(){SnakeInit(); updateScore(); };
 window.addEventListener("keydown", function (e) {    
 	if(e.keyCode===40 && d!="up"){
-		d="down";
+		dn="down";
 	}
 	else if(e.keyCode===39&& d!="left"){
-		d="right";
+		dn="right";
 	}
 	else if(e.keyCode===38&& d!="down"){
-		d="up";
+		dn="up";
 	}
 	else if(e.keyCode===37&& d!="right"){
-		d="left";
+		dn="left";
 	}
 });
 
@@ -66,7 +67,7 @@ function printScore() {
 function SnakeInit(){
 	score = 0; 					//reset score to 0	
 	SnakeTail=-1;				//Most recently added SnakeBit
-	d="right";  				//direction
+	dn="right";  				//direction
 	nx=40;						//resets where the next added snakebits go (top left)
 	ny=0;
 	for(i=5;i>=0;i--){
@@ -128,6 +129,7 @@ function moveSnake(){
 		SnakeArray[i].y=SnakeArray[i-1].y;
 	}
 	
+	d=dn;					
 	var isHit=false;		//is true if the snake is going to hit itself
 	if(d==="right"){
 		for(i=1; i<=SnakeTail; i++){

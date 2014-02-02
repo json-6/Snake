@@ -109,7 +109,7 @@ function printPopup(text){
 
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	printFood();	
+	printFood();
 	printSnake();
 	printScore();
 }
@@ -122,15 +122,15 @@ function moveSnake(){
 		SnakeArray[i].y=SnakeArray[i-1].y;
 	}
 	
-	var hitCheck=true;		//is false if the snake is going to hit itself
+	var isHit=false;		//is true if the snake is going to hit itself
 	if(d==="right"){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
-				hitCheck = false;
+				isHit = true;
 				deleteSnake();
 			}			
 		}
-		if(hitCheck){
+		if(!isHit){
 				SnakeArray[0].x=SnakeArray[0].x+10;
 				moveSnake2();
 		}
@@ -138,11 +138,11 @@ function moveSnake(){
 	else if(d==="up"){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
-				hitCheck = false;
+				isHit = true;
 				deleteSnake();
 			}			
 		}
-		if(hitCheck){
+		if(!isHit){
 				SnakeArray[0].y=SnakeArray[0].y-10;
 				moveSnake2();
 		}				
@@ -150,11 +150,11 @@ function moveSnake(){
 	else if(d==="left"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
-				hitCheck = false;
+				isHit = true;
 				deleteSnake();
 			}			
 		}
-		if(hitCheck){
+		if(!isHit){
 				SnakeArray[0].x=SnakeArray[0].x-10;
 				moveSnake2();
 		}						
@@ -163,11 +163,11 @@ function moveSnake(){
 	else if(d==="down"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
-				hitCheck = false;
+				isHit = true;
 				deleteSnake();
 			}			
 		}
-		if(hitCheck){
+		if(!isHit){
 			SnakeArray[0].y=SnakeArray[0].y+10;
 			moveSnake2();
 		}					
@@ -179,7 +179,10 @@ function moveSnake2(){						//required to stop snake from continuing if it hits 
 		}	
 		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){
 			score=score+20;
+			for(i=0;i<50;i++){
 			addSnakeBit();
+			}
+			
 			makeFood();
 			paint();
 		}

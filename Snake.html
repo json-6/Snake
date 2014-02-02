@@ -90,6 +90,12 @@ function getRandomArbitary (min, max) {
 function makeFood(){
 	food.x= getRandomArbitary(0,40)*10;
 	food.y= getRandomArbitary(0,40)*10;
+	for(i=0; i<=SnakeTail; i++){
+		if(food.x == SnakeArray[i].x && food.y ===SnakeArray[i].y){		//this could be risky at high snake bit counts
+			makeFood();
+			break;
+		}
+	}
 }
 
 function printFood(){

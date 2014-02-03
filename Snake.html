@@ -17,6 +17,7 @@
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 <img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
 
+
 <script>
 
 var c=document.getElementById('canvas');
@@ -114,8 +115,11 @@ function printPopup(text){
   ctx.fillText(text, cx, cy); //add a personalized random message later
 }
 
+var img_background = new Image();
+img_background.src = "images/background.jpg";
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.drawImage(img_background, 0, 0, canvas.width, canvas.height);
 	printFood();
 	printSnake();
 	printScore();

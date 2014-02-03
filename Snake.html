@@ -36,7 +36,11 @@ var food=new Object();
 var nx=0;
 var ny=0;
 
+
 //declaring image variables
+var img_background = new Image();							//background
+img_background.src = "images/background.jpg";
+
 var head_up = new Image();									//Snake head
 head_up.src = "images/head_up.jpg";
 var head_right = new Image();
@@ -134,18 +138,18 @@ function printFood(){
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
 }
 
-function printPopup(text){
+function printPopup(text, text2){
   var cx = canvas.width/2;
   var cy = canvas.height/2;
   ctx.fillStyle = '#4A4FFF';
-  ctx.font = 'bold 50px sans-serif';
+  ctx.font = 'bold 20px sans-serif';
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'center';
   ctx.fillText(text, cx, cy); 			//add a personalized random message later
+  ctx.fillText(text2, cx, cy+20);
 }
 
-var img_background = new Image();
-img_background.src = "images/background.jpg";
+
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.drawImage(img_background, 0, 0, canvas.width, canvas.height);
@@ -170,7 +174,8 @@ function moveSnake(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-				deleteSnake();
+				printPopup('Your conga line crashed!','Disqualified!');
+				deleteSnake();				
 			}			
 		}
 		if(!isHit){
@@ -182,6 +187,7 @@ function moveSnake(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
+				printPopup('Your conga line crashed!','Disqualified!');
 				deleteSnake();
 			}			
 		}
@@ -194,6 +200,7 @@ function moveSnake(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
+				printPopup('Your conga line crashed!','Disqualified!');
 				deleteSnake();
 			}			
 		}
@@ -207,6 +214,7 @@ function moveSnake(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
+				printPopup('Your conga line crashed!','Disqualified!');
 				deleteSnake();
 			}			
 		}
@@ -218,6 +226,7 @@ function moveSnake(){
 }
 function moveSnake2(){						//required to stop snake from continuing if it hits itself
 	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
+			printPopup('Your conga line left the dance floor!','Disqualified!');
 			deleteSnake();
 		}	
 		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
@@ -239,8 +248,7 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
-	
-	SnakeInit();
+	setTimeout(function(){SnakeInit();},3000)
 }
 
 function printSnake(){	

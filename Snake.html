@@ -25,18 +25,41 @@ var c=document.getElementById('canvas');
 var ctx=c.getContext('2d');
 
 
-var SnakeArray=new Array(); //array to hold snake bit objects
+var SnakeArray=new Array(); 	//array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
 var dn = d;						// dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
+								// ALL ASSIGNMENT SHOULD GO TO dn
 var delay=100;					//refresh rate (in milliseconds)
-var score = 0; //current score
+var score = 0; 					//current score
 var food=new Object();
 var nx=0;
 var ny=0;
 
-window.onload = function(){SnakeInit(); updateScore(); };
-window.addEventListener("keydown", function (e) {    
+//declaring image variables
+var head_up = new Image();									//Snake head
+head_up.src = "images/head_up.jpg";
+var head_right = new Image();
+head_right.src = "images/head_right.jpg";
+var head_down = new Image();
+head_down.src = "images/head_down.jpg";
+var head_left = new Image();
+head_left.src = "images/head_left.jpg";
+
+var body_up = new Image();									//Snake body
+body_up.src = "images/body_up.jpg";
+var body_right = new Image();
+body_right.src = "images/body_right.jpg";
+var body_down = new Image();
+body_down.src = "images/body_down.jpg";
+var body_left = new Image();
+body_left.src = "images/body_left.jpg";
+
+var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
+
+window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
+
+window.addEventListener("keydown", function (e) {    			//listens for key press
 	if(e.keyCode===40 && d!="up"){
 		dn="down";
 	}
@@ -52,8 +75,8 @@ window.addEventListener("keydown", function (e) {
 });
 
 function updateScore(){
-  score = score + 1; //update score as each second passes 
-	setTimeout(function(){updateScore();},1000); //call again to update score
+  score = score + 1; 								//update score as each second passes 
+	setTimeout(function(){updateScore();},1000); 	//call again to update score
 }
 
 function printScore() {
@@ -62,7 +85,7 @@ function printScore() {
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'left';
   ctx.textAlign = 'bottom';
-  ctx.fillText('score: ' + score, 4, 398); //display in lower left hand corner
+  ctx.fillText('score: ' + score, 4, 398); 			//display in lower left hand corner
 }
 
 function SnakeInit(){
@@ -79,9 +102,9 @@ function SnakeInit(){
 	paint();
 }
 
-function addSnakeBit(){	         //adds a new snake bit
-	SnakeArray[++SnakeTail]=new Object();
-	SnakeArray[SnakeTail].x=nx;
+function addSnakeBit(){	         								//adds a new snake bit 
+	SnakeArray[++SnakeTail]=new Object();						//x and y variables are for location
+	SnakeArray[SnakeTail].x=nx;									//dir variable is to know which image to load
 	SnakeArray[SnakeTail].y=ny;
 	if(SnakeTail !=0){
 		SnakeArray[SnakeTail].dir=SnakeArray[SnakeTail-1].dir;
@@ -118,7 +141,7 @@ function printPopup(text){
   ctx.font = 'bold 50px sans-serif';
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'center';
-  ctx.fillText(text, cx, cy); //add a personalized random message later
+  ctx.fillText(text, cx, cy); 			//add a personalized random message later
 }
 
 var img_background = new Image();
@@ -197,9 +220,9 @@ function moveSnake2(){						//required to stop snake from continuing if it hits 
 	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
 			deleteSnake();
 		}	
-		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){
+		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 			score=score+20;
-			for(i=0;i<50;i++){
+			for(i=0;i<3;i++){
 			addSnakeBit();
 			}
 			
@@ -220,28 +243,10 @@ function deleteSnake(){
 	SnakeInit();
 }
 
-var head_up = new Image();
-head_up.src = "images/head_up.jpg";
-var head_right = new Image();
-head_right.src = "images/head_right.jpg";
-var head_down = new Image();
-head_down.src = "images/head_down.jpg";
-var head_left = new Image();
-head_left.src = "images/head_left.jpg";
-
-var body_up = new Image();
-body_up.src = "images/body_up.jpg";
-var body_right = new Image();
-body_right.src = "images/body_right.jpg";
-var body_down = new Image();
-body_down.src = "images/body_down.jpg";
-var body_left = new Image();
-body_left.src = "images/body_left.jpg";
-
 function printSnake(){	
-	var img_snake = document.getElementById('snake_body'); //get snake image
-	var img_snake_tail = document.getElementById('snake_tail'); //snake tail
-	var img_snake_head = document.getElementById('snake_head'); //snake head
+
+
+	
 		for (i=0;i<SnakeTail;i++)
 		{ 		
 			if(i === 0){
@@ -282,32 +287,32 @@ function printSnake(){
 
 function counterClockwise(){
 	if(d==="right"){
-		d="up";
+		dn="up";
 	}
 	else if(d==="down"){
-		d="right";
+		dn="right";
 	}
 	else if(d==="left"){
-		d="down";
+		dn="down";
 	}
 	else if(d==="up"){
-		d="left";
+		dn="left";
 	}
 
 }
 function clockwise()
 {
 	if(d==="right"){
-		d="down";
+		dn="down";
 	}
 	else if(d==="down"){
-		d="left";
+		dn="left";
 	}
 	else if(d==="left"){
-		d="up";
+		dn="up";
 	}
 	else if(d==="up"){
-		d="right";
+		dn="right";
 	}
 }
 

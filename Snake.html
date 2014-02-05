@@ -21,26 +21,26 @@
 <script>
 
 var c = document.getElementById('canvas');
-
 var ctx = c.getContext('2d');
 
 //declaring variables
 
-var SnakeArray=new Array(); 	//array to hold snake bit objects
-var SnakeTail=-1; 				//Most recently added SnakeBit
-var d="right";  				//direction
+var SnakeArray = []; 			//array to hold snake bit objects
+var SnakeTail = -1; 			//Most recently added SnakeBit
+
+var d = "right"; 				//direction
 var dn = d;						// dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								// ALL ASSIGNMENT SHOULD GO TO dn
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
-var food=new Object();			//food that doesnt move
-var movingFood= new Object();	//the food that moves. pops up "randomly"
+var food={};			//food that doesnt move
+var movingFood= {};	//the food that moves. pops up "randomly"
 var foodBool = false;			//true if there is moving food on the screen
 var foodD = "right";			//direction of moving food
 
-var nx=0;						//holds where a new snakebit would go
-var ny=0;
+var nx = 0;						//holds where a new snakebit would go
+var ny = 0;
 
 var rand = 0; //used to store random numbers
 
@@ -104,10 +104,10 @@ function SnakeInit(){
 }
 
 function addSnakeBit(){	         								//adds a new snake bit 
-	SnakeArray[++SnakeTail]=new Object();						//x and y variables are for location
+	SnakeArray[++SnakeTail]={};						//x and y variables are for location
 	SnakeArray[SnakeTail].x=nx;									
 	SnakeArray[SnakeTail].y=ny;
-	if(SnakeTail !=0){											//dir variable is to know which image to load
+	if(SnakeTail !==0){											//dir variable is to know which image to load
 		SnakeArray[SnakeTail].dir = SnakeArray[SnakeTail-1].dir;
 	}
 	else{ // is snake head
@@ -124,7 +124,7 @@ function makeMovingFood(){
 	movingFood.x= getRandomArbitrary(0,39)*10;
 	movingFood.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
-		if(movingFood.x == SnakeArray[i].x && movingFood.y ===SnakeArray[i].y){		//this could be risky at very high snake bit counts
+		if(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeMovingFood();
 			break;
 		}
@@ -135,7 +135,7 @@ function makeFood(){
 	food.x= getRandomArbitrary(0,39)*10;
 	food.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
-		if(food.x == SnakeArray[i].x && food.y ===SnakeArray[i].y){		//this could be risky at very high snake bit counts
+		if(food.x === SnakeArray[i].x && food.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeFood();
 			break;
 		}
@@ -364,16 +364,16 @@ function printSnake(){
 }
 
 window.addEventListener("keydown", function (e) {    			//listens for key press
-	if(e.keyCode===40 && d!="up"){
+	if(e.keyCode===40 && d!=="up"){
 		dn="down";
 	}
-	else if(e.keyCode===39&& d!="left"){
+	else if(e.keyCode===39&& d!=="left"){
 		dn="right";
 	}
-	else if(e.keyCode===38&& d!="down"){
+	else if(e.keyCode===38&& d!=="down"){
 		dn="up";
 	}
-	else if(e.keyCode===37&& d!="right"){
+	else if(e.keyCode===37&& d!=="right"){
 		dn="left";
 	}
 });

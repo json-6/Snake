@@ -20,27 +20,29 @@
 
 <script>
 
-var c=document.getElementById('canvas');
+var c = document.getElementById('canvas');
+var ctx = c.getContext('2d');
 
-var ctx=c.getContext('2d');
+//declaring variables
 
+var SnakeArray = []; 			//array to hold snake bit objects
+var SnakeTail = -1; 			//Most recently added SnakeBit
 
-var SnakeArray=new Array(); 	//array to hold snake bit objects
-var SnakeTail=-1;				//Most recently added SnakeBit
-var d="right";  				//direction
+var d = "right"; 				//direction
 var dn = d;						// dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								// ALL ASSIGNMENT SHOULD GO TO dn
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
-var food=new Object();			//food that doesnt move
-var movingFood= new Object();	//the food that moves. pops up randomly
+var food={};			//food that doesnt move
+var movingFood= {};	//the food that moves. pops up "randomly"
 var foodBool = false;			//true if there is moving food on the screen
 var foodD = "right";			//direction of moving food
 
-var nx=0;						//holds where a new snakebit would go
-var ny=0;
+var nx = 0;						//holds where a new snakebit would go
+var ny = 0;
 
+var rand = 0; //used to store random numbers
 
 //declaring image variables
 var img_background = new Image();							//background
@@ -73,21 +75,6 @@ var img_heart = document.getElementById('heart'); //snake head
 
 window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
 
-window.addEventListener("keydown", function (e) {    			//listens for key press
-	if(e.keyCode===40 && d!="up"){
-		dn="down";
-	}
-	else if(e.keyCode===39&& d!="left"){
-		dn="right";
-	}
-	else if(e.keyCode===38&& d!="down"){
-		dn="up";
-	}
-	else if(e.keyCode===37&& d!="right"){
-		dn="left";
-	}
-});
-
 function updateScore(){
 	score = score + 1; 								//update score as each second passes 
 	setTimeout(function(){updateScore();},1000); 	//call again to update score
@@ -117,26 +104,27 @@ function SnakeInit(){
 }
 
 function addSnakeBit(){	         								//adds a new snake bit 
-	SnakeArray[++SnakeTail]=new Object();						//x and y variables are for location
-	SnakeArray[SnakeTail].x=nx;									//dir variable is to know which image to load
+	SnakeArray[++SnakeTail]={};						//x and y variables are for location
+	SnakeArray[SnakeTail].x=nx;									
 	SnakeArray[SnakeTail].y=ny;
-	if(SnakeTail !=0){
+	if(SnakeTail !==0){											//dir variable is to know which image to load
 		SnakeArray[SnakeTail].dir = SnakeArray[SnakeTail-1].dir;
 	}
-	else{
+	else{ // is snake head
 		SnakeArray[SnakeTail].dir = d;
 	}
 }
 
-function getRandomArbitrary (min, max) {
+function getRandomArbitrary (min, max) { //returns random integer between min and max. min is more likely than max due to floor function
     return Math.floor(Math.random() * (max - min) + min);
 }
+
 function makeMovingFood(){
 	foodBool = true;
 	movingFood.x= getRandomArbitrary(0,39)*10;
 	movingFood.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
-		if(movingFood.x == SnakeArray[i].x && movingFood.y ===SnakeArray[i].y){		//this could be risky at very high snake bit counts
+		if(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeMovingFood();
 			break;
 		}
@@ -147,7 +135,7 @@ function makeFood(){
 	food.x= getRandomArbitrary(0,39)*10;
 	food.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
-		if(food.x == SnakeArray[i].x && food.y ===SnakeArray[i].y){		//this could be risky at very high snake bit counts
+		if(food.x === SnakeArray[i].x && food.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeFood();
 			break;
 		}
@@ -180,18 +168,25 @@ function paint(){        				//clears screen and repaints snake in new position
 	printSnake();
 	printScore();
 }
-
-function moveSnake(){
-	nx= SnakeArray[SnakeTail].x;
-	ny= SnakeArray[SnakeTail].y;
-	SnakeArray[0].dir= d;
-	for(i=SnakeTail; i>0; i--){
-		SnakeArray[i].x=SnakeArray[i-1].x;
-		SnakeArray[i].y=SnakeArray[i-1].y;
-		SnakeArray[i].dir=SnakeArray[i-1].dir;
+function moveSnake2(){						//required to stop snake from continuing if it hits itself
+	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
+		score=score+20;
+		for(i=0;i<3;i++){
+			addSnakeBit();
+		}			
+		makeFood();
 	}
-	
-	d=dn;					
+	else if(foodBool){		
+		checkFoodCollision();	//checks moving food for eating
+	}
+	else{
+		if(getRandomArbitrary(0,40) > 37){
+			makeMovingFood();
+		}
+	}
+	paint();
+}
+function checkCollision(){
 	var isHit=false;		//is true if the snake is going to hit itself
 	if(d==="right"){
 		for(i=1; i<=SnakeTail; i++){
@@ -203,7 +198,6 @@ function moveSnake(){
 		}
 		if(!isHit){
 				SnakeArray[0].x=SnakeArray[0].x+10;
-				moveSnake2();
 		}
 	}
 	else if(d==="up"){
@@ -216,7 +210,6 @@ function moveSnake(){
 		}
 		if(!isHit){
 				SnakeArray[0].y=SnakeArray[0].y-10;
-				moveSnake2();
 		}				
 	}
 	else if(d==="left"){	
@@ -229,7 +222,6 @@ function moveSnake(){
 		}
 		if(!isHit){
 				SnakeArray[0].x=SnakeArray[0].x-10;
-				moveSnake2();
 		}						
 	}
 		
@@ -243,85 +235,87 @@ function moveSnake(){
 		}
 		if(!isHit){
 			SnakeArray[0].y=SnakeArray[0].y+10;
-			moveSnake2();
 		}					
-	}	
-}
-
-var rand = 0; //used to store random numbers
-function moveSnake2(){						//required to stop snake from continuing if it hits itself
-	if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
+	}
+	if(!isHit){
+		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
 			printPopup('Your conga line left the dance floor!','Disqualified!');
 			deleteSnake();
-		}	
-		else if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-			score=score+20;
-			for(i=0;i<3;i++){
-				addSnakeBit();
-			}
 			
-			makeFood();
-			paint();
-		}
-		else if(foodBool){
-			if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
-				score += 40;
-				foodBool=false;
-			}
-			else{
-				rand = getRandomArbitrary(0,100);
-				if(rand>=90){
-					if(rand >= 97.5){
-						foodD="right";
-					}
-					else if(rand>=95){
-						foodD="left";
-					}
-					else if(rand>=92.5){
-						foodD="up";
-					}
-					else if(rand>=90){
-						foodD="down";
-					}
-				}
-				if( foodD === "right"){
-					movingFood.x += 10;
-					if(movingFood.x > 370){
-						foodD= "left";
-					}
-				}
-				else if( foodD === "left"){
-					if(movingFood.x <= 10){
-						foodD= "right";
-					}
-					movingFood.x -= 10;
-					
-				}
-				else if( foodD === "up"){
-					movingFood.y -= 10;
-					if(movingFood.y <= 10){
-						foodD= "down";
-					}
-				}
-				else if( foodD === "down"){
-					movingFood.y += 10;
-					if(movingFood.y > 370){
-						foodD= "up";
-					}
-				}
-				
-				
-			}
-			paint();
 		}
 		else{
-			if(getRandomArbitrary(0,40) > 37){
-				makeMovingFood();
-			}
-			paint();
+			moveSnake2();
 		}
-
+	}
 }
+function moveSnake(){
+	nx= SnakeArray[SnakeTail].x;
+	ny= SnakeArray[SnakeTail].y;
+	SnakeArray[0].dir= d;
+	for(i=SnakeTail; i>0; i--){
+		SnakeArray[i].x=SnakeArray[i-1].x;
+		SnakeArray[i].y=SnakeArray[i-1].y;
+		SnakeArray[i].dir=SnakeArray[i-1].dir;
+	}	
+	d=dn;		
+	checkCollision();
+}
+function randomizeFood(){ //randomizes the direction of the food in a (preferably) not annoying way
+	rand = getRandomArbitrary(0,100);
+	if(rand>=90){
+		if(rand >= 97.5){
+			foodD="right";
+		}
+		else if(rand>=95){
+			foodD="left";
+		}
+		else if(rand>=92.5){
+			foodD="up";
+		}
+		else if(rand>=90){
+			foodD="down";
+		}
+	}
+}
+function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)
+	if( foodD === "right"){
+		movingFood.x += 10;
+		if(movingFood.x > 370){
+			foodD= "left";
+		}
+	}
+	else if( foodD === "left"){
+		if(movingFood.x < 20){
+			foodD= "right";
+		}
+		movingFood.x -= 10;
+		
+	}
+	else if( foodD === "up"){
+		movingFood.y -= 10;
+		if(movingFood.y < 20){
+			foodD= "down";
+		}
+	}
+	else if( foodD === "down"){
+		movingFood.y += 10;
+		if(movingFood.y > 370){
+			foodD= "up";
+		}
+	}
+}
+function checkFoodCollision(){
+	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
+		score += 40;
+		foodBool=false;
+	}
+	else{
+		randomizeFood();
+		moveFood();			
+	}
+}
+
+
 
 function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
@@ -330,47 +324,59 @@ function deleteSnake(){
 	setTimeout(function(){SnakeInit();},3000)
 }
 
-function printSnake(){	
-
-
-	
-		for (i=0;i<SnakeTail;i++)
-		{ 		
-			if(i === 0){
-				if(d==="up"){
-					ctx.drawImage(head_up, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(d==="right"){
-					ctx.drawImage(head_right, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(d==="down"){
-					ctx.drawImage(head_down, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(d==="left"){
-					ctx.drawImage(head_left, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
+function printSnake(){		
+	for (i=0;i<SnakeTail;i++)
+	{ 		
+		if(i === 0){
+			if(d==="up"){
+				ctx.drawImage(head_up, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
 			}
-			else if (i === SnakeTail - 1 ){ //at tail, SnakeTail -1
-				ctx.drawImage(img_snake_tail, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			else if(d==="right"){
+				ctx.drawImage(head_right, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
 			}
-			else{
-				if(SnakeArray[i-1].dir==="up"){
-					ctx.drawImage(body_up, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(SnakeArray[i-1].dir==="right"){
-					ctx.drawImage(body_right, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(SnakeArray[i-1].dir==="down"){
-					ctx.drawImage(body_down, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				else if(SnakeArray[i-1].dir==="left"){
-					ctx.drawImage(body_left, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
-				}
-				
+			else if(d==="down"){
+				ctx.drawImage(head_down, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			}
+			else if(d==="left"){
+				ctx.drawImage(head_left, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
 			}
 		}
+		else if (i === SnakeTail - 1 ){ //at tail, SnakeTail -1
+			ctx.drawImage(img_snake_tail, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+		}
+		else{
+			if(SnakeArray[i-1].dir==="up"){
+				ctx.drawImage(body_up, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			}
+			else if(SnakeArray[i-1].dir==="right"){
+				ctx.drawImage(body_right, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			}
+			else if(SnakeArray[i-1].dir==="down"){
+				ctx.drawImage(body_down, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			}
+			else if(SnakeArray[i-1].dir==="left"){
+				ctx.drawImage(body_left, SnakeArray[i].x, SnakeArray[i].y, 9, 9);
+			}
+			
+		}
+	}
 	setTimeout(function(){moveSnake();},delay)
 }
+
+window.addEventListener("keydown", function (e) {    			//listens for key press
+	if(e.keyCode===40 && d!=="up"){
+		dn="down";
+	}
+	else if(e.keyCode===39&& d!=="left"){
+		dn="right";
+	}
+	else if(e.keyCode===38&& d!=="down"){
+		dn="up";
+	}
+	else if(e.keyCode===37&& d!=="right"){
+		dn="left";
+	}
+});
 
 function counterClockwise(){
 	if(d==="right"){

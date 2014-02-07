@@ -15,8 +15,6 @@
 <img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
 <img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
-<img src="images/heart.png" alt="heart" width="9" height="9" id="heart" style="display:none" />
-
 
 <script>
 
@@ -31,6 +29,7 @@ var SnakeTail = -1; 			//Most recently added SnakeBit
 var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								//ALL ASSIGNMENT SHOULD GO TO dn
+                                
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
@@ -42,40 +41,67 @@ var foodD = "right";			//direction of moving food
 var nx = 0;						//holds where a new snakebit would go
 var ny = 0;
 
+var level = 1;
+
 var rand = 0; //used to store random numbers
 
+var popupTime = 0;
+function initLevel(){
+    level = 1;
+    img_background.src = "images/background.jpg";
+    head_up.src = "images/head_up.jpg";
+    head_right.src = "images/head_right.jpg";
+    head_down.src = "images/head_down.jpg";
+    head_left.src = "images/head_left.jpg";
+    body_up.src = "images/body_up.png";
+    body_right.src = "images/body_right.png";
+    body_down.src = "images/body_down.png";
+    body_left.src = "images/body_left.png";
+    img_heart.src = "images/heart.png" ;
+    img_movingFood.src = "images/movingFood.png";
+}
+function initLevel2(){
+    level = 2;
+    img_background.src = "images/Oz.png";
+    printPopup("Level 2!", "", 100);
+
+}
 //declaring image variables
 var img_background = new Image();							//background
-img_background.src = "images/background.jpg";
-
 var head_up = new Image();									//Snake head
-head_up.src = "images/head_up.jpg";
 var head_right = new Image();
-head_right.src = "images/head_right.jpg";
 var head_down = new Image();
-head_down.src = "images/head_down.jpg";
 var head_left = new Image();
-head_left.src = "images/head_left.jpg";
-
 var body_up = new Image();									//Snake body
-body_up.src = "images/body_up.png";
 var body_right = new Image();
-body_right.src = "images/body_right.png";
 var body_down = new Image();
-body_down.src = "images/body_down.png";
 var body_left = new Image();
-body_left.src = "images/body_left.png";
 
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 
 var img_movingFood = new Image();
-img_movingFood.src = "images/movingFood.png";
-
-var img_heart = document.getElementById('heart'); 
+var img_heart = new Image();
 
 window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
 
+function SnakeInit(){
+    initLevel();
+	score = 0; 					//reset score to 0	
+	SnakeTail=-1;				//Most recently added SnakeBit
+	dn="right";  				//direction
+	nx=40;						//resets where the next added snakebits go (top left)
+	ny=0;
+	for(i=5;i>=0;i--){
+		addSnakeBit();
+		nx=nx-10;
+	}
+	makeFood();
+	paint();
+}
 function updateScore(){
+    if(score>1000 && level === 1){
+        initLevel2();
+    }
 	score = score + 1; 								//update score as each second passes 
 	setTimeout(function(){updateScore();},100); 	//call again to update score
 }
@@ -89,19 +115,6 @@ function printScore() {
   ctx.fillText('score: ' + score, 4, 398); 			//display in lower left hand corner
 }
 
-function SnakeInit(){
-	score = 0; 					//reset score to 0	
-	SnakeTail=-1;				//Most recently added SnakeBit
-	dn="right";  				//direction
-	nx=40;						//resets where the next added snakebits go (top left)
-	ny=0;
-	for(i=5;i>=0;i--){
-		addSnakeBit();
-		nx=nx-10;
-	}
-	makeFood();
-	paint();
-}
 
 function addSnakeBit(){	         								//adds a new snake bit 
 	SnakeArray[++SnakeTail]={};						//x and y variables are for location
@@ -148,8 +161,12 @@ function printFood(){
 	}
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
 }
-
-function printPopup(text, text2){
+var popupText;
+var popupText2;
+function printPopup(text, text2, p){
+  popupTime = p;
+  popupText =text;
+  popupText2=text2;
   var cx = canvas.width/2;
   var cy = canvas.height/2;
   ctx.fillStyle = '#4A4FFF';
@@ -164,6 +181,9 @@ function printPopup(text, text2){
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.drawImage(img_background, 0, 0, canvas.width, canvas.height);
+    if(popupTime-- > 0){
+        printPopup(popupText, popupText2, popupTime);
+    }
 	printFood();
 	printSnake();
 	printScore();

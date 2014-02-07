@@ -15,7 +15,7 @@
 <img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
 <img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
-<img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
+<img src="images/heart.png" alt="heart" width="9" height="9" id="heart" style="display:none" />
 
 
 <script>
@@ -29,13 +29,13 @@ var SnakeArray = []; 			//array to hold snake bit objects
 var SnakeTail = -1; 			//Most recently added SnakeBit
 
 var d = "right"; 				//direction
-var dn = d;						// dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
-								// ALL ASSIGNMENT SHOULD GO TO dn
+var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
+								//ALL ASSIGNMENT SHOULD GO TO dn
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
-var food={};			//food that doesnt move
-var movingFood= {};	//the food that moves. pops up "randomly"
+var food={};			        //food that doesnt move
+var movingFood= {};	            //the food that moves. pops up "randomly"
 var foodBool = false;			//true if there is moving food on the screen
 var foodD = "right";			//direction of moving food
 
@@ -58,20 +58,20 @@ var head_left = new Image();
 head_left.src = "images/head_left.jpg";
 
 var body_up = new Image();									//Snake body
-body_up.src = "images/body_up.jpg";
+body_up.src = "images/body_up.png";
 var body_right = new Image();
-body_right.src = "images/body_right.jpg";
+body_right.src = "images/body_right.png";
 var body_down = new Image();
-body_down.src = "images/body_down.jpg";
+body_down.src = "images/body_down.png";
 var body_left = new Image();
-body_left.src = "images/body_left.jpg";
+body_left.src = "images/body_left.png";
 
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 
 var img_movingFood = new Image();
-img_movingFood.src = "images/movingFood.jpg";
+img_movingFood.src = "images/movingFood.png";
 
-var img_heart = document.getElementById('heart'); //snake head
+var img_heart = document.getElementById('heart'); 
 
 window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
 

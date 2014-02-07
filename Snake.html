@@ -77,7 +77,7 @@ window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
 
 function updateScore(){
 	score = score + 1; 								//update score as each second passes 
-	setTimeout(function(){updateScore();},1000); 	//call again to update score
+	setTimeout(function(){updateScore();},100); 	//call again to update score
 }
 
 function printScore() {
@@ -170,7 +170,7 @@ function paint(){        				//clears screen and repaints snake in new position
 }
 function moveSnake2(){						//required to stop snake from continuing if it hits itself
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-		score=score+20;
+		score=score+200;
 		for(i=0;i<3;i++){
 			addSnakeBit();
 		}			
@@ -306,7 +306,7 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
 }
 function checkFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
-		score += 40;
+		score += 400;
 		foodBool=false;
 	}
 	else{

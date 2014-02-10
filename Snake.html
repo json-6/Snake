@@ -24,7 +24,6 @@ var c=document.getElementById('canvas');
 
 var ctx=c.getContext('2d');
 
-
 var SnakeArray=new Array(); 	//array to hold snake bit objects
 var SnakeTail=-1;				//Most recently added SnakeBit
 var d="right";  				//direction
@@ -87,6 +86,8 @@ function Menu(){
 
 function startButton(c){
   SnakeInit();
+
+  this.removeEventListener('click',startButton,false); //remove the event listener so the game does not continue to wait for button press
 }
 
 function updateScore(){

@@ -45,6 +45,8 @@ var level = 1;
 
 var rand = 0; //used to store random numbers
 
+var scoreMod = 1;
+
 var popupTime = 0;
 function initLevel(){
     level = 1;
@@ -113,6 +115,9 @@ function updateScore(){
     else if(score>2000 && level === 2){
         initLevel3();
     }
+    if(scoreMod>1){
+        scoreMod -= .01;
+    }
 	score = score + 1; 								//update score as each second passes 
 	setTimeout(function(){updateScore();},100); 	//call again to update score
 }
@@ -123,9 +128,17 @@ function printScore() {
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'left';
   ctx.textAlign = 'bottom';
-  ctx.fillText('score: ' + score, 4, 398); 			//display in lower left hand corner
+  ctx.fillText('score: ' + Math.floor(score), 4, 398); 			//display in lower left hand corner
+                                                                //Math.floor keeps score an integer
 }
-
+function printMod(){
+  ctx.fillStyle = '#808080'; //gray
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'left';
+  ctx.textAlign = 'bottom';
+  ctx.fillText('modifier: ' + Math.round(scoreMod*10)/10, 320, 16); 
+}
 
 function addSnakeBit(){	         								//adds a new snake bit 
 	SnakeArray[++SnakeTail]={};						//x and y variables are for location
@@ -197,10 +210,11 @@ function paint(){        				//clears screen and repaints snake in new position
 	printFood();
 	printSnake();
 	printScore();
+    printMod();
 }
 function moveSnake2(){						//required to stop snake from continuing if it hits itself
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-		score=score+200;
+		score=score+200*scoreMod;
 		for(i=0;i<3;i++){
 			addSnakeBit();
 		}			
@@ -341,7 +355,8 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
 }
 function checkFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
-		score += 400;
+		score += 400*scoreMod;
+        scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
 	}
 	else{

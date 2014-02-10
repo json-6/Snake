@@ -28,7 +28,7 @@ var SnakeTail = -1; 			//Most recently added SnakeBit
 
 var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
-								//ALL ASSIGNMENT SHOULD GO TO dn
+								//ALL ASSIGNMENT SHOULD GO TO dn 
                                 
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
@@ -62,9 +62,14 @@ function initLevel(){
 }
 function initLevel2(){
     level = 2;
-    img_background.src = "images/Oz.png";
+    img_background.src = "images/Oz.png";    
     printPopup("Level 2!", "", 100);
 
+}
+function initLevel3(){
+    level = 3;
+    img_background.src = "images/background3.png";
+    printPopup("Level 3!", "", 100);
 }
 //declaring image variables
 var img_background = new Image();							//background
@@ -84,6 +89,9 @@ var img_heart = new Image();
 
 window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
 
+var popupText;
+var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
+
 function SnakeInit(){
     initLevel();
 	score = 0; 					//reset score to 0	
@@ -101,6 +109,9 @@ function SnakeInit(){
 function updateScore(){
     if(score>1000 && level === 1){
         initLevel2();
+    }
+    else if(score>2000 && level === 2){
+        initLevel3();
     }
 	score = score + 1; 								//update score as each second passes 
 	setTimeout(function(){updateScore();},100); 	//call again to update score
@@ -161,8 +172,7 @@ function printFood(){
 	}
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
 }
-var popupText;
-var popupText2;
+
 function printPopup(text, text2, p){
   popupTime = p;
   popupText =text;
@@ -212,7 +222,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();				
 			}			
 		}
@@ -224,7 +235,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();
 			}			
 		}
@@ -236,7 +248,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();
 			}			
 		}
@@ -249,7 +262,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!',1);
 				deleteSnake();
 			}			
 		}
@@ -259,7 +273,8 @@ function checkCollision(){
 	}
 	if(!isHit){
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
-			printPopup('Your conga line left the dance floor!','Disqualified!');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+			printPopup('Your conga line left the dance floor!','Disqualified!',1);
 			deleteSnake();
 			
 		}

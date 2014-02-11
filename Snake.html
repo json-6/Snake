@@ -15,6 +15,7 @@
 <img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
 <img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
+
 <img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
 <img src="images/start.png" alt="startbutton" width = "410" height = "195" style="display:none" id="start_button"/>
 
@@ -31,7 +32,7 @@ var SnakeTail = -1; 			//Most recently added SnakeBit
 
 var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
-								//ALL ASSIGNMENT SHOULD GO TO dn
+								//ALL ASSIGNMENT SHOULD GO TO dn 
 
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
@@ -44,41 +45,62 @@ var foodD = "right";			//direction of moving food
 var nx = 0;						//holds where a new snakebit would go
 var ny = 0;
 
+var level = 1;
+
 var rand = 0; //used to store random numbers
 
+var scoreMod = 1;
+
+var popupTime = 0;
+function initLevel(){
+    level = 1;
+    img_background.src = "images/background.jpg";
+    head_up.src = "images/head_up.jpg";
+    head_right.src = "images/head_right.jpg";
+    head_down.src = "images/head_down.jpg";
+    head_left.src = "images/head_left.jpg";
+    body_up.src = "images/body_up.png";
+    body_right.src = "images/body_right.png";
+    body_down.src = "images/body_down.png";
+    body_left.src = "images/body_left.png";
+    img_heart.src = "images/heart.png" ;
+    img_movingFood.src = "images/movingFood.png";
+}
+function initLevel2(){
+    level = 2;
+    img_background.src = "images/Oz.png";    
+    printPopup("Level 2!", "", 100);
+
+}
+function initLevel3(){
+    level = 3;
+    img_background.src = "images/background3.png";
+    body_up.src = "images/body_up3.png";
+    body_right.src = "images/body_right3.png";
+    body_down.src = "images/body_down3.png";
+    body_left.src = "images/body_left3.png";
+    printPopup("Level 3!", "", 100);
+}
 //declaring image variables
 var img_background = new Image();							//background
-img_background.src = "images/background.jpg";
-
 var head_up = new Image();									//Snake head
-head_up.src = "images/head_up.jpg";
 var head_right = new Image();
-head_right.src = "images/head_right.jpg";
 var head_down = new Image();
-head_down.src = "images/head_down.jpg";
 var head_left = new Image();
-head_left.src = "images/head_left.jpg";
-
 var body_up = new Image();									//Snake body
-body_up.src = "images/body_up.png";
 var body_right = new Image();
-body_right.src = "images/body_right.png";
 var body_down = new Image();
-body_down.src = "images/body_down.png";
 var body_left = new Image();
-body_left.src = "images/body_left.png";
 
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 
 var img_movingFood = new Image();
-img_movingFood.src = "images/movingFood.png";
-
-var img_heart = document.getElementById('heart'); 
+var img_heart = new Image();
 
 window.onload = function(){Menu(); updateScore() };		//starts everything
 
 function Menu(){
-	ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
+  ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
   ctx.drawImage(start, 0, 100, 410, 195);
   c.addEventListener("click", startButton, false);
@@ -90,21 +112,11 @@ function startButton(c){
   this.removeEventListener('click',startButton,false); //remove the event listener so the game does not continue to wait for button press
 }
 
-function updateScore(){
-	score = score + 1; 								//update score as each second passes 
-	setTimeout(function(){updateScore();},100); 	//call again to update score
-}
-
-function printScore() {
-  ctx.fillStyle = '#808080'; //gray
-  ctx.font = 'bold 12px sans-serif';
-  ctx.textBaseline = 'bottom';
-  ctx.textAlign = 'left';
-  ctx.textAlign = 'bottom';
-  ctx.fillText('score: ' + score, 4, 398); 			//display in lower left hand corner
-}
+var popupText;
+var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
 
 function SnakeInit(){
+    initLevel();
 	score = 0; 					//reset score to 0	
 	SnakeTail=-1;				//Most recently added SnakeBit
 	dn="right";  				//direction
@@ -116,6 +128,37 @@ function SnakeInit(){
 	}
 	makeFood();
 	paint();
+}
+function updateScore(){
+    if(score>1000 && level === 1){
+        initLevel2();
+    }
+    else if(score>2000 && level === 2){
+        initLevel3();
+    }
+    if(scoreMod>1){
+        scoreMod -= .01;
+    }
+	score = score + 1; 								//update score as each second passes 
+	setTimeout(function(){updateScore();},100); 	//call again to update score
+}
+
+function printScore() {
+  ctx.fillStyle = '#808080'; //gray
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'left';
+  ctx.textAlign = 'bottom';
+  ctx.fillText('score: ' + Math.floor(score), 4, 398); 			//display in lower left hand corner
+                                                                //Math.floor keeps score an integer
+}
+function printMod(){
+  ctx.fillStyle = '#808080'; //gray
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'left';
+  ctx.textAlign = 'bottom';
+  ctx.fillText('modifier: ' + Math.round(scoreMod*10)/10, 320, 16); 
 }
 
 function addSnakeBit(){	         								//adds a new snake bit 
@@ -164,7 +207,10 @@ function printFood(){
 	ctx.drawImage(img_heart, food.x, food.y, 9, 9);
 }
 
-function printPopup(text, text2){
+function printPopup(text, text2, p){
+  popupTime = p;
+  popupText =text;
+  popupText2=text2;
   var cx = canvas.width/2;
   var cy = canvas.height/2;
   ctx.fillStyle = '#4A4FFF';
@@ -179,13 +225,17 @@ function printPopup(text, text2){
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.drawImage(img_background, 0, 0, canvas.width, canvas.height);
+    if(popupTime-- > 0){
+        printPopup(popupText, popupText2, popupTime);
+    }
 	printFood();
 	printSnake();
 	printScore();
+    printMod();
 }
 function moveSnake2(){						//required to stop snake from continuing if it hits itself
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-		score=score+200;
+		score=score+200*scoreMod;
 		for(i=0;i<3;i++){
 			addSnakeBit();
 		}			
@@ -207,7 +257,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();				
 			}			
 		}
@@ -219,7 +270,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();
 			}			
 		}
@@ -231,7 +283,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!', 1);
 				deleteSnake();
 			}			
 		}
@@ -244,7 +297,8 @@ function checkCollision(){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
-				printPopup('Your conga line crashed!','Disqualified!');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+				printPopup('Your conga line crashed!','Disqualified!',1);
 				deleteSnake();
 			}			
 		}
@@ -254,7 +308,8 @@ function checkCollision(){
 	}
 	if(!isHit){
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
-			printPopup('Your conga line left the dance floor!','Disqualified!');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+			printPopup('Your conga line left the dance floor!','Disqualified!',1);
 			deleteSnake();
 			
 		}
@@ -321,7 +376,8 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
 }
 function checkFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
-		score += 400;
+		score += 400*scoreMod;
+        scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
 	}
 	else{

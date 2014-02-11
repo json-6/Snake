@@ -100,7 +100,7 @@ var img_heart = new Image();
 window.onload = function(){Menu(); updateScore() };		//starts everything
 
 function Menu(){
-	ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
+  ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
   ctx.drawImage(start, 0, 100, 410, 195);
   c.addEventListener("click", startButton, false);

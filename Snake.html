@@ -15,7 +15,8 @@
 <img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
 <img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
 <img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
-<img src="images/heart.png" alt="heart" width="9" height="9" id="heart" style="display:none" />
+<img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
+<img src="images/start.png" alt="startbutton" width = "410" height = "195" style="display:none" id="start_button"/>
 
 
 <script>
@@ -31,6 +32,7 @@ var SnakeTail = -1; 			//Most recently added SnakeBit
 var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								//ALL ASSIGNMENT SHOULD GO TO dn
+
 var delay=100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
@@ -73,7 +75,20 @@ img_movingFood.src = "images/movingFood.png";
 
 var img_heart = document.getElementById('heart'); 
 
-window.onload = function(){SnakeInit(); updateScore(); };		//starts everything
+window.onload = function(){Menu(); updateScore() };		//starts everything
+
+function Menu(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
+  var start = document.getElementById('start_button');
+  ctx.drawImage(start, 0, 100, 410, 195);
+  c.addEventListener("click", startButton, false);
+}
+
+function startButton(c){
+  SnakeInit();
+
+  this.removeEventListener('click',startButton,false); //remove the event listener so the game does not continue to wait for button press
+}
 
 function updateScore(){
 	score = score + 1; 								//update score as each second passes 
@@ -321,7 +336,7 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
-	setTimeout(function(){SnakeInit();},3000)
+	setTimeout(function(){Menu();},3000) //game ends, go back to main menu
 }
 
 function printSnake(){		

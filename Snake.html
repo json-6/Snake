@@ -140,6 +140,8 @@ function menuClick(){
   else if (mousePos.x>100 && mousePos.x<300 &&mousePos.y>245 &&mousePos.y<345){
     highScore(c);
   }
+  c.removeEventListener('click', menuClick, false);
+  c.removeEventListener('mousemove');
 }
 function help(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);

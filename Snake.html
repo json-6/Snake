@@ -101,6 +101,7 @@ var img_heart = new Image();
 
 window.onload = function(){Menu(); updateScore() };		//starts everything
 
+var mousePos;
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -109,11 +110,47 @@ function Menu(){
   ctx.drawImage(start, 100, 25, 200, 100);
   ctx.drawImage(help, 100, 135, 200, 100);
   ctx.drawImage(highScore, 100, 245, 200, 100);
-  c.addEventListener("click", startButton, false);
+  canvas.addEventListener('mousemove', function(evt) {
+        mousePos = getMousePos(canvas, evt);
+  }, false);
+  
+  c.addEventListener("click", menuClick, false);
+}
+function getMousePos(canvas, evt) {
+        var rect = c.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+}
+function writeMessage(message) {
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '18pt Calibri';
+        ctx.fillStyle = 'black';
+        ctx.fillText(message, 10, 25);
+}
+function menuClick(){
+  if (mousePos.x>100 && mousePos.x<300 &&mousePos.y>25 &&mousePos.y<125){
+    startButton(c);
+  }
+  else if (mousePos.x>100 && mousePos.x<300 &&mousePos.y>135 &&mousePos.y<235){
+    help(c);
+  }
+  else if (mousePos.x>100 && mousePos.x<300 &&mousePos.y>245 &&mousePos.y<345){
+    highScore(c);
+  }
+}
+function help(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    printPopup("Need help?","Test");
+}
+function highScore(c){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    printPopup("Tech: 9999","Morale: 32");
 }
 function startButton(c){
   SnakeInit();
-
   this.removeEventListener('click',startButton,false); //remove the event listener so the game does not continue to wait for button press
 }
 var popupText;

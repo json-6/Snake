@@ -104,6 +104,11 @@ var img_heart = new Image();
 window.onload = function(){Menu(); updateScore() };		//starts everything
 
 var mousePos;                                           //used for menu to tell where mouse is
+
+var scoreReq2=2000;//score requirements for their perspective levels
+var scoreReq3=5000;
+var scoreReq4=10000;
+var scoreReq5=20000;
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -143,8 +148,12 @@ function menuClick(){
   
 }
 function help(){                        //what happens if you press help in menu
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    printPopup("Need help?","Test");
+                                        //currently being used for debugging
+    SnakeInit();
+    scoreReq2=1000;
+    scoreReq3=2000;
+    scoreReq4=3000;
+    
 }
 function highScore(c){                  //what happens if you press highScore in menu
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -171,12 +180,13 @@ function SnakeInit(){
 	makeFood();
 	paint();
 }
+
 function updateScore(){
     if(uScore){
-        if(score>1000 && level === 1){
+        if(score>scoreReq2 && level === 1){
             initLevel2();
         }
-        else if(score>2000 && level === 2){
+        else if(score>scoreReq3 && level === 2){
             initLevel3();
         }
         if(scoreMod>1){

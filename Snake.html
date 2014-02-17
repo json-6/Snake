@@ -418,7 +418,7 @@ function checkFoodCollision(){
 	else{
         randomizeFood();
         moveFood();	
-        for(i=1;i<SnakeTail;i++){
+        for(i=1;i<SnakeTail;i++){       //checks that movingFood isn't hitting the snake body, changes direction and breaks if it is
             if((movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y) ||(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y-10)||(movingFood.x === SnakeArray[i].x-10 && movingFood.y === SnakeArray[i].y)||(movingFood.x === SnakeArray[i].x -10 && movingFood.y === SnakeArray[i].y-10)){
                 if(foodD==="right"){
                     foodD="left";

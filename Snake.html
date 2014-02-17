@@ -416,8 +416,26 @@ function checkFoodCollision(){
 		foodBool=false;
 	}
 	else{
-		randomizeFood();
-		moveFood();			
+        randomizeFood();
+        moveFood();	
+        for(i=1;i<SnakeTail;i++){
+            if((movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y) ||(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y-10)||(movingFood.x === SnakeArray[i].x-10 && movingFood.y === SnakeArray[i].y)||(movingFood.x === SnakeArray[i].x -10 && movingFood.y === SnakeArray[i].y-10)){
+                if(foodD==="right"){
+                    foodD="left";
+                }
+                else if(foodD==="down"){
+                    foodD="up";
+                }
+                else if(foodD==="left"){
+                    foodD="right";
+                }
+                else if(foodD==="up"){
+                    foodD="down";
+                }
+                moveFood();
+                break;
+            }
+        }		
 	}
 }
 function deleteSnake(){

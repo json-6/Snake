@@ -334,7 +334,7 @@ function checkCollision(){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+score, 0);
+				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
 				deleteSnake();				
 			}			
 		}
@@ -347,7 +347,7 @@ function checkCollision(){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+score, 0);
+				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
 				deleteSnake();
 			}			
 		}
@@ -360,7 +360,7 @@ function checkCollision(){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+score, 0);
+				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
 				deleteSnake();
 			}			
 		}
@@ -374,7 +374,7 @@ function checkCollision(){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+score,0);
+				printPopup('Your conga line crashed!','Score: '+Math.floor(score),0);
 				deleteSnake();
 			}			
 		}
@@ -385,7 +385,7 @@ function checkCollision(){
 	if(!isHit){
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-			printPopup('Your conga line left the dance floor!','Score: '+score,0);
+			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
 			deleteSnake();
 			
 		}

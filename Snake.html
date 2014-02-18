@@ -220,9 +220,6 @@ function updateScore(){
         else if(score>scoreReq7 && level === 6){
             initLevel7();
         }
-        if(scoreMod>1){
-            scoreMod -= .01;
-        }
         score = score + 1; 								//update score as each second passes         
     }
     setTimeout(function(){updateScore();},100); 	//call again to update score
@@ -312,6 +309,7 @@ function paint(){        				//clears screen and repaints snake in new position
 function moveSnake2(){						//required to stop snake from continuing if it hits itself
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
+        scoreMod += 0.1;
 		for(i=0;i<3;i++){
 			addSnakeBit();
 		}			
@@ -467,7 +465,7 @@ function changeFoodDirection(){
 function checkFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
 		score += 400*scoreMod;
-        scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
+        //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
 	}
 	else{

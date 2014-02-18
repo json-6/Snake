@@ -85,6 +85,23 @@ function initLevel3(){
     body_left.src = "images/body_left3.png";
     printPopup("Level 3!", "", 100);
 }
+function initLevel4(){
+    level = 4;
+    printPopup("Level 4!", "", 100);
+    
+}
+function initLevel5(){
+    level = 5;
+    printPopup("Level 5!", "", 100);
+}
+function initLevel6(){
+    level = 6;
+    printPopup("Level 6!", "", 100);
+}
+function initLevel7(){
+    level = 7;
+    printPopup("Level 7!", "", 100);
+}
 //declaring image variables
 var img_background = new Image();							//background
 var head_up = new Image();									//Snake head
@@ -109,6 +126,8 @@ var scoreReq2=3000;//score requirements for their perspective levels
 var scoreReq3=7000;
 var scoreReq4=12000;
 var scoreReq5=25000;
+var scoreReq6=40000;
+var scoreReq7=100000;
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -188,6 +207,18 @@ function updateScore(){
         }
         else if(score>scoreReq3 && level === 2){
             initLevel3();
+        }
+        else if(score>scoreReq4 && level === 3){
+            initLevel4();
+        }
+        else if(score>scoreReq5 && level === 4){
+            initLevel5();
+        }
+        else if(score>scoreReq6 && level === 5){
+            initLevel6();
+        }
+        else if(score>scoreReq7 && level === 6){
+            initLevel7();
         }
         if(scoreMod>1){
             scoreMod -= .01;

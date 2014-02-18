@@ -418,22 +418,31 @@ function randomizeFoodDirection(){ //randomizes the direction of the food in a (
 		}
 	}
 }
-function moveFood(){ //moves food and changes the direction of the food if it's going the wrong way (i.e. off the screen)
+function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)
 	if( foodD === "right"){
 		movingFood.x += 10;
+		if(movingFood.x > 370){
+			foodD= "left";
+		}
 	}
 	else if( foodD === "left"){
+		if(movingFood.x < 20){
+			foodD= "right";
+		}
 		movingFood.x -= 10;		
 	}
 	else if( foodD === "up"){
 		movingFood.y -= 10;
+		if(movingFood.y < 20){
+			foodD= "down";
+		}
 	}
 	else if( foodD === "down"){
 		movingFood.y += 10;
+		if(movingFood.y > 370){
+			foodD= "up";
+		}
 	}
-    if(movingFood.x > 370 || movingFood.x < 20 || movingFood.y < 20 || movingFood.y > 370){
-        changeFoodDirection();
-    }
 }
 function changeFoodDirection(){
     if(foodD==="right"){

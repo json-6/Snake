@@ -349,8 +349,7 @@ function checkCollision(){
 				isHit = true;
 			}			
 		}					
-	}
-		
+	}		
 	else if(d==="down"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
@@ -364,11 +363,10 @@ function checkCollision(){
 		deleteSnake();	    
     }
 	else{
-		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
+		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){ //checks whether the snake leaves the screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
-			deleteSnake();
-			
+			deleteSnake();			
 		}
 		else{
             moveHead();
@@ -403,7 +401,7 @@ function moveSnake(){
 	d=dn;		
 	checkCollision();
 }
-function randomizeFood(){ //randomizes the direction of the food in a (preferably) not annoying way
+function randomizeFoodDirection(){ //randomizes the direction of the food in a (preferably) not annoying way
 	rand = getRandomArbitrary(0,100);
 	if(rand>=90){
 		if(rand >= 97.5){
@@ -420,32 +418,22 @@ function randomizeFood(){ //randomizes the direction of the food in a (preferabl
 		}
 	}
 }
-function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)
+function moveFood(){ //moves food and changes the direction of the food if it's going the wrong way (i.e. off the screen)
 	if( foodD === "right"){
 		movingFood.x += 10;
-		if(movingFood.x > 370){
-			foodD= "left";
-		}
 	}
 	else if( foodD === "left"){
-		if(movingFood.x < 20){
-			foodD= "right";
-		}
-		movingFood.x -= 10;
-		
+		movingFood.x -= 10;		
 	}
 	else if( foodD === "up"){
 		movingFood.y -= 10;
-		if(movingFood.y < 20){
-			foodD= "down";
-		}
 	}
 	else if( foodD === "down"){
 		movingFood.y += 10;
-		if(movingFood.y > 370){
-			foodD= "up";
-		}
 	}
+    if(movingFood.x > 370 || movingFood.x < 20 || movingFood.y < 20 || movingFood.y > 370){
+        changeFoodDirection();
+    }
 }
 function changeFoodDirection(){
     if(foodD==="right"){
@@ -468,7 +456,7 @@ function checkMovingFoodCollision(){
 		foodBool=false;
 	}
 	else{
-        randomizeFood();
+        randomizeFoodDirection();
         moveFood();	
         if((movingFood.x === food.x && movingFood.y === food.y) ||(movingFood.x === food.x && movingFood.y === food.y-10)||(movingFood.x === food.x-10 && movingFood.y === food.y)||(movingFood.x === food.x -10 && movingFood.y === food.y-10)){
             changeFoodDirection(); 

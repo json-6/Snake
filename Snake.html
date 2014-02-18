@@ -108,6 +108,7 @@ var head_up = new Image();									//Snake head
 var head_right = new Image();
 var head_down = new Image();
 var head_left = new Image();
+
 var body_up = new Image();									//Snake body
 var body_right = new Image();
 var body_down = new Image();
@@ -128,6 +129,7 @@ var scoreReq4=12000;
 var scoreReq5=25000;
 var scoreReq6=40000;
 var scoreReq7=100000;
+
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -256,7 +258,7 @@ function getRandomArbitrary (min, max) { //returns random integer between min an
     return Math.floor(Math.random() * (max - min) + min);
 }
 function makeMovingFood(){
-	foodBool = true;
+	foodBool = true; 
 	movingFood.x= getRandomArbitrary(0,39)*10;
 	movingFood.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
@@ -306,7 +308,7 @@ function paint(){        				//clears screen and repaints snake in new position
 	printScore();
     printMod();
 }
-function moveSnake2(){						//required to stop snake from continuing if it hits itself
+function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
@@ -316,71 +318,52 @@ function moveSnake2(){						//required to stop snake from continuing if it hits 
 		makeFood();
 	}
 	else if(foodBool){		
-		checkFoodCollision();	//checks moving food for eating
+		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
 		if(getRandomArbitrary(0,40) > 37){
 			makeMovingFood();
 		}
-	}
-	paint();
+	}	
 }
 function checkCollision(){
 	var isHit=false;		//is true if the snake is going to hit itself
-	if(d==="right"){
-		for(i=1; i<=SnakeTail; i++){
+	if(d === "right"){
+		for( i = 1; i <= SnakeTail; i++ ){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();				
+                		
 			}			
 		}
-		if(!isHit){
-				SnakeArray[0].x=SnakeArray[0].x+10;
-		}
 	}
-	else if(d==="up"){
+	else if(d === "up"){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-				SnakeArray[0].y=SnakeArray[0].y-10;
-		}				
+		}			
 	}
 	else if(d==="left"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-				SnakeArray[0].x=SnakeArray[0].x-10;
-		}						
+		}					
 	}
 		
 	else if(d==="down"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score),0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-			SnakeArray[0].y=SnakeArray[0].y+10;
-		}					
+		}				
 	}
-	if(!isHit){
+    if(isHit){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+		printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
+		deleteSnake();	    
+    }
+	else{
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
@@ -388,9 +371,25 @@ function checkCollision(){
 			
 		}
 		else{
-			moveSnake2();
+            moveHead();
+			foodCheck();
+            paint();
 		}
 	}
+}
+function moveHead(){
+    if(d==="right"){
+        SnakeArray[0].x += 10;
+    }
+    else if(d==="left"){
+        SnakeArray[0].x -= 10;
+    }
+    else if(d==="up"){
+        SnakeArray[0].y -= 10;
+    }
+    else if(d==="down"){
+        SnakeArray[0].y += 10;
+    }
 }
 function moveSnake(){
 	nx= SnakeArray[SnakeTail].x;
@@ -462,7 +461,7 @@ function changeFoodDirection(){
         foodD="down";
     }
 }
-function checkFoodCollision(){
+function checkMovingFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
 		score += 400*scoreMod;
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10

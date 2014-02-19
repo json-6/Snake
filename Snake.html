@@ -12,11 +12,11 @@
 <embed height="0" width="0" src="test.mp3">
 //audio if wanted
 -->
-<img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
-<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
-<img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 
-<img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
+<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
+
+
+
 <img src="images/start1.png" alt="startbutton" width = "410" height = "195" style="display:none" id="start_button"/>
 <img src="images/highscore.png" alt="highscorebutton" width = "410" height = "195" style="display:none" id="high_score_button"/>
 <img src="images/help.png" alt="helpbutton" width = "410" height = "195" style="display:none" id="help_button"/>
@@ -56,6 +56,38 @@ var scoreMod = 1;
 var popupTime = 0;
 
 var uScore =false;
+
+//declaring image variables
+var img_background = new Image();							//background
+var head_up = new Image();									//Snake head
+var head_right = new Image();
+var head_down = new Image();
+var head_left = new Image();
+
+var body_up = new Image();									//Snake body
+var body_right = new Image();
+var body_down = new Image();
+var body_left = new Image();
+
+var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
+
+var img_movingFood = new Image();
+var img_heart = new Image();
+
+window.onload = function(){Menu(); updateScore() };		//starts everything
+
+var mousePos;                                           //used for menu to tell where mouse is
+
+var scoreReq2=3000;//score requirements for their perspective levels
+var scoreReq3=7000;
+var scoreReq4=12000;
+var scoreReq5=25000;
+var scoreReq6=40000;
+var scoreReq7=100000;
+
+var popupText;
+var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
+
 function initLevel(){
     level = 1;
     img_background.src = "images/background.jpg";
@@ -102,33 +134,7 @@ function initLevel7(){
     level = 7;
     printPopup("Level 7!", "", 100);
 }
-//declaring image variables
-var img_background = new Image();							//background
-var head_up = new Image();									//Snake head
-var head_right = new Image();
-var head_down = new Image();
-var head_left = new Image();
 
-var body_up = new Image();									//Snake body
-var body_right = new Image();
-var body_down = new Image();
-var body_left = new Image();
-
-var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
-
-var img_movingFood = new Image();
-var img_heart = new Image();
-
-window.onload = function(){Menu(); updateScore() };		//starts everything
-
-var mousePos;                                           //used for menu to tell where mouse is
-
-var scoreReq2=3000;//score requirements for their perspective levels
-var scoreReq3=7000;
-var scoreReq4=12000;
-var scoreReq5=25000;
-var scoreReq6=40000;
-var scoreReq7=100000;
 
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
@@ -183,8 +189,7 @@ function highScore(c){                  //what happens if you press highScore in
 function startButton(c){                //what happens if you press start in menu
   SnakeInit();  
 }
-var popupText;
-var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
+
 function SnakeInit(){
     initLevel();
     uScore = true;
@@ -466,7 +471,7 @@ function checkMovingFoodCollision(){
 	}
 	else{
         randomizeFoodDirection();
-        moveFood();	
+        moveFood();
         if((movingFood.x === food.x && movingFood.y === food.y) ||(movingFood.x === food.x && movingFood.y === food.y-10)||(movingFood.x === food.x-10 && movingFood.y === food.y)||(movingFood.x === food.x -10 && movingFood.y === food.y-10)){
             changeFoodDirection(); 
             moveFood();

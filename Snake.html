@@ -242,7 +242,6 @@ function SnakeInit(){
 function makeTwister(){
     img_movingFood.src = "images/Twister.png";
     level = 1.5;
-
 }
 function updateScore(){
     if(uScore){
@@ -355,7 +354,7 @@ function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
-		for(i=0;i<3;i++){
+		for(i=0;i<1;i++){
 			addSnakeBit("body_plain");
 		}			
 		makeFood();
@@ -364,7 +363,7 @@ function foodCheck(){						//checks to see if snake hits food
 		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
-        if(level!=1 && level!=2){
+        if(level!==1 && level!==2){
             if(getRandomArbitrary(0,40) > 37){
                 makeMovingFood();
             }

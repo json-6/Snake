@@ -31,7 +31,7 @@ var ctx = c.getContext('2d');
 var w = canvas.width;
 var h = canvas.height;
 
-var sizeOfSquare = canvas.width/40;
+var sizeOfSquare = canvas.width/20;
 var numOfSquares = canvas.width/sizeOfSquare; //number of squares in a row/column
 
 
@@ -267,8 +267,8 @@ function getRandomArbitrary (min, max) { //returns random integer between min an
 }
 function makeMovingFood(){
 	foodBool = true; 
-	movingFood.x= getRandomArbitrary(0,w/sizeOfSquare-sizeOfSquare)*sizeOfSquare;
-	movingFood.y= getRandomArbitrary(0,w/sizeOfSquare-sizeOfSquare)*sizeOfSquare;
+	movingFood.x= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
+	movingFood.y= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
 	for(i=0; i<=SnakeTail; i++){
 		if(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeMovingFood();
@@ -277,8 +277,8 @@ function makeMovingFood(){
 	}
 }
 function makeFood(){
-	food.x= getRandomArbitrary(0,w/sizeOfSquare-sizeOfSquare)*sizeOfSquare;
-	food.y= getRandomArbitrary(0,w/sizeOfSquare-sizeOfSquare)*sizeOfSquare;
+	food.x= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
+	food.y= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
 	for(i=0; i<=SnakeTail; i++){
 		if(food.x === SnakeArray[i].x && food.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeFood();
@@ -413,7 +413,7 @@ function moveSnake(){
 		SnakeArray[i].dir=SnakeArray[i-1].dir;
 	}	
 	d=dn;		
-	checkCollision();
+	setTimeout(checkCollision,0);
 }
 function randomizeFoodDirection(){ //randomizes the direction of the food in a (preferably) not annoying way
 	rand = getRandomArbitrary(0,100);

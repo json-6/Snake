@@ -70,10 +70,18 @@ var head_right = new Image();
 var head_down = new Image();
 var head_left = new Image();
 
-var body_up = new Image();									//Snake body
+var body_up = new Image();		
+var body_up_red = new Image();
+var body_up_blue = new Image();							//Snake body
 var body_right = new Image();
+var body_right_red = new Image();
+var body_right_blue = new Image();
 var body_down = new Image();
+var body_down_red = new Image();
+var body_down_blue = new Image();
 var body_left = new Image();
+var body_left_red = new Image();
+var body_left_blue = new Image();
 
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 
@@ -102,9 +110,18 @@ function initLevel(){
     head_down.src = "images/head_down.jpg";
     head_left.src = "images/head_left.jpg";
     body_up.src = "images/body_up.png";
+    body_up_red.src = "images/body_up_red.png";
+    body_up_blue.src = "images/body_up_blue.png";
     body_right.src = "images/body_right.png";
+    body_right_red.src = "images/body_right_red.png";
+    body_right_blue.src = "images/body_right_blue.png";
+   
     body_down.src = "images/body_down.png";
+    body_down_red.src = "images/body_down_red.png";
+    body_down_blue.src = "images/body_down_blue.png";
     body_left.src = "images/body_left.png";
+    body_left_red.src = "images/body_left_red.png";
+    body_left_blue.src = "images/body_left_blue.png";
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
 }
@@ -523,16 +540,51 @@ function printSnake(){
 		}
 		else{
 			if(SnakeArray[i-1].dir==="up"){
-				ctx.drawImage(body_up, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                if((i-1)%3 ===0){
+                    ctx.drawImage(body_up, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===1){
+                    ctx.drawImage(body_up_red, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===2){
+                    ctx.drawImage(body_up_blue, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+				
 			}
 			else if(SnakeArray[i-1].dir==="right"){
-				ctx.drawImage(body_right, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                if((i-1)%3 ===0){
+                    ctx.drawImage(body_right, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===1){
+                    ctx.drawImage(body_right_red, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===2){
+                    ctx.drawImage(body_right_blue, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+				
 			}
 			else if(SnakeArray[i-1].dir==="down"){
-				ctx.drawImage(body_down, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                if((i-1)%3 ===0){
+                    ctx.drawImage(body_down, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===1){
+                    ctx.drawImage(body_down_red, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===2){
+                    ctx.drawImage(body_down_blue, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
 			}
 			else if(SnakeArray[i-1].dir==="left"){
-				ctx.drawImage(body_left, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                if((i-1)%3 ===0){
+                    ctx.drawImage(body_left, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===1){
+                   ctx.drawImage(body_left_red, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+                else if((i-1)%3 ===2){
+                    ctx.drawImage(body_left_blue, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+                }
+				
 			}
 			
 		}

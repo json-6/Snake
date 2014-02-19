@@ -36,7 +36,7 @@ var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								//ALL ASSIGNMENT SHOULD GO TO dn 
 
-var delay=100;					//refresh rate (in milliseconds)
+var delay = 100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
 var food={};			        //food that doesnt move
@@ -134,8 +134,6 @@ function initLevel7(){
     level = 7;
     printPopup("Level 7!", "", 100);
 }
-
-
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -365,22 +363,28 @@ function checkCollision(){
     if(isHit){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 		printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
+        sendToDB(Math.floor(score));
 		deleteSnake();	    
     }
 	else{
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){ //checks whether the snake leaves the screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
+            sendToDB(Math.floor(score));
 			deleteSnake();			
 		}
 		else{
-            moveHead();
+            moveSnakeHead();
 			foodCheck();
             paint();
 		}
 	}
 }
-function moveHead(){
+
+function sendToDB(score) {
+ //ill do this later
+}
+function moveSnakeHead(){
     if(d==="right"){
         SnakeArray[0].x += 10;
     }
@@ -486,7 +490,7 @@ function checkMovingFoodCollision(){
 	}
 }
 function deleteSnake(){
-    uScore=false; 
+    uScore=false; //stops score from increasing after game ends
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}

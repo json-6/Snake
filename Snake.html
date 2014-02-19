@@ -232,7 +232,7 @@ function updateScore(){
         }
         score = score + 1; 								//update score as each second passes         
     }
-    setTimeout(function(){updateScore();},100); 	//call again to update score
+    setTimeout(updateScore,100); 	//call again to update score
 }
 function printScore() {
   ctx.fillStyle = '#808080'; //gray
@@ -499,7 +499,7 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
-	setTimeout(function(){Menu();},3000) //game ends, go back to main menu
+	setTimeout(Menu,3000) //game ends, go back to main menu
 }
 function printSnake(){		
 	for (i=0;i<SnakeTail;i++)
@@ -537,7 +537,7 @@ function printSnake(){
 			
 		}
 	}
-	setTimeout(function(){moveSnake();},delay)
+	setTimeout(moveSnake,delay)
 }
 window.addEventListener("keydown", function (e) {    			//listens for key press
 	if(e.keyCode===40 && d!=="up"){

@@ -12,11 +12,11 @@
 <embed height="0" width="0" src="test.mp3">
 //audio if wanted
 -->
-<img src="images/snake_body.jpg" alt="Snake body image" width="9" height="9" id="snake_body" style="display:none" />
-<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
-<img src="images/snake_head.png" alt="Snake head image" width="9" height="9" id="snake_head" style="display:none" />
 
-<img src="images/heart.jpg" alt="heart" width="9" height="9" id="heart" style="display:none" />
+<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
+
+
+
 <img src="images/start1.png" alt="startbutton" width = "410" height = "195" style="display:none" id="start_button"/>
 <img src="images/highscore.png" alt="highscorebutton" width = "410" height = "195" style="display:none" id="high_score_button"/>
 <img src="images/help.png" alt="helpbutton" width = "410" height = "195" style="display:none" id="help_button"/>
@@ -36,7 +36,7 @@ var d = "right"; 				//direction
 var dn = d;						//dn variable exists so that player can't turn around by pressing two keys, d doesn't get dn until right before movement occurs
 								//ALL ASSIGNMENT SHOULD GO TO dn 
 
-var delay=100;					//refresh rate (in milliseconds)
+var delay = 100;					//refresh rate (in milliseconds)
 var score = 0; 					//current score
 
 var food={};			        //food that doesnt move
@@ -56,6 +56,38 @@ var scoreMod = 1;
 var popupTime = 0;
 
 var uScore =false;
+
+//declaring image variables
+var img_background = new Image();							//background
+var head_up = new Image();									//Snake head
+var head_right = new Image();
+var head_down = new Image();
+var head_left = new Image();
+
+var body_up = new Image();									//Snake body
+var body_right = new Image();
+var body_down = new Image();
+var body_left = new Image();
+
+var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
+
+var img_movingFood = new Image();
+var img_heart = new Image();
+
+window.onload = function(){Menu(); updateScore() };		//starts everything
+
+var mousePos;                                           //used for menu to tell where mouse is
+
+var scoreReq2=3000;//score requirements for their perspective levels
+var scoreReq3=7000;
+var scoreReq4=12000;
+var scoreReq5=25000;
+var scoreReq6=40000;
+var scoreReq7=100000;
+
+var popupText;
+var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
+
 function initLevel(){
     level = 1;
     img_background.src = "images/background.jpg";
@@ -102,32 +134,6 @@ function initLevel7(){
     level = 7;
     printPopup("Level 7!", "", 100);
 }
-//declaring image variables
-var img_background = new Image();							//background
-var head_up = new Image();									//Snake head
-var head_right = new Image();
-var head_down = new Image();
-var head_left = new Image();
-var body_up = new Image();									//Snake body
-var body_right = new Image();
-var body_down = new Image();
-var body_left = new Image();
-
-var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
-
-var img_movingFood = new Image();
-var img_heart = new Image();
-
-window.onload = function(){Menu(); updateScore() };		//starts everything
-
-var mousePos;                                           //used for menu to tell where mouse is
-
-var scoreReq2=3000;//score requirements for their perspective levels
-var scoreReq3=7000;
-var scoreReq4=12000;
-var scoreReq5=25000;
-var scoreReq6=40000;
-var scoreReq7=100000;
 function Menu(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the screen of score and background image
   var start = document.getElementById('start_button');
@@ -181,8 +187,7 @@ function highScore(c){                  //what happens if you press highScore in
 function startButton(c){                //what happens if you press start in menu
   SnakeInit();  
 }
-var popupText;
-var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
+
 function SnakeInit(){
     initLevel();
     uScore = true;
@@ -256,7 +261,7 @@ function getRandomArbitrary (min, max) { //returns random integer between min an
     return Math.floor(Math.random() * (max - min) + min);
 }
 function makeMovingFood(){
-	foodBool = true;
+	foodBool = true; 
 	movingFood.x= getRandomArbitrary(0,39)*10;
 	movingFood.y= getRandomArbitrary(0,39)*10;
 	for(i=0; i<=SnakeTail; i++){
@@ -306,7 +311,7 @@ function paint(){        				//clears screen and repaints snake in new position
 	printScore();
     printMod();
 }
-function moveSnake2(){						//required to stop snake from continuing if it hits itself
+function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
@@ -316,81 +321,82 @@ function moveSnake2(){						//required to stop snake from continuing if it hits 
 		makeFood();
 	}
 	else if(foodBool){		
-		checkFoodCollision();	//checks moving food for eating
+		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
 		if(getRandomArbitrary(0,40) > 37){
 			makeMovingFood();
 		}
-	}
-	paint();
+	}	
 }
 function checkCollision(){
 	var isHit=false;		//is true if the snake is going to hit itself
-	if(d==="right"){
-		for(i=1; i<=SnakeTail; i++){
+	if(d === "right"){
+		for( i = 1; i <= SnakeTail; i++ ){
 			if(SnakeArray[0].x+10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();				
+                		
 			}			
 		}
-		if(!isHit){
-				SnakeArray[0].x=SnakeArray[0].x+10;
-		}
 	}
-	else if(d==="up"){
+	else if(d === "up"){
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y-10 === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-				SnakeArray[0].y=SnakeArray[0].y-10;
-		}				
+		}			
 	}
 	else if(d==="left"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x-10===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-				SnakeArray[0].x=SnakeArray[0].x-10;
-		}						
-	}
-		
+		}					
+	}		
 	else if(d==="down"){	
 		for(i=1; i<=SnakeTail; i++){
 			if(SnakeArray[0].x===SnakeArray[i].x && SnakeArray[0].y+10 === SnakeArray[i].y){
 				isHit = true;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-				printPopup('Your conga line crashed!','Score: '+Math.floor(score),0);
-				deleteSnake();
 			}			
-		}
-		if(!isHit){
-			SnakeArray[0].y=SnakeArray[0].y+10;
-		}					
+		}				
 	}
-	if(!isHit){
-		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){
+    if(isHit){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+		printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
+        sendToDB(Math.floor(score));
+		deleteSnake();	    
+    }
+	else{
+		if(SnakeArray[0].x<0||SnakeArray[0].x>=400||SnakeArray[0].y<0||SnakeArray[0].y>=400){ //checks whether the snake leaves the screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
-			deleteSnake();
-			
+            sendToDB(Math.floor(score));
+			deleteSnake();			
 		}
 		else{
-			moveSnake2();
+            moveSnakeHead();
+			foodCheck();
+            paint();
 		}
 	}
+}
+
+function sendToDB(score) {
+ //ill do this later
+}
+function moveSnakeHead(){
+    if(d==="right"){
+        SnakeArray[0].x += 10;
+    }
+    else if(d==="left"){
+        SnakeArray[0].x -= 10;
+    }
+    else if(d==="up"){
+        SnakeArray[0].y -= 10;
+    }
+    else if(d==="down"){
+        SnakeArray[0].y += 10;
+    }
 }
 function moveSnake(){
 	nx= SnakeArray[SnakeTail].x;
@@ -404,7 +410,7 @@ function moveSnake(){
 	d=dn;		
 	checkCollision();
 }
-function randomizeFood(){ //randomizes the direction of the food in a (preferably) not annoying way
+function randomizeFoodDirection(){ //randomizes the direction of the food in a (preferably) not annoying way
 	rand = getRandomArbitrary(0,100);
 	if(rand>=90){
 		if(rand >= 97.5){
@@ -432,8 +438,7 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
 		if(movingFood.x < 20){
 			foodD= "right";
 		}
-		movingFood.x -= 10;
-		
+		movingFood.x -= 10;		
 	}
 	else if( foodD === "up"){
 		movingFood.y -= 10;
@@ -462,15 +467,15 @@ function changeFoodDirection(){
         foodD="down";
     }
 }
-function checkFoodCollision(){
+function checkMovingFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-10)||(movingFood.x === SnakeArray[0].x-10 && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -10 && movingFood.y === SnakeArray[0].y-10)){
 		score += 400*scoreMod;
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
 	}
 	else{
-        randomizeFood();
-        moveFood();	
+        randomizeFoodDirection();
+        moveFood();
         if((movingFood.x === food.x && movingFood.y === food.y) ||(movingFood.x === food.x && movingFood.y === food.y-10)||(movingFood.x === food.x-10 && movingFood.y === food.y)||(movingFood.x === food.x -10 && movingFood.y === food.y-10)){
             changeFoodDirection(); 
             moveFood();
@@ -485,7 +490,7 @@ function checkFoodCollision(){
 	}
 }
 function deleteSnake(){
-    uScore=false; 
+    uScore=false; //stops score from increasing after game ends
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}

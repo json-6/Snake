@@ -423,6 +423,7 @@ function checkCollision(){
 }
 
 function sendToDB(score) {
+    var name = prompt("Give me your name: ");
  //ill do this later
 }
 function moveSnakeHead(){
@@ -539,6 +540,7 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
+    
 	setTimeout(Menu,3000) //game ends, go back to main menu
 }
 function printSnake(){		

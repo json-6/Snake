@@ -100,7 +100,7 @@ window.onload = function(){Menu(); updateScore() };		//starts everything
 var mousePos;                                           //used for menu to tell where mouse is
 
 var scoreReq2=3000;//score requirements for their perspective levels
-var scoreReq3=7000;
+var scoreReq3=3000;//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
 var scoreReq4=12000;
 var scoreReq5=25000;
 var scoreReq6=40000;
@@ -147,6 +147,7 @@ function initLevel2(){
 }
 function initLevel3(){
     level = 3;
+    img_background.src = "images/background3.png";
     printPopup("Level 3!", "", 100);
 }
 function initLevel4(){
@@ -238,11 +239,14 @@ function SnakeInit(){
 	makeFood();
 	paint();
 }
-
+function makeTwister(){
+    img_movingFood.src = "images/Twister.png";
+    level = 1.5;
+}
 function updateScore(){
     if(uScore){
         if(score>scoreReq2 && level === 1){
-            initLevel2();
+            makeTwister();
         }
         else if(score>scoreReq3 && level === 2){
             initLevel3();
@@ -350,7 +354,7 @@ function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
-		for(i=0;i<3;i++){
+		for(i=0;i<1;i++){
 			addSnakeBit("body_plain");
 		}			
 		makeFood();
@@ -359,9 +363,11 @@ function foodCheck(){						//checks to see if snake hits food
 		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
-		if(getRandomArbitrary(0,40) > 37){
-			makeMovingFood();
-		}
+        if(level!==1 && level!==2){
+            if(getRandomArbitrary(0,40) > 37){
+                makeMovingFood();
+            }
+        }
 	}	
 }
 function checkCollision(){
@@ -505,6 +511,10 @@ function changeFoodDirection(){
 function checkMovingFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare)){
 		score += 400*scoreMod;
+        if(level==1.5){
+            initLevel2();
+            scoreReq3=score+scoreReq3;
+        }
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
 	}

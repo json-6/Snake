@@ -162,6 +162,7 @@ function initLevel4(){
     level = 4;
     numOfSquares = numOfSquares*2; 
     sizeOfSquare = Math.floor(w/numOfSquares*10)/10;
+    img_background.src = "images/junior.png";
     printPopup("Level 4!", "", 100);
     
 }
@@ -395,7 +396,7 @@ function foodCheck(){						//checks to see if snake hits food
 		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
-        if(level!==1 && level!==2){
+        if(level===1.5 || level ===3){
             if(getRandomArbitrary(0,40) > 37){
                 makeMovingFood();
             }

@@ -31,7 +31,7 @@ var ctx = c.getContext('2d');
 var w = canvas.width;
 var h = canvas.height;
 
-var sizeOfSquare = canvas.width/20;
+var sizeOfSquare = canvas.width/40;
 var numOfSquares = canvas.width/sizeOfSquare; //number of squares in a row/column
 
 
@@ -540,6 +540,7 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
+    level=1;
     
 	setTimeout(Menu,3000) //game ends, go back to main menu
 }

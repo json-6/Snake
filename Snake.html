@@ -104,8 +104,8 @@ var mousePos;                                           //used for menu to tell 
 
 var scoreReq2=3000;//score requirements for their perspective levels
 var scoreReq3=3000;//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
-var scoreReq4=12000;
-var scoreReq5=25000;
+var scoreReq4=4000;
+var scoreReq5=5000;
 var scoreReq6=40000;
 var scoreReq7=100000;
 
@@ -164,15 +164,29 @@ function initLevel4(){
     sizeOfSquare = Math.floor(w/numOfSquares*10)/10;
     img_background.src = "images/junior.png";
     printPopup("Level 4!", "", 100);
+    scoreReq5=score + scoreReq5;
     
 }
 function initLevel5(){
     level = 5;
+    numOfSquares = numOfSquares/2;
+    sizeOfSquare = Math.floor(w/numOfSquares);
+    w=numOfSquares*sizeOfSquare;
+    h=numOfSquares*sizeOfSquare;
+    SnakeArray[0].x=numOfSquares*sizeOfSquare/2;
+    SnakeArray[0].y=numOfSquares*sizeOfSquare/2;
+    for(i=1;i<=SnakeTail;i++){
+        SnakeArray[i].x=SnakeArray[0].x;
+        SnakeArray[i].y=SnakeArray[0].y;
+    }
+    makefood();
     printPopup("Level 5!", "", 100);
+    scoreReq6=score + scoreReq6;
 }
 function initLevel6(){
     level = 6;
     printPopup("Level 6!", "", 100);
+    scoreReq7=score + scoreReq7;
 }
 function initLevel7(){
     level = 7;
@@ -221,7 +235,8 @@ function help(){                        //what happens if you press help in menu
     SnakeInit();
     scoreReq2=300;
     scoreReq3=300;
-    scoreReq4=500;
+    scoreReq4=300;
+    scoreReq5=500;
     
 }
 function highScore(c){                  //what happens if you press highScore in menu

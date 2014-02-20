@@ -375,12 +375,14 @@ function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
-		if(level !== 3){
-			addSnakeBit("body_plain");
-		}
+        
+        if(level !== 3){
+            addSnakeBit("body_plain");
+        }
         else if(level === 3){
             addSnakeBit("minion");
         }
+        
 		makeFood();
 	}
 	else if(foodBool){		
@@ -569,7 +571,7 @@ function deleteSnake(){
 	setTimeout(Menu,3000) //game ends, go back to main menu
 }
 function printSnake(){		
-	for (i=0;i<SnakeTail;i++)
+	for (i=0;i<=SnakeTail;i++)
 	{ 		
 		if(SnakeArray[i].image === "head"){
 			if(d==="up"){

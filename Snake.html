@@ -90,6 +90,8 @@ var body_left_red = new Image();
 var body_left_blue = new Image();
 var body_left_black = new Image();
 
+var minion_down=new Image();
+
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 
 var img_movingFood = new Image();
@@ -146,8 +148,10 @@ function initLevel2(){
     printPopup("Level 2!", "", 100);
 }
 function initLevel3(){
+    minion_down.src = "images/minion_down.png";
     level = 3;
     img_background.src = "images/background3.png";
+    img_movingFood.src = "images/moon.png";
     printPopup("Level 3!", "", 100);
 }
 function initLevel4(){
@@ -210,7 +214,7 @@ function help(){                        //what happens if you press help in menu
     SnakeInit();
     scoreReq2=1000;
     scoreReq3=2000;
-    scoreReq4=3000;
+    scoreReq4=10000000;
     
 }
 function highScore(c){                  //what happens if you press highScore in menu
@@ -371,9 +375,12 @@ function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
         scoreMod += 0.1;
-		for(i=0;i<1;i++){
+		if(level !== 3){
 			addSnakeBit("body_plain");
-		}			
+		}
+        else if(level === 3){
+            addSnakeBit("minion");
+        }
 		makeFood();
 	}
 	else if(foodBool){		
@@ -554,6 +561,7 @@ function checkMovingFoodCollision(){
 }
 function deleteSnake(){
     uScore=false; //stops score from increasing after game ends
+    foodBool=false;
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
@@ -645,8 +653,13 @@ function printSnake(){
                     }
 				}
 			}
+            
 			
 		}
+        else if(SnakeArray[i].image==="minion"){
+            ctx.drawImage(minion_down, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+        
+        }
 	}
 	setTimeout(moveSnake,delay)
 }

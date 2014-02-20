@@ -111,7 +111,7 @@ var popupText2;//for print method to recall printPopup after background repaints
 
 function initLevel(){
     level = 1;
-    img_background.src = "images/background.jpg";
+    img_background.src = "images/background.png";
     head_up.src = "images/head_up.png";
     head_right.src = "images/head_right.png";
     head_down.src = "images/head_down.png";
@@ -142,7 +142,7 @@ function initLevel(){
 }
 function initLevel2(){
     level = 2;
-    img_background.src = "images/Oz.png";    
+    img_background.src = "images/OzColor.png";    
     printPopup("Level 2!", "", 100);
 }
 function initLevel3(){
@@ -240,8 +240,25 @@ function SnakeInit(){
 	paint();
 }
 function makeTwister(){
-    img_movingFood.src = "images/Twister.png";
     level = 1.5;
+    img_movingFood.src = "images/Twister.png";    
+    twisterFlicker(1);
+}
+function twisterFlicker(num){
+    if(num===1){
+        img_background.src = "images/Oz.png";
+        num = 0;
+    }
+    else if(num===0){
+        img_background.src = "images/backgroundBlack.png";
+        num = 1;
+    }
+    if(level===1.5){
+        setTimeout(function(){twisterFlicker(num);},500);
+    }
+    else{
+        initLevel2();
+    }
 }
 function updateScore(){
     if(uScore){
@@ -512,8 +529,8 @@ function changeFoodDirection(){
 function checkMovingFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare)){
 		score += 400*scoreMod;
-        if(level==1.5){
-            initLevel2();
+        if(level===1.5){
+            level = 2;
             scoreReq3=score+scoreReq3;
         }
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
@@ -562,7 +579,7 @@ function printSnake(){
 		}		
 		else if (SnakeArray[i].image === "body_plain" ){
 			if(SnakeArray[i-1].dir==="up"){
-                if(level===2){
+                if(level===1.5){
                     ctx.drawImage(body_up_black, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
                 } 
                 else{
@@ -579,7 +596,7 @@ function printSnake(){
 				
 			}
 			else if(SnakeArray[i-1].dir==="right"){
-                if(level===2){
+                if(level===1.5){
                     ctx.drawImage(body_right_black, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
                 } 
                 else{
@@ -596,7 +613,7 @@ function printSnake(){
 				
 			}
 			else if(SnakeArray[i-1].dir==="down"){
-                if(level===2){
+                if(level===1.5){
                     ctx.drawImage(body_down_black, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
                 } 
                 else{
@@ -612,7 +629,7 @@ function printSnake(){
                 }
 			}
 			else if(SnakeArray[i-1].dir==="left"){
-                if(level===2){
+                if(level===1.5){
                     ctx.drawImage(body_left_black, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
                 }                
                 else{

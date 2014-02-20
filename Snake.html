@@ -31,8 +31,9 @@ var ctx = c.getContext('2d');
 var w = canvas.width;
 var h = canvas.height;
 
-var sizeOfSquare = canvas.width/20;
-var numOfSquares = canvas.width/sizeOfSquare; //number of squares in a row/column
+var numOfSquares = 20; //number of squares in a row/column
+var sizeOfSquare = Math.floor(w/numOfSquares);
+
 
 
 var SnakeArray = []; 			//array to hold snake bit objects
@@ -146,6 +147,8 @@ function initLevel2(){
     level = 2;
     img_background.src = "images/OzColor.png";    
     printPopup("Level 2!", "", 100);
+    scoreReq3=score+scoreReq3;
+
 }
 function initLevel3(){
     minion_down.src = "images/minion_down.png";
@@ -153,9 +156,12 @@ function initLevel3(){
     img_background.src = "images/background3.png";
     img_movingFood.src = "images/moon.png";
     printPopup("Level 3!", "", 100);
+    scoreReq4=score + scoreReq4;
 }
 function initLevel4(){
     level = 4;
+    numOfSquares = numOfSquares*2; 
+    sizeOfSquare = Math.floor(w/numOfSquares*10)/10;
     printPopup("Level 4!", "", 100);
     
 }
@@ -212,9 +218,9 @@ function menuClick(){
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    scoreReq2=1000;
-    scoreReq3=2000;
-    scoreReq4=10000000;
+    scoreReq2=300;
+    scoreReq3=300;
+    scoreReq4=500;
     
 }
 function highScore(c){                  //what happens if you press highScore in menu
@@ -332,8 +338,8 @@ function makeMovingFood(){
 	}
 }
 function makeFood(){
-	food.x= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
-	food.y= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
+	food.x= getRandomArbitrary(0,numOfSquares-1)*sizeOfSquare;
+	food.y= getRandomArbitrary(0,numOfSquares-1)*sizeOfSquare;
 	for(i=0; i<=SnakeTail; i++){
 		if(food.x === SnakeArray[i].x && food.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeFood();
@@ -539,8 +545,7 @@ function checkMovingFoodCollision(){
 	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare)){
 		score += 400*scoreMod;
         if(level===1.5){
-            level = 2;
-            scoreReq3=score+scoreReq3;
+            level = 2;            
         }
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;

@@ -554,6 +554,7 @@ function checkMovingFoodCollision(){
 }
 function deleteSnake(){
     uScore=false; //stops score from increasing after game ends
+    foodBool=false;
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}

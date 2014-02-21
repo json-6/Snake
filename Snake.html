@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<head>
+<TITLE>Dance Marathon - Snake</TITLE>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+</head>
 <body>
 
 
@@ -21,7 +25,7 @@
 <img src="images/highscore.png" alt="highscorebutton" width = "410" height = "195" style="display:none" id="high_score_button"/>
 <img src="images/help.png" alt="helpbutton" width = "410" height = "195" style="display:none" id="help_button"/>
 
-
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
 
 var c = document.getElementById('canvas');
@@ -241,7 +245,25 @@ function help(){                        //what happens if you press help in menu
 }
 function highScore(c){                  //what happens if you press highScore in menu
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    printPopup("Tech: 9999","Morale: 32");
+    var scoresToRetrieve = 5;
+    $.post("getScores.php", {count: scoresToRetrieve}, function(result) {
+        var obj = $.parseJSON(result);
+        var names = [];
+        var scores = [];
+        for (var i = 0; i < obj.length; i++) {
+            names.push(obj[i]["Name"]);
+            scores.push(obj[i]["Score"]);
+        }
+        /*
+        ____Name___|____Score_____
+          names[0] |   scores[0]
+          names[0] |   scores[1]
+            ...    |     ...
+          names[4] |   scores[4]
+        */
+
+        printPopup("Tech: 9999","Morale: 32");
+    });
 }
 function startButton(c){                //what happens if you press start in menu
   SnakeInit();  
@@ -472,7 +494,15 @@ function checkCollision(){
 
 function sendToDB(score) {
     var name = prompt("Give me your name: ");
- //ill do this later
+    while (name && name.length > 75) {
+        alert("Name must be shorter than 75 characters!");
+        name = prompt("Give me your name: ");
+    }
+    if (name) {
+        $.post("sendScore.php", {name: name, score: score}, function(result) {
+            console.log("Result from sending score: "+result);
+        });
+    }
 }
 function moveSnakeHead(){
     if(d==="right"){

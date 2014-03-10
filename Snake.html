@@ -632,7 +632,9 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
-    c.removeEventListener('touchstart');
+    /*if(isMobile){
+        c.removeEventListener('touchstart',mobile, false);
+    }*/
 	setTimeout(Menu,3000) //game ends, go back to main menu
 }
 function printSnake(){		
@@ -743,14 +745,16 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
 		dn="left";
 	}
 });
+var isMobile = false;
 function listenForFingers(){ 
  var mousex = 0; 
  var mousey = 0;
- c.addEventListener('touchstart', function(e){
+ c.addEventListener('touchstart', function mobile(e){
+  isMobile = true;
   var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
   mousex = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
   mousey = parseInt(touchobj.clientY)
-  e.preventDefault()
+  //e.preventDefault()
   if(mousex>mousey ){
     if(mousey <= h-mousex){
         if(d!="down"){
@@ -775,7 +779,7 @@ function listenForFingers(){
         }
     }
   }
- }, false)
+ }, false);
    
 }
 

@@ -184,7 +184,7 @@ function initLevel5(){//theme: land before DM
         SnakeArray[i].y=SnakeArray[0].y;
     }
     makeFood();
-    makeMovingFood();
+    img_heart.src = "images/leaf.png";
     printPopup("Level 5!", "", 100);
     scoreReq6 = score + scoreReq6;
 }
@@ -238,7 +238,8 @@ function menuClick(){
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    initLevel3();
+    initLevel4();
+    initLevel5();
     scoreReq2=300;
     scoreReq3=300;
     scoreReq4=300;

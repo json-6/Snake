@@ -66,7 +66,7 @@ var scoreMod = 1;
 
 var popupTime = 0;
 
-var uScore =false;
+
 
 //declaring image variables
 var img_background = new Image();							//background
@@ -147,14 +147,14 @@ function initLevel(){
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
 }
-function initLevel2(){
+function initLevel2(){//theme: wizard of Oz
     level = 2;
     img_background.src = "images/OzColor.png";    
     printPopup("Level 2!", "", 100);
     scoreReq3=score+scoreReq3;
 
 }
-function initLevel3(){
+function initLevel3(){//theme: despicable me
     minion_down.src = "images/minion_down.png";
     level = 3;
     img_background.src = "images/background3.png";
@@ -162,17 +162,19 @@ function initLevel3(){
     printPopup("Level 3!", "", 100);
     scoreReq4=score + scoreReq4;
 }
-function initLevel4(){
+function initLevel4(){//theme: high school dance marathon
     level = 4;
     numOfSquares = numOfSquares*2; 
     sizeOfSquare = Math.floor(w/numOfSquares);
     img_background.src = "images/junior.png";
     printPopup("Level 4!", "", 100);
     scoreReq5=score + scoreReq5;
+    foodBool=false;
     
 }
-function initLevel5(){
+function initLevel5(){//theme: land before DM
     level = 5;
+    img_background.src = "images/background5.png";
     numOfSquares = numOfSquares/2;
     sizeOfSquare = Math.floor(w/numOfSquares);
     SnakeArray[0].x=numOfSquares*sizeOfSquare/2;
@@ -184,7 +186,7 @@ function initLevel5(){
     makeFood();
     makeMovingFood();
     printPopup("Level 5!", "", 100);
-    scoreReq6=score + scoreReq6;
+    scoreReq6 = score + scoreReq6;
 }
 function initLevel6(){
     level = 6;
@@ -271,7 +273,6 @@ function startButton(c){                //what happens if you press start in men
 
 function SnakeInit(){
     initLevel();
-    uScore = true;
 	score = 0; 					//reset score to 0	
     scoreMod = 1;               //reset modifier to 1
 	SnakeTail=-1;				//Most recently added SnakeBit
@@ -309,27 +310,26 @@ function twisterFlicker(num){
     }
 }
 function updateScore(){
-    if(uScore){
-        if(score>scoreReq2 && level === 1){
-            makeTwister();
-        }
-        else if(score>scoreReq3 && level === 2){
-            initLevel3();
-        }
-        else if(score>scoreReq4 && level === 3){
-            initLevel4();
-        }
-        else if(score>scoreReq5 && level === 4){
-            initLevel5();
-        }
-        else if(score>scoreReq6 && level === 5){
-            initLevel6();
-        }
-        else if(score>scoreReq7 && level === 6){
-            initLevel7();
-        }
-        score = score + 1; 								//update score as each second passes         
+    if(score>scoreReq2 && level === 1){
+        makeTwister();
     }
+    else if(score>scoreReq3 && level === 2){
+       initLevel3();
+    }
+    else if(score>scoreReq4 && level === 3){
+        initLevel4();
+    }
+    else if(score>scoreReq5 && level === 4){
+        initLevel5();
+    }
+    else if(score>scoreReq6 && level === 5){
+        initLevel6();
+    }
+    else if(score>scoreReq7 && level === 6){
+        initLevel7();
+    }
+    score = score + 1; 								//update score as each second passes         
+    
     //setTimeout(updateScore,100); 	//call again to update score
 }
 function printScore() {
@@ -614,7 +614,7 @@ function checkMovingFoodCollision(){
 	}
 }
 function deleteSnake(){
-    uScore=false; //stops score from increasing after game ends
+
     foodBool=false;
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];

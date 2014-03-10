@@ -247,7 +247,7 @@ function help(){                        //what happens if you press help in menu
 }
 function highScore(c){                  //what happens if you press highScore in menu
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var scoresToRetrieve = 5;
+    var scoresToRetrieve = 10;
     $.post("getScores.php", {count: scoresToRetrieve}, function(result) {
         var obj = $.parseJSON(result);
         var names = [];
@@ -263,9 +263,18 @@ function highScore(c){                  //what happens if you press highScore in
             ...    |     ...
           names[4] |   scores[4]
         */
-
-        printPopup(names[1],scores[1]);
+        ctx.fillStyle = '#4A4FFF';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'center';
+        var textNameScore = "";
+        for(i=0;i<5;i++){
+            textNameScore = names[i] + ": " + scores[i];
+            ctx.fillText(textNameScore, w/2, h/2-50+i*20);
+        }
     });
+    //var hScores = [];
+    
 }
 function startButton(c){                //what happens if you press start in menu
   SnakeInit();  

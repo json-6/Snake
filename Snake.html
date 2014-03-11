@@ -17,7 +17,7 @@
 //audio if wanted
 -->
 
-<img src="images/snake_tail.png" alt="Snake tail image" width="9" height="9" id="snake_tail" style="display:none" />
+
 
 
 
@@ -28,8 +28,11 @@
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
 
+
+
 var c = document.getElementById('canvas');
 var ctx = c.getContext('2d');
+
 
 //declaring variables
 var w = canvas.width;
@@ -102,7 +105,7 @@ var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 var img_movingFood = new Image();
 var img_heart = new Image();
 
-window.onload = function(){Menu(); updateScore() };		//starts everything
+window.onload = function(){Menu(); updateScore();  };		//starts everything
 
 var mousePos;                                           //used for menu to tell where mouse is
 
@@ -184,7 +187,7 @@ function initLevel5(){//theme: land before DM
         SnakeArray[i].y=SnakeArray[0].y;
     }
     makeFood();
-    makeMovingFood();
+    img_heart.src = "images/leaf.png";
     printPopup("Level 5!", "", 100);
     scoreReq6 = score + scoreReq6;
 }
@@ -232,13 +235,13 @@ function menuClick(){
     highScore(c);
     c.removeEventListener('click', menuClick, false);
     c.removeEventListener('mousemove');
-  }
-  
+  }  
 }
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    initLevel3();
+    initLevel4();
+    initLevel5();
     scoreReq2=300;
     scoreReq3=300;
     scoreReq4=300;
@@ -294,6 +297,7 @@ function SnakeInit(){
 		addSnakeBit("body_plain");
 		nx=nx-sizeOfSquare;
 	}
+    listenForFingers();
 	makeFood();
 	paint();
 }
@@ -628,7 +632,9 @@ function deleteSnake(){
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
-    
+    /*if(isMobile){
+        c.removeEventListener('touchstart',mobile, false);
+    }*/
 	setTimeout(Menu,3000) //game ends, go back to main menu
 }
 function printSnake(){		
@@ -739,6 +745,44 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
 		dn="left";
 	}
 });
+var isMobile = false;
+function listenForFingers(){ 
+ var mousex = 0; 
+ var mousey = 0;
+ c.addEventListener('touchstart', function mobile(e){
+  isMobile = true;
+  var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
+  mousex = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
+  mousey = parseInt(touchobj.clientY)
+  //e.preventDefault()
+  if(mousex>mousey ){
+    if(mousey <= h-mousex){
+        if(d!="down"){
+            dn = "up";
+        }
+    }
+    else{
+        if(d!="left"){
+            dn = "right";
+        }
+    }
+  }
+  else{
+    if(mousey <= h-mousex){
+        if(d != "right"){
+            dn = "left";
+        }
+    }
+    else{
+        if(d != "up"){
+            dn = "down";
+        }
+    }
+  }
+ }, false);
+   
+}
+
 function counterClockwise(){
 	if(d==="right"){
 		dn="up";
@@ -773,13 +817,14 @@ function clockwise()
 </script>
 <br>
 
-<img id="leftImage" onclick="counterClockwise()"			
-src="images/left.jpg" width="100" height="70"><!--buttons for control-->
+<!-- <img id="leftImage" onclick="counterClockwise()"			
+src="images/left.jpg" width="100" height="70"> 
 
 &nbsp;&nbsp;&nbsp;
 
 <img id="rightImage" onclick="clockwise()"
 src="images/right.jpg" width="100" height="70"></H1>
+-->
 
 </body>
 </html>

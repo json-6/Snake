@@ -24,6 +24,7 @@
 <img src="images/start1.png" alt="startbutton" width = "410" height = "195" style="display:none" id="start_button"/>
 <img src="images/highscore.png" alt="highscorebutton" width = "410" height = "195" style="display:none" id="high_score_button"/>
 <img src="images/help.png" alt="helpbutton" width = "410" height = "195" style="display:none" id="help_button"/>
+<img src="images/back.png" alt="backbutton" width = "200" height = "100" style="display:none" id="back_button"/>
 
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
@@ -234,18 +235,18 @@ function menuClick(){
   else if (mousePos.x>w/4 && mousePos.x<w/4+w/2 &&mousePos.y>h/16 +2*h/4 +20 &&mousePos.y<h/16 +3*h/4 +10){
     highScore(c);
     c.removeEventListener('click', menuClick, false);
-    c.removeEventListener('mousemove');
+    //c.removeEventListener('mousemove');
   }  
 }
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    initLevel4();
-    initLevel5();
+    
+   
     scoreReq2=300;
     scoreReq3=300;
     scoreReq4=300;
-    scoreReq5=500;
+    scoreReq5=300;
     
 }
 function highScore(c){                  //what happens if you press highScore in menu
@@ -275,14 +276,23 @@ function highScore(c){                  //what happens if you press highScore in
             textNameScore = names[i] + ": " + scores[i];
             ctx.fillText(textNameScore, w/2, h/2-50+i*20);
         }
+        var backButton =document.getElementById('back_button');
+        ctx.drawImage(backButton, w/4, 5*h/8 , w/2, h/4);
+        c.addEventListener("click", highScoreClick, false);
     });
-    //var hScores = [];
     
+}
+function highScoreClick(){
+    if (mousePos.x>w/4 && mousePos.x<w/4+w/2 &&mousePos.y>5*h/8 &&mousePos.y<5*h/8+h/4){
+        c.removeEventListener('click', highScoreClick, false);
+        c.removeEventListener('mousemove');
+        Menu();
+    }
+
 }
 function startButton(c){                //what happens if you press start in menu
   SnakeInit();  
 }
-
 function SnakeInit(){
     initLevel();
 	score = 0; 					//reset score to 0	
@@ -505,7 +515,6 @@ function checkCollision(){
 		}
 	}
 }
-
 function sendToDB(score) {
     var name = prompt("Give me your name: ");
     while (name && name.length > 75) {
@@ -627,7 +636,6 @@ function checkMovingFoodCollision(){
 	}
 }
 function deleteSnake(){
-
     foodBool=false;
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
@@ -635,7 +643,11 @@ function deleteSnake(){
     /*if(isMobile){
         c.removeEventListener('touchstart',mobile, false);
     }*/
-	setTimeout(Menu,3000) //game ends, go back to main menu
+    c.addEventListener("click", goToMenu, false);
+}
+function goToMenu(){
+    c.removeEventListener('click', goToMenu, false);
+    Menu();
 }
 function printSnake(){		
 	for (i=0;i<=SnakeTail;i++)

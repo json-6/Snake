@@ -251,12 +251,12 @@ function help(){                        //what happens if you press help in menu
 }
 function highScore(c){                  //what happens if you press highScore in menu
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var scoresToRetrieve = 10;
+    var scoresToRetrieve = 5;
     $.post("getScores.php", {count: scoresToRetrieve}, function(result) {
         var obj = $.parseJSON(result);
         var names = [];
         var scores = [];
-        for (var i = 0; i < obj.length; i++) {
+        for (var i = 0; i < obj.length; i++) { 
             names.push(obj[i]["Name"]);
             scores.push(obj[i]["Score"]);
         }
@@ -267,14 +267,14 @@ function highScore(c){                  //what happens if you press highScore in
             ...    |     ...
           names[4] |   scores[4]
         */
-        ctx.fillStyle = '#4A4FFF';
-        ctx.font = 'bold 20px sans-serif';
+        ctx.fillStyle = '#7094FF';
+        ctx.font = 'bold 15px sans-serif';
         ctx.textBaseline = 'bottom';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'left';
         var textNameScore = "";
-        for(i=0;i<5;i++){
+        for(i=0;i<scoresToRetrieve;i++){
             textNameScore = names[i] + ": " + scores[i];
-            ctx.fillText(textNameScore, w/2, h/2-50+i*20);
+            ctx.fillText(textNameScore, w/4, h/4+i*20);
         }
         var backButton =document.getElementById('back_button');
         ctx.drawImage(backButton, w/4, 5*h/8 , w/2, h/4);

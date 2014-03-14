@@ -211,12 +211,18 @@ function initLevel6(){
     level = 6;
     img_background.src = "images/circus.png";
     img_movingFood.src = "images/lion.png";
+    img_heart.src = "images/heart.png";
     printPopup("Lasso the Lion!", "", 100);
     scoreReq7=score + scoreReq7;
 }
 function initLevel7(){
     level = 7;
+    img_background.src = "images/pirateShip.png";
+    img_heart.src = "images/booty.png";
     printPopup("Level 7!", "", 100);
+}
+function initLevel8(){
+    level = 8;
 }
 var menuBool = true;
 function Menu(){
@@ -349,7 +355,7 @@ function optionsClick(){
 function help(c){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    initLevel6();
+    initLevel7();
     for(i=0; i<20; i++){
         addSnakeBit("body_plain");
     }
@@ -494,6 +500,7 @@ function addSnakeBit(image){	         								//adds a new snake bit
 	else{ // is snake head
 		SnakeArray[SnakeTail].dir = d;
 	}
+    scoreMod += 0.1;
 }
 function getRandomArbitrary (min, max) { //returns random integer between min and max. min is more likely than max due to floor function
     return Math.floor(Math.random() * (max - min) + min);
@@ -553,7 +560,7 @@ function paint(){        				//clears screen and repaints snake in new position
 function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
 		score=score+200*scoreMod;
-        scoreMod += 0.1;
+        
         
         if(level !== 3){
             addSnakeBit("body_plain");
@@ -618,7 +625,14 @@ function checkCollision(){
             sendToDB(Math.floor(score));
 			deleteSnake();			
 		}
+        
 		else{
+            if(level === 7){
+                if(SnakeArray[0].x > (numOfSquares-3)*sizeOfSquare){
+                    printPopup("Overboard!", "", 3);
+                    initLevel8();
+                }
+            }
             moveSnakeHead();
 			foodCheck();
             updateScore();
@@ -651,6 +665,7 @@ function moveSnakeHead(){
     else if(d==="down"){
         SnakeArray[0].y += sizeOfSquare;
     }
+    
 }
 function moveSnake(){
 	nx= SnakeArray[SnakeTail].x;

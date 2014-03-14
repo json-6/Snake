@@ -134,6 +134,15 @@ var scoreReq7=3000;
 var popupText;
 var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
 
+function resetLevelReqs(){
+    scoreReq2=3000;//score requirements for their perspective levels
+    scoreReq3=4000;//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
+    scoreReq4=5000;
+    scoreReq5=6000;
+    scoreReq6=7000;
+    scoreReq7=8000;
+    scoreReq8=9000;
+}
 function initLevel(){
     level = 1;
     delay = 150 - 50*difficulty;
@@ -165,6 +174,7 @@ function initLevel(){
     
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
+    resetLevelReqs();
 }
 function initLevel2(){//theme: wizard of Oz
     level = 2;
@@ -226,6 +236,7 @@ function initLevel7(){
 }
 function initLevel8(){
     level = 8;
+    foodBool = false;
     img_background.src = "images/bikiniBottom.png";
     img_heart.src = "images/jellyfish.png";
 }

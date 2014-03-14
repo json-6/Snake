@@ -281,12 +281,11 @@ function highScore(c){                  //what happens if you press highScore in
         ctx.textAlign = 'left';
         var textNameScore = "";
         for(i=0;i<scoresToRetrieve;i++){
-            textNameScore = names[i] + ": " + scores[i];
-            ctx.fillText(textNameScore, w/4, h/8+i*20);
+            ctx.fillText((i+1)+":  "+names[i], w/6, h/8+i*20);
+            ctx.fillText(scores[i], 2*w/4, h/8+i*20);
         }               
     });
     var backButton = document.getElementById('back_button');
-    //ctx.drawImage(backButton, w/4, 5*h/8 , w/2, h/4);
     ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
     c.addEventListener("click", highScoreClick, false);
     

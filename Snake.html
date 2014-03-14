@@ -70,6 +70,8 @@ var scoreMod = 1;
 
 var popupTime = 0;
 
+var GameOver=false;
+
 
 
 //declaring image variables
@@ -153,6 +155,7 @@ function initLevel(){
 }
 function initLevel2(){//theme: wizard of Oz
     level = 2;
+    foodBool=false;
     img_background.src = "images/OzColor.png";    
     printPopup("Level 2!", "", 100);
     scoreReq3=score+scoreReq3;
@@ -194,7 +197,9 @@ function initLevel5(){//theme: land before DM
 }
 function initLevel6(){
     level = 6;
-    printPopup("Level 6!", "", 100);
+    img_background.src = "images/circus.png";
+    img_movingFood.src = "images/lion.png";
+    printPopup("Lasso the Lion!", "", 100);
     scoreReq7=score + scoreReq7;
 }
 function initLevel7(){
@@ -241,8 +246,10 @@ function menuClick(){
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
-    
-   
+    initLevel6();
+    for(i=0; i<20; i++){
+        addSnakeBit("body_plain");
+    }
     scoreReq2=300;
     scoreReq3=300;
     scoreReq4=300;
@@ -307,6 +314,7 @@ function SnakeInit(){
 		addSnakeBit("body_plain");
 		nx=nx-sizeOfSquare;
 	}
+    GameOver=false;
     listenForFingers();
 	makeFood();
 	paint();
@@ -352,7 +360,6 @@ function updateScore(){
         initLevel7();
     }
     score = score + 1; 								//update score as each second passes         
-    
     //setTimeout(updateScore,100); 	//call again to update score
 }
 function printScore() {
@@ -389,8 +396,8 @@ function getRandomArbitrary (min, max) { //returns random integer between min an
 }
 function makeMovingFood(){
 	foodBool = true; 
-	movingFood.x= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
-	movingFood.y= getRandomArbitrary(0,(w-sizeOfSquare)/sizeOfSquare)*sizeOfSquare;
+	movingFood.x= getRandomArbitrary(w/4/sizeOfSquare,3*w/4/sizeOfSquare)*sizeOfSquare;
+	movingFood.y= getRandomArbitrary(h/4/sizeOfSquare,3*h/4/sizeOfSquare)*sizeOfSquare;
 	for(i=0; i<=SnakeTail; i++){
 		if(movingFood.x === SnakeArray[i].x && movingFood.y === SnakeArray[i].y){		//this could be risky at very high snake bit counts
 			makeMovingFood();
@@ -456,7 +463,7 @@ function foodCheck(){						//checks to see if snake hits food
 		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
-        if(level===1.5 || level ===3){
+        if(level===1.5 || level ===3 || level === 6){
             if(getRandomArbitrary(0,40) > 37){
                 makeMovingFood();
             }
@@ -570,30 +577,85 @@ function randomizeFoodDirection(){ //randomizes the direction of the food in a (
 		}
 	}
 }
-function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)
-	if( foodD === "right"){
-		movingFood.x += sizeOfSquare;
+var binary = 1;      //for moving food every other frame
+function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)	    
+    if(binary===1){
+        binary = 0;
+    }
+    else{
+        binary = 1;
+    }
+    if( foodD === "right"){		
 		if(movingFood.x > w-sizeOfSquare*3){
-			foodD= "left";
-		}
+            if(level !== 6){
+                foodD= "left";
+            }
+            else if(movingFood.x > w-sizeOfSquare*2){
+                printPopup("The lion escaped!", "Score - 1000", 2000);
+                score = score - 1000;
+                foodBool = false;
+            }
+		}        
+        if(level!=6){
+            movingFood.x += sizeOfSquare;
+        }
+        else if(binary==1){
+            movingFood.x += sizeOfSquare;
+        }
 	}
-	else if( foodD === "left"){
+	else if( foodD === "left"){    
 		if(movingFood.x < sizeOfSquare*2){
-			foodD= "right";
+            if(level !== 6){
+                foodD= "right";
+            }
+            else if(movingFood.x < sizeOfSquare){
+                printPopup("The lion escaped!", "Score - 1000", 2000);
+                score = score - 1000;
+                foodBool = false;
+            }
 		}
-		movingFood.x -= sizeOfSquare;		
+		if(level!=6){
+            movingFood.x -= sizeOfSquare;
+        }
+        else if(binary==1){
+            movingFood.x -= sizeOfSquare;
+        }
 	}
-	else if( foodD === "up"){
-		movingFood.y -= sizeOfSquare;
+	else if( foodD === "up"){		
 		if(movingFood.y < sizeOfSquare*2){
-			foodD= "down";
-		}
+            if(level !== 6){
+                foodD= "down";
+            }
+            else if(movingFood.y < sizeOfSquare){
+                printPopup("The lion escaped!", "Score - 1000", 2000);
+                score = score - 1000;
+                foodBool = false;
+            }
+		}        
+        if(level!=6){
+            movingFood.y -= sizeOfSquare;
+        }
+        else if(binary==1){
+            movingFood.y -= sizeOfSquare
+        }
 	}
 	else if( foodD === "down"){
-		movingFood.y += sizeOfSquare;
 		if(movingFood.y > h-sizeOfSquare*3){
-			foodD= "up";
+            if(level !== 6){
+                foodD= "up";
+            }
+            else if(movingFood.y > h-sizeOfSquare*2){
+                printPopup("The lion escaped!", "Score - 1000", 2000);
+                score = score - 1000;
+                foodBool = false;
+            }
 		}
+        if(level!=6){
+            movingFood.y += sizeOfSquare;
+        }
+        else if(binary==1){
+            movingFood.y += sizeOfSquare;
+        }
 	}
 }
 function changeFoodDirection(){
@@ -611,10 +673,10 @@ function changeFoodDirection(){
     }
 }
 function checkMovingFoodCollision(){
-	if((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare)){
+	if(((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare))&& level != 6){
 		score += 400*scoreMod;
         if(level===1.5){
-            level = 2;            
+            level = 2;           
         }
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;
@@ -644,6 +706,7 @@ function deleteSnake(){
         c.removeEventListener('touchstart',mobile, false);
     }*/
     c.addEventListener("click", goToMenu, false);
+    GameOver = true;
 }
 function goToMenu(){
     c.removeEventListener('click', goToMenu, false);
@@ -756,6 +819,9 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
 	else if(e.keyCode===37&& d!=="right"){
 		dn="left";
 	}
+    if(GameOver){
+        goToMenu();
+    }
 });
 var isMobile = false;
 function listenForFingers(){ 

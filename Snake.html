@@ -48,7 +48,7 @@ var h = canvas.height;
 var numOfSquares = 20; //number of squares in a row/column
 var sizeOfSquare = Math.floor(w/numOfSquares);
 
-
+var difficulty = 0;//0 is easy, 1 is medium, 2 is hard
 
 var SnakeArray = []; 			//array to hold snake bit objects
 var SnakeTail = -1; 			//Most recently added SnakeBit
@@ -315,12 +315,37 @@ function menuClick(){
   }  
   else{
     options(c);
+    c.removeEventListener('click', menuClick, false);
+    //c.removeEventListener('mousemove');
   }
 }
-function options(c){
-    //nothing for now
+var difficultyButton = new Array();
+difficultyButton[0] = new Image();
+difficultyButton[1] = new Image();
+difficultyButton[2] = new Image();
+difficultyButton[0].src="images/easy.png";
+difficultyButton[1].src="images/medium.png";
+difficultyButton[2].src="images/hard.png";
+function options(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(difficultyButton[difficulty],0,0,w,h/4);
+    c.addEventListener("click", optionsClick, false);
 }
-function help(){                        //what happens if you press help in menu
+function optionsClick(){
+    if(mousePos.y<h/4){
+        if(difficulty < 2)
+            difficulty++;
+        else
+            difficulty = 0;
+        options();
+    }
+    else{
+        c.removeEventListener('click', optionsClick, false);
+        c.removeEventListener('mousemove');
+        Menu();
+    }
+}
+function help(c){                        //what happens if you press help in menu
                                         //currently being used for debugging
     SnakeInit();
     initLevel6();

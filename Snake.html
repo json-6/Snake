@@ -289,7 +289,6 @@ function Menu(){
   c.addEventListener("click", menuClick, false);
   
 }
-
 function getMousePos(canvas, evt) {
         var rect = c.getBoundingClientRect();
         return {
@@ -555,8 +554,7 @@ function checkCollision(){
 	if(d === "right"){
 		for( i = 1; i <= SnakeTail; i++ ){
 			if(SnakeArray[0].x+sizeOfSquare===SnakeArray[i].x && SnakeArray[0].y === SnakeArray[i].y){
-				isHit = true;
-                		
+				isHit = true;                		
 			}			
 		}
 	}
@@ -785,7 +783,14 @@ function deleteSnake(){
     /*if(isMobile){
         c.removeEventListener('touchstart',mobile, false);
     }*/
-    c.addEventListener("click", goToMenu, false);
+    if(isMobile){
+        setTimeout(function(){
+            c.addEventListener("click", goToMenu, false);
+        },delay)  
+    }
+    else{
+        c.addEventListener("click", goToMenu, false);
+    }
     GameOver = true;
 }
 function goToMenu(){

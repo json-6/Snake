@@ -70,6 +70,8 @@ var scoreMod = 1;
 
 var popupTime = 0;
 
+var GameOver=false;
+
 
 
 //declaring image variables
@@ -312,6 +314,7 @@ function SnakeInit(){
 		addSnakeBit("body_plain");
 		nx=nx-sizeOfSquare;
 	}
+    GameOver=false;
     listenForFingers();
 	makeFood();
 	paint();
@@ -703,6 +706,7 @@ function deleteSnake(){
         c.removeEventListener('touchstart',mobile, false);
     }*/
     c.addEventListener("click", goToMenu, false);
+    GameOver = true;
 }
 function goToMenu(){
     c.removeEventListener('click', goToMenu, false);
@@ -815,6 +819,9 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
 	else if(e.keyCode===37&& d!=="right"){
 		dn="left";
 	}
+    if(GameOver){
+        goToMenu();
+    }
 });
 var isMobile = false;
 function listenForFingers(){ 

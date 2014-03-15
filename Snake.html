@@ -358,12 +358,12 @@ function menuClick(){
   menuBool=false;
   if (mousePos.y<h/4){
     c.removeEventListener('click', menuClick, false);
-    c.removeEventListener('mousemove');
+    c.removeEventListener('mousemove', menuMove, false);
     startButton(c);    
   }
   else if (mousePos.y<2*h/4){
     c.removeEventListener('click', menuClick, false);
-    c.removeEventListener('mousemove');
+    c.removeEventListener('mousemove', menuMove, false);
     help(c);    
   }
   else if (mousePos.y<3*h/4){

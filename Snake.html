@@ -354,14 +354,14 @@ function getMousePos(canvas, evt) {
 function menuClick(){
   menuBool=false;
   if (mousePos.y<h/4){
-    startButton(c);
     c.removeEventListener('click', menuClick, false);
     c.removeEventListener('mousemove');
+    startButton(c);    
   }
   else if (mousePos.y<2*h/4){
-    help(c);
     c.removeEventListener('click', menuClick, false);
     c.removeEventListener('mousemove');
+    help(c);    
   }
   else if (mousePos.y<3*h/4){
     c.removeEventListener('click', menuClick, false);

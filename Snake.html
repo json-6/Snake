@@ -563,6 +563,7 @@ function makeTwister(){
     twisterFlicker(1);
 }
 function twisterFlicker(num){
+if(!GameOver){
     if(num===1){
         img_background.src = "images/Oz.png";
         num = 0;
@@ -577,6 +578,7 @@ function twisterFlicker(num){
     else{
         initLevel2();
     }
+}
 }
 function updateScore(){
     if(score>scoreReq2 && level === 1){

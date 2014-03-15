@@ -958,12 +958,14 @@ function deleteSnake(){
         },delay)  
     }
     else{
-        c.addEventListener("click", goToMenu, false);
+        img_background.src = "images/background.png";
+        c.addEventListener("click", goToMenu, false);        
     }
     GameOver = true;
 }
 function goToMenu(){
     c.removeEventListener('click', goToMenu, false);
+    img_background.onload==function(){Menu();}    
     Menu();
 }
 function printSnake(){		

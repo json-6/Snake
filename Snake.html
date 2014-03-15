@@ -118,10 +118,22 @@ var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
 var img_movingFood = new Image();
 var img_heart = new Image();
 
-window.onload = function(){
-    Menu(); 
-    updateScore();  
+
+        
+var img_start = document.getElementById('start_button');
+var img_help = document.getElementById('help_button');
+var img_highScore = document.getElementById('high_score_button');  
+var img_options = document.getElementById('options_button');
+  
+var start1 = document.getElementById('start_button1');
+var help1 = document.getElementById('help_button1');
+var highScore1 = document.getElementById('high_score_button1');  
+var options1 = document.getElementById('options_button1');
+
+window.onload = function(){      
     loadImages();
+    Menu(); 
+    updateScore();
 };		//starts everything
 
 var mousePos;                                           //used for menu to tell where mouse is
@@ -174,6 +186,7 @@ function loadImages(){
     
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
+    
 }
 function initLevel(){
     level = 1;
@@ -273,74 +286,64 @@ function initLevel8(){
     img_heart.src = "images/jellyfish.png";
 }
 var menuBool = true;
+function menuMove(evt){    
+    var whichButton;
+    mousePos = getMousePos(canvas, evt);
+    if(menuBool === true){
+      if (mousePos.y<h/4){
+          if(whichButton !==1){
+                ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
+                ctx.drawImage(img_background, 0, 0, w, h);
+                ctx.drawImage(start1, 0, 0, w, h/4);
+                ctx.drawImage(img_help, 0, h/4, w, h/4);
+                ctx.drawImage(img_highScore, 0, h/2, w, h/4);
+                ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+                whichButton=1;
+          }
+      }
+      else if (mousePos.y<2*h/4){
+         if(whichButton !==2){
+            ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
+            ctx.drawImage(img_background, 0, 0, w, h);
+            ctx.drawImage(img_start, 0, 0, w, h/4);
+            ctx.drawImage(help1, 0, h/4, w, h/4);
+            ctx.drawImage(img_highScore, 0, h/2, w, h/4);
+            ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+            whichButton=2;
+         }
+      }
+      else if (mousePos.y<3*h/4){
+        if(whichButton !==3){
+            ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
+            ctx.drawImage(img_background, 0, 0, w, h);
+            ctx.drawImage(img_start, 0, 0, w, h/4);
+            ctx.drawImage(img_help, 0, h/4, w, h/4);
+            ctx.drawImage(highScore1, 0, h/2, w, h/4);
+            ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+            whichButton=3;
+        }
+      }  
+      else if(whichButton !==4){
+        ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
+        ctx.drawImage(img_background, 0, 0, w, h);
+        ctx.drawImage(img_start, 0, 0, w, h/4);
+        ctx.drawImage(img_help, 0, h/4, w, h/4);
+        ctx.drawImage(img_highScore, 0, h/2, w, h/4);
+        ctx.drawImage(options1, 0, 3*h/4, w,h/4);
+        whichButton=4;
+      }
+   }
+       
+}
 function Menu(){
   menuBool = true;
-  var start = document.getElementById('start_button');
-  var help = document.getElementById('help_button');
-  var highScore = document.getElementById('high_score_button');  
-  var options = document.getElementById('options_button');
-  
-  var start1 = document.getElementById('start_button1');
-  var help1 = document.getElementById('help_button1');
-  var highScore1 = document.getElementById('high_score_button1');  
-  var options1 = document.getElementById('options_button1');
   ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
   ctx.drawImage(img_background, 0, 0, w, h);
-  ctx.drawImage(start, 0, 0, w, h/4);
-  ctx.drawImage(help, 0, h/4, w, h/4);
-  ctx.drawImage(highScore, 0, h/2, w, h/4);
-  ctx.drawImage(options, 0, 3*h/4, w,h/4);
-  
-  var whichButton=1;
-  
-  canvas.addEventListener('mousemove', function(evt) {
-      mousePos = getMousePos(canvas, evt);
-      if(menuBool === true){
-        if (mousePos.y<h/4){
-            if(whichButton !==1){
-                  ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
-                  ctx.drawImage(img_background, 0, 0, w, h);
-                  ctx.drawImage(start1, 0, 0, w, h/4);
-                  ctx.drawImage(help, 0, h/4, w, h/4);
-                  ctx.drawImage(highScore, 0, h/2, w, h/4);
-                  ctx.drawImage(options, 0, 3*h/4, w,h/4);
-                  whichButton=1;
-            }
-        }
-              else if (mousePos.y<2*h/4){
-                if(whichButton !==2){
-                  ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
-                  ctx.drawImage(img_background, 0, 0, w, h);
-                  ctx.drawImage(start, 0, 0, w, h/4);
-                  ctx.drawImage(help1, 0, h/4, w, h/4);
-                  ctx.drawImage(highScore, 0, h/2, w, h/4);
-                  ctx.drawImage(options, 0, 3*h/4, w,h/4);
-                  whichButton=2;
-                }
-              }
-              else if (mousePos.y<3*h/4){
-                if(whichButton !==3){
-                  ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
-                  ctx.drawImage(img_background, 0, 0, w, h);
-                  ctx.drawImage(start, 0, 0, w, h/4);
-                  ctx.drawImage(help, 0, h/4, w, h/4);
-                  ctx.drawImage(highScore1, 0, h/2, w, h/4);
-                  ctx.drawImage(options, 0, 3*h/4, w,h/4);
-                  whichButton=3;
-                }
-              }  
-              else if(whichButton !==4){
-                  ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
-                  ctx.drawImage(img_background, 0, 0, w, h);
-                  ctx.drawImage(start, 0, 0, w, h/4);
-                  ctx.drawImage(help, 0, h/4, w, h/4);
-                  ctx.drawImage(highScore, 0, h/2, w, h/4);
-                  ctx.drawImage(options1, 0, 3*h/4, w,h/4);
-                  whichButton=4;
-              }
-    }
-       
-  }, false);  
+  ctx.drawImage(img_start, 0, 0, w, h/4);
+  ctx.drawImage(img_help, 0, h/4, w, h/4);
+  ctx.drawImage(img_highScore, 0, h/2, w, h/4);
+  ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+  canvas.addEventListener('mousemove', menuMove, false);  
   c.addEventListener("click", menuClick, false);
   
 }

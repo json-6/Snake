@@ -408,7 +408,7 @@ function optionsClick(evt){
     }
     else{
         c.removeEventListener('click', optionsClick, false);
-        c.removeEventListener('mousemove');
+        c.removeEventListener('mousemove', menuMove, false);
         Menu();
     }
 }
@@ -693,9 +693,7 @@ function paint(){        				//clears screen and repaints snake in new position
 }
 function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-		score=score+200*scoreMod;
-        
-        
+		score=score+200*scoreMod*(1+difficulty/2);        
         if(level !== 3 && level!==8){
             addSnakeBit("body_plain");
         }
@@ -933,7 +931,7 @@ function changeFoodDirection(){
 }
 function checkMovingFoodCollision(){
 	if(((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare))&& level != 6){
-		score += 400*scoreMod;
+		score += 400*scoreMod*(1+difficulty);
         if(level===1.5){
             level = 2;           
         }

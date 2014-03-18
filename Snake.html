@@ -110,7 +110,11 @@ var body_left_red = new Image();
 var body_left_blue = new Image();
 var body_left_black = new Image();
 
-var minion_down=new Image();
+var minion = new Array();
+minion[0] = new Image();
+minion[1] = new Image();
+minion[2] = new Image();
+
 var bubbleBuddy=new Image();
 
 var img_snake_tail = document.getElementById('snake_tail'); 	//snake tail
@@ -189,6 +193,9 @@ function loadImages(){
     img_movingFood.src = "images/movingFood.png";
     highScoreBackground.src= "images/highScoresBackground.png";
     
+    minion[0].src = "images/minion_up.png";
+    minion[1].src = "images/minion_down.png"; //is also minion left
+    minion[2].src = "images/minion_right.png"; 
 }
 function initLevel(){
     level = 1;
@@ -232,7 +239,6 @@ function initLevel2(){//theme: wizard of Oz
 
 }
 function initLevel3(){//theme: despicable me
-    minion_down.src = "images/minion_down.png";
     level = 3;
     img_background.src = "images/background3.png";
     img_movingFood.src = "images/moon.png";
@@ -1065,8 +1071,18 @@ function printSnake(){
 			
 		}
         else if(SnakeArray[i].image==="minion"){
-            ctx.drawImage(minion_down, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
-        
+            if(SnakeArray[i-1].dir==="up"){
+                ctx.drawImage(minion[0], SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);				
+			}
+			else if(SnakeArray[i-1].dir==="right"){
+                ctx.drawImage(minion[2], SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);				
+			}
+			else if(SnakeArray[i-1].dir==="down"){
+                ctx.drawImage(minion[1], SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+			}
+			else if(SnakeArray[i-1].dir==="left"){
+                ctx.drawImage(minion[1], SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);
+			}        
         }
         else if(SnakeArray[i].image==="bubbleBuddy"){
             ctx.drawImage(bubbleBuddy, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);

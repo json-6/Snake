@@ -408,7 +408,7 @@ function optionsClick(evt){
     }
     else{
         c.removeEventListener('click', optionsClick, false);
-        c.removeEventListener('mousemove');
+        c.removeEventListener('mousemove', menuMove, false);
         Menu();
     }
 }

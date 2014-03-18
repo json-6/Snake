@@ -290,6 +290,7 @@ function initLevel7(){
 function initLevel8(){
     level = 8;
     foodBool = false;
+    img_movingFood.src = "images/bubbles.png";
     img_background.src = "images/bikiniBottom.png";
     img_heart.src = "images/jellyfish.png";
 }
@@ -706,17 +707,13 @@ function foodCheck(){						//checks to see if snake hits food
         else if(level === 3){
             addSnakeBit("minion");
         }
-        else if( level === 8){
-            addSnakeBit("bubbleBuddy");
-        }
-        
 		makeFood();
 	}
 	else if(foodBool){		
 		checkMovingFoodCollision();	//checks moving food for eating
 	}
 	else{
-        if(level===1.5 || level ===3 || level === 6){
+        if(level===1.5 || level ===3 || level === 6 || level ===8){
             if(getRandomArbitrary(0,40) > 37){
                 makeMovingFood();
             }
@@ -940,6 +937,9 @@ function checkMovingFoodCollision(){
 		score += 400*scoreMod*(1+difficulty);
         if(level===1.5){
             level = 2;           
+        }
+        else if(level===8){
+            addSnakeBit("bubbleBuddy");
         }
         //scoreMod += (1 - scoreMod/10);// makes it impossible for scoreMod to go over 10. realistically won't approach 10
 		foodBool=false;

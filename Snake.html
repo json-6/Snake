@@ -46,7 +46,8 @@ var ctx = c.getContext('2d');
 var w = canvas.width;
 var h = canvas.height;
 
-var numOfSquares = 20; //number of squares in a row/column
+var initialNumOfSquares =20;
+var numOfSquares = initialNumOfSquares; //number of squares in a row/column
 var sizeOfSquare = Math.floor(w/numOfSquares);
 
 var difficulty = 0;//0 is easy, 1 is medium, 2 is hard
@@ -200,6 +201,8 @@ function loadImages(){
 function initLevel(){
     level = 1;
     delay = 150 - 50*difficulty;
+    numOfSquares = initialNumOfSquares;
+    sizeOfSquare = Math.floor(w/numOfSquares);
     img_background.src = "images/background.png";
     head_up.src = "images/head_up.png";
     head_right.src = "images/head_right.png";
@@ -564,7 +567,9 @@ function SnakeInit(){
 		nx=nx-sizeOfSquare;
 	}
     GameOver=false;
-    listenForFingers();
+    if(!isMobile){
+        listenForFingers();
+    }
 	makeFood();
 	paint();
 }
@@ -1114,15 +1119,19 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
     }
 });
 var isMobile = false; //boolean for whether or not the device is mobile
-function listenForFingers(){ 
  var mousex = 0; 
  var mousey = 0;
- c.addEventListener('touchstart', function mobile(e){
+ var touchobj;
+ 
+function mobileClick(e){
   isMobile = true;
-  var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
-  mousex = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
-  mousey = parseInt(touchobj.clientY)
-  //e.preventDefault()
+  touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
+  if(!GameOver){
+    e.preventDefault();
+  }
+  mousex = parseInt(touchobj.clientX); // get x position of touch point relative to left edge of browser
+  mousey = parseInt(touchobj.clientY);
+  printPopup(mousex,mousey, 10);  
   if(mousex>mousey ){
     if(mousey <= h-mousex){
         if(d!="down"){
@@ -1147,8 +1156,13 @@ function listenForFingers(){
         }
     }
   }
- }, false);
-   
+  if(GameOver){
+        goToMenu();
+  }
+}
+
+function listenForFingers(){ 
+ c.addEventListener('touchstart', mobileClick, false);   
 }
 function counterClockwise(){
 	if(d==="right"){

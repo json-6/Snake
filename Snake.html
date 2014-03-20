@@ -2,38 +2,22 @@
 <html>
 <head>
 <TITLE>Dance Marathon - Snake</TITLE>
-<meta name="viewport" content="width=620, user-scalable=yes">
+<meta name="viewport" content="width=420, user-scalable=no">
 </head>
 <body>
-
-
 <H1 align="center">
 <canvas id="canvas" width="400" height="400" style="border:10px solid #FFA500;">
 	Your browser does not support the HTML5 canvas tag.
 </canvas>
-
-<!--
-<embed height="0" width="0" src="test.mp3">
-//audio if wanted
--->
-
-
-
-
-
 <img src="images/start.png" alt="startbutton" width = "400" height = "100" style="display:none" id="start_button"/>
 <img src="images/highscore.png" alt="highscorebutton" width = "400" height = "100" style="display:none" id="high_score_button"/>
 <img src="images/help.png" alt="helpbutton" width = "400" height = "100" style="display:none" id="help_button"/>
 <img src="images/options.png" alt="optionsbutton" width = "400" height = "100" style="display:none" id="options_button"/>
-
 <img src="images/start1.png" alt="startbutton1" width = "400" height = "100" style="display:none" id="start_button1"/>
 <img src="images/highscore1.png" alt="highscorebutton1" width = "400" height = "100" style="display:none" id="high_score_button1"/>
 <img src="images/help1.png" alt="helpbutton1" width = "400" height = "100" style="display:none" id="help_button1"/>
 <img src="images/options1.png" alt="optionsbutton1" width = "400" height = "100" style="display:none" id="options_button1"/>
-
 <img src="images/back.png" alt="backbutton" width = "400" height = "100" style="display:none" id="back_button"/>
-
-
 
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
@@ -136,6 +120,8 @@ var help1 = document.getElementById('help_button1');
 var highScore1 = document.getElementById('high_score_button1');  
 var options1 = document.getElementById('options_button1');
 
+var inGame= false;
+
 window.onload = function(){      
     loadImages();
     Menu(); 
@@ -201,6 +187,7 @@ function loadImages(){
 function initLevel(){
     level = 1;
     delay = 150 - 50*difficulty;
+    inGame=true;
     numOfSquares = initialNumOfSquares;
     sizeOfSquare = Math.floor(w/numOfSquares);
     img_background.src = "images/background.png";
@@ -352,6 +339,7 @@ function menuMove(evt){
 }
 function Menu(){
   menuBool = true;
+  inGame=false;
   ctx.clearRect(0, 0, w, h); //clears the screen of score and background image
   ctx.drawImage(img_background, 0, 0, w, h);
   ctx.drawImage(img_start, 0, 0, w, h/4);
@@ -402,6 +390,7 @@ difficultyButton[2] = new Image();
 difficultyButton[0].src="images/easy.png";
 difficultyButton[1].src="images/medium.png";
 difficultyButton[2].src="images/hard.png";
+
 function options(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(difficultyButton[difficulty],0,0,w,h/4);
@@ -422,8 +411,7 @@ function optionsClick(evt){
         Menu();
     }
 }
-function help(c){                        //what happens if you press help in menu
-                                        //currently being used for debugging
+function debug(){
     SnakeInit();
     initLevel7();
     for(i=0; i<20; i++){
@@ -433,7 +421,26 @@ function help(c){                        //what happens if you press help in men
     scoreReq3=300;
     scoreReq4=300;
     scoreReq5=300;
-    
+}
+function helpClick(evt){
+    mousePos = getMousePos(canvas, evt);
+    if (mousePos.y>6*h/8){
+        c.removeEventListener("click", helpClick, false);
+        img_background.src = "images/background.png";        
+        Menu();                    
+    }
+    else if(mousePos.x>380 && mousePos.y <20){
+        debug();
+    }
+
+}
+function help(){                        //what happens if you press help in menu
+                                        //currently being used for debugging
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var backButton = document.getElementById('back_button');
+    ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
+    ctx. drawImage(img_heart, 380,0,20,20);
+    c.addEventListener("click", helpClick, false);
 }
 function highScore(c){                  //what happens if you press highScore in menu
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -538,8 +545,7 @@ function highScore(c){                  //what happens if you press highScore in
     var backButton = document.getElementById('back_button');
     ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
     c.addEventListener("click", highScoreClick, false);
-    
-    
+       
 }
 function highScoreClick(evt){
     mousePos = getMousePos(canvas, evt);
@@ -970,6 +976,7 @@ function checkMovingFoodCollision(){
 }
 function deleteSnake(){
     foodBool=false;
+    inGame = false;
 	for(i=0; i<SnakeTail;i++){
 		delete SnakeArray[i];
 	}
@@ -1130,8 +1137,10 @@ function mobileClick(e){
     e.preventDefault();
   }
   mousex = parseInt(touchobj.clientX); // get x position of touch point relative to left edge of browser
+  mousex = mousex - (window.innerWidth-canvas.width)/2;
   mousey = parseInt(touchobj.clientY);
-  printPopup(mousex,mousey, 10);  
+  mousey = mousey - 25;
+  //printPopup(mousex,mousey, 10);  
   if(mousex>mousey ){
     if(mousey <= h-mousex){
         if(d!="down"){
@@ -1156,7 +1165,7 @@ function mobileClick(e){
         }
     }
   }
-  if(GameOver){
+  if(GameOver  && inGame){
         goToMenu();
   }
 }

@@ -108,6 +108,7 @@ var img_movingFood = new Image();
 var img_heart = new Image();
 
 var highScoreBackground = new Image();
+var helpBackground = new Image();
 
         
 var img_start = document.getElementById('start_button');
@@ -179,6 +180,7 @@ function loadImages(){
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
     highScoreBackground.src= "images/highScoresBackground.png";
+    helpBackground.src="images/helpBackground.png";
     
     minion[0].src = "images/minion_up.png";
     minion[1].src = "images/minion_down.png"; //is also minion left
@@ -429,7 +431,7 @@ function helpClick(evt){
         img_background.src = "images/background.png";        
         Menu();                    
     }
-    else if(mousePos.x>380 && mousePos.y <20){
+    else if(mousePos.x>360 && mousePos.y <20){
         debug();
     }
 
@@ -437,6 +439,7 @@ function helpClick(evt){
 function help(){                        //what happens if you press help in menu
                                         //currently being used for debugging
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(helpBackground,0,0,w,h);
     var backButton = document.getElementById('back_button');
     ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
     ctx. drawImage(img_heart, 380,0,20,20);

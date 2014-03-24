@@ -284,7 +284,7 @@ function initLevel8(){
     foodBool = false;
     img_movingFood.src = "images/bubbles.png";
     img_background.src = "images/bikiniBottom.png";
-    img_heart.src = "images/jellyfish.png";
+    img_heart.src = "images/crabbyPatty.png";
 }
 var menuBool = true;
 function menuMove(evt){   
@@ -582,6 +582,7 @@ function SnakeInit(){
 	makeFood();
 	paint();
 }
+var tempImage = new Image();
 function makeTwister(){
     level = 1.5;
     img_movingFood.src = "images/twister.png";    
@@ -590,11 +591,13 @@ function makeTwister(){
 function twisterFlicker(num){
 if(!GameOver){
     if(num===1){
-        img_background.src = "images/Oz.png";
+        img_background.src = tempImage;
+        tempImage="images/backgroundBlack.png";
         num = 0;
     }
     else if(num===0){
-        img_background.src = "images/backgroundBlack.png";
+        img_background.src = tempImage;
+        tempImage="images/Os.png";
         num = 1;
     }
     if(level===1.5){
@@ -1001,6 +1004,8 @@ function goToMenu(){
     c.removeEventListener('click', goToMenu, false);
     Menu();
 }
+var jellyfish =new Image();
+jellyfish.src = "images/jellyfish.png";
 function printSnake(){		
 	for (i=0;i<=SnakeTail;i++)
 	{ 		
@@ -1106,7 +1111,7 @@ function printSnake(){
             ctx.drawImage(bubbleBuddy, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1);        
         }
         else if(SnakeArray[i].image==="jellyfish"){
-            ctx.drawImage(img_heart, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1); 
+            ctx.drawImage(jellyfish, SnakeArray[i].x, SnakeArray[i].y, sizeOfSquare-1, sizeOfSquare-1); 
         }
 	}
 	setTimeout(moveSnake,delay)

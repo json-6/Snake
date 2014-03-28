@@ -121,12 +121,12 @@ var help1 = document.getElementById('help_button1');
 var highScore1 = document.getElementById('high_score_button1');  
 var options1 = document.getElementById('options_button1');
 
+var deathscreen = new Image();
+
 var inGame= false;
 
 window.onload = function(){      
     loadImages();
-    Menu(); 
-    updateScore();
 };		//starts everything
 
 var mousePos;                                           //used for menu to tell where mouse is
@@ -185,6 +185,11 @@ function loadImages(){
     minion[0].src = "images/minion_up.png";
     minion[1].src = "images/minion_down.png"; //is also minion left
     minion[2].src = "images/minion_right.png"; 
+    
+	deathscreen.src = "images/death.png";
+	
+    Menu();     
+    updateScore();
 }
 function initLevel(){
     level = 1;
@@ -224,10 +229,10 @@ function initLevel(){
 }
 function initLevel2(){//theme: wizard of Oz
     level = 2;
+	scoreReq3=score+scoreReq3;
     foodBool=false;
     img_background.src = "images/OzColor.png";    
-    printPopup("Level 2!", "", 100);
-    scoreReq3=score+scoreReq3;
+    printPopup("Level 2!", "", 100);   
 
 }
 function initLevel3(){//theme: despicable me
@@ -272,6 +277,7 @@ function initLevel6(){
     scoreReq7=score + scoreReq7;
 }
 function initLevel7(){
+	foodBool = false;
     level = 7;
     img_background.src = "images/pirateShip.png";
     img_heart.src = "images/booty.png";
@@ -285,6 +291,7 @@ function initLevel8(){
     img_movingFood.src = "images/bubbles.png";
     img_background.src = "images/bikiniBottom.png";
     img_heart.src = "images/crabbyPatty.png";
+	foodBool = false;
 }
 var menuBool = true;
 function menuMove(evt){   
@@ -349,8 +356,7 @@ function Menu(){
   ctx.drawImage(img_highScore, 0, h/2, w, h/4);
   ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
   c.addEventListener('mousemove', menuMove,false);  
-  c.addEventListener("click", menuClick, false);
-  
+  c.addEventListener("click", menuClick, false);  
 }
 function getMousePos(canvas, evt) {
         var rect = c.getBoundingClientRect();
@@ -419,6 +425,7 @@ function debug(){
     for(i=0; i<20; i++){
         addSnakeBit("body_plain");
     }
+    //score = 10000000;
     scoreReq2=300;
     scoreReq3=300;
     scoreReq4=300;
@@ -509,48 +516,139 @@ function highScore(c){                  //what happens if you press highScore in
         ctx.textAlign = 'center';
         var textNameScore = ""; 
         ctx.fillText("TOP 10 HIGH SCORES", 200, 58);
-        ctx.fillStyle = '#7094FF';
+        ctx.fillStyle = '#FF850A';
         ctx.font = 'bold 20px sans-serif';
-        for(i=0;i<scoresToRetrieve;i++){    
-            if(i===1){
-                ctx.fillStyle = '#FF8000';
+        ctx.textAlign = 'center';
+        ctx.fillText("NAME", 200, 0*17+80);
+        ctx.textAlign = 'right';
+        //ctx.fillStyle = '#CC33FF';
+        ctx.fillText("SCORE",360, 0*17+80);
+        ctx.textAlign = 'left';
+        ctx.fillText("PLACE",45, 0*17+80);
+        ctx.font = 'bold 15px sans-serif';
+        
+        
+        var place = new Array();
+        place[0]="1st";
+        place[1]="2nd";
+        place[2]="3rd";
+        for(i=3;i<10;i++){
+            place[i]=(i+1)+"th";
+        }
+        
+        for(i=0;i<scoresToRetrieve;i++){   
+            if(i==0){
+                ctx.fillStyle = '#EBF5FF';
+            }
+            else if(i===1){
+                ctx.fillStyle = '#B8DBFF'; 
             }
             else if(i===2){
-                ctx.fillStyle = '#FF33FF';
+                ctx.fillStyle = '#85C2FF';
             }
+            /*else{
+                ctx.fillStyle = '#A3A3A3';
+            }
+            */
             else if(i===3){
-                ctx.fillStyle = '#FFFF00';
+                ctx.fillStyle = '#0582FF';
             }
             else if(i===4){
-                ctx.fillStyle = '#00994C';
+                ctx.fillStyle = '#0075EB';
             }
             else if(i===5){
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = '#0069D1';
             }
             else if(i===6){
-                ctx.fillStyle = '#FF0000';
+                ctx.fillStyle = '#005CB8';
             }
             else if(i===7){
-                ctx.fillStyle = '#7F00FF';
+                ctx.fillStyle = '#004F9E';
             }
             else if(i===8){
-                ctx.fillStyle = '#66CC00';
+                ctx.fillStyle = '#004285';
             }
             else if(i===9){
-                ctx.fillStyle = '#660000';
+                ctx.fillStyle = '#00366B';
             }
-            ctx.textAlign = 'left';
-            ctx.fillText(names[i], 100, i*22+80);
+            ctx.fillText(place[i], 45, (i+1)*17+85);
+        }
+        ctx.textAlign = 'center';
+        for(i=0;i<scoresToRetrieve;i++){   
+            if(i==0){
+                ctx.fillStyle = '#EBF5FF';
+            }
+            else if(i===1){
+                ctx.fillStyle = '#B8DBFF'; 
+            }
+            else if(i===2){
+                ctx.fillStyle = '#85C2FF';
+            }
+            else if(i===3){
+                ctx.fillStyle = '#0582FF';
+            }
+            else if(i===4){
+                ctx.fillStyle = '#0075EB';
+            }
+            else if(i===5){
+                ctx.fillStyle = '#0069D1';
+            }
+            else if(i===6){
+                ctx.fillStyle = '#005CB8';
+            }
+            else if(i===7){
+                ctx.fillStyle = '#004F9E';
+            }
+            else if(i===8){
+                ctx.fillStyle = '#004285';
+            }
+            else if(i===9){
+                ctx.fillStyle = '#00366B';
+            }
+            ctx.fillText(names[i], 200, (i+1)*17+85);
+        }
+        //ctx.drawImage(highScoreBackground, 230,100,w-290,5*h/11);
+         for(i=0;i<scoresToRetrieve;i++){   
+            if(i==0){
+                ctx.fillStyle = '#EBF5FF';
+            }
+            else if(i===1){
+                ctx.fillStyle = '#B8DBFF'; 
+            }
+            else if(i===2){
+                ctx.fillStyle = '#85C2FF';
+            }
+            else if(i===3){
+                ctx.fillStyle = '#0582FF';
+            }
+            else if(i===4){
+                ctx.fillStyle = '#0075EB';
+            }
+            else if(i===5){
+                ctx.fillStyle = '#0069D1';
+            }
+            else if(i===6){
+                ctx.fillStyle = '#005CB8';
+            }
+            else if(i===7){
+                ctx.fillStyle = '#004F9E';
+            }
+            else if(i===8){
+                ctx.fillStyle = '#004285';
+            }
+            else if(i===9){
+                ctx.fillStyle = '#00366B';
+            }
             ctx.textAlign = 'right';
-            ctx.fillText(scores[i],300, i*22+80)
-        }               
+            ctx.fillText(scores[i],360, (i+1)*17+85)
+        }    
     });
     var backButton = document.getElementById('back_button');
     ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
-    c.addEventListener("click", highScoreClick, false);
+    c.addEventListener("click", highScoreClick, false); 
        
 }
-function highScoreClick(evt){
+function highScoreClick(evt){ //called when someone clicks in the high score menu
     mousePos = getMousePos(canvas, evt);
     if (mousePos.y>6*h/8){
         c.removeEventListener("click", highScoreClick, false);
@@ -567,6 +665,7 @@ function SnakeInit(){
     scoreMod = 1;               //reset modifier to 1
 	SnakeTail=-1;				//Most recently added SnakeBit
 	dn="right";  				//direction
+    d="right";
 	nx=4*sizeOfSquare;						//resets where the next added snakebits go (top left)
 	ny=0;
     addSnakeBit("head");
@@ -591,21 +690,21 @@ function makeTwister(){
 function twisterFlicker(num){
 if(!GameOver){
     if(num===1){
-        img_background.src = tempImage;
-        tempImage="images/backgroundBlack.png";
+        img_background = tempImage;
+        tempImage.src="images/backgroundBlack.png";
         num = 0;
     }
     else if(num===0){
-        img_background.src = tempImage;
-        tempImage="images/Os.png";
+        img_background = tempImage;
+        tempImage.src="images/Oz.png";
         num = 1;
     }
     if(level===1.5){
-        setTimeout(function(){twisterFlicker(num);},500);
+        setTimeout(function(){twisterFlicker(num);},1000);
     }
-    else{
-        initLevel2();
-    }
+	else{
+		img_background.src= "images/OzColor.png";
+	}
 }
 }
 function updateScore(){
@@ -631,12 +730,29 @@ function updateScore(){
     //setTimeout(updateScore,100); 	//call again to update score
 }
 function printScore() {
-  ctx.fillStyle = '#808080'; //gray
-  ctx.font = 'bold 12px sans-serif';
+  //ctx.translate(0.5, 0.5);
+  ctx.font         = "bold 14px Arial";
+  ctx.textBaseline = "top"; 
+  //ctx.font = 'bold 12px sans-serif';
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'left';
   ctx.textAlign = 'bottom';
-  ctx.fillText('score: ' + Math.floor(score), 4, h-2); 			//display in lower left hand corner
+  var x =4;
+  var y =h-2;
+  ctx.fillStyle    = "black";
+  ctx.fillText( 'score: ' + Math.floor(score), x-1, y );    
+  ctx.fillText( 'score: ' + Math.floor(score), x, y-1 );    
+  ctx.fillText( 'score: ' + Math.floor(score), x+1, y );    
+  ctx.fillText( 'score: ' + Math.floor(score), x, y+1 );    
+
+  ctx.fillStyle    = "white";
+  ctx.fillText( 'score: ' + Math.floor(score), x, y ); 
+  //ctx.fillStyle = '#808080'; //gray
+  /*ctx.font = 'bold 12px sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'left';
+  ctx.textAlign = 'bottom';*/
+  //ctx.fillText('score: ' + Math.floor(score), 4, h-2); 			//display in lower left hand corner
                                                                 //Math.floor keeps score an integer
 }
 function printMod(){
@@ -700,8 +816,26 @@ function printPopup(text, text2, p){
   ctx.font = 'bold 20px sans-serif';
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'center';
-  ctx.fillText(text, cx, cy); 			//add a personalized random message later
-  ctx.fillText(text2, cx, cy+20);
+  //ctx.fillText(text, cx, cy); 			//add a personalized random message later
+  
+  //ctx.fillText(text2, cx, cy+20);
+  
+  var x =cx;
+  var y =cy;
+  ctx.fillStyle    = "blue";
+  ctx.fillText( text,  x-1, y );    
+  ctx.fillText( text,  x, y-1 );    
+  ctx.fillText( text,  x+1, y );    
+  ctx.fillText( text,  x, y+1 );   
+
+  ctx.fillText( text2,  x-1, y +20);    
+  ctx.fillText( text2,  x, y-1 +20);    
+  ctx.fillText( text2, x+1, y +20);    
+  ctx.fillText( text2, x, y+1 +20);
+
+  ctx.fillStyle    = "orange";
+  ctx.fillText( text, x, y );
+  ctx.fillText( text2, x, y+20 );   
 }
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, w, h);
@@ -772,6 +906,8 @@ function checkCollision(){
 	}
     if(isHit){
         ctx.clearRect(0, 0, w, h);
+		img_background.src = "images/background.png";
+		ctx.drawImage(deathscreen, 0, 0, w, h);
 		printPopup('Your conga line crashed!','Score: '+Math.floor(score), 0);
         sendToDB(Math.floor(score));
 		deleteSnake();	    
@@ -779,6 +915,8 @@ function checkCollision(){
 	else{
 		if(SnakeArray[0].x<0||SnakeArray[0].x>=w||SnakeArray[0].y<0||SnakeArray[0].y>=h){ //checks whether the snake leaves the screen
             ctx.clearRect(0, 0, w, h);
+			img_background.src = "images/background.png";
+			ctx.drawImage(deathscreen, 0, 0, w, h);
 			printPopup('Your conga line left the dance floor!','Score: '+Math.floor(score),0);
             sendToDB(Math.floor(score));
 			deleteSnake();			
@@ -866,7 +1004,7 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
         binary = 1;
     }
     if( foodD === "right"){		
-		if(movingFood.x > w-sizeOfSquare*3){
+		if(movingFood.x > w-sizeOfSquare*4){
             if(level !== 6){
                 foodD= "left";
             }
@@ -920,7 +1058,7 @@ function moveFood(){ //changes the direction of the food if it's going the wrong
         }
 	}
 	else if( foodD === "down"){
-		if(movingFood.y > h-sizeOfSquare*3){
+		if(movingFood.y > h-sizeOfSquare*4){
             if(level !== 6){
                 foodD= "up";
             }
@@ -956,7 +1094,7 @@ function checkMovingFoodCollision(){
 	if(((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare))&& level != 6){
 		score += 400*scoreMod*(1+difficulty);
         if(level===1.5){
-            level = 2;           
+            initLevel2();           
         }
         else if(level===8){
             addSnakeBit("bubbleBuddy");
@@ -1133,7 +1271,7 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
         goToMenu();
     }
 });
-var isMobile = false; //boolean for whether or not the device is mobile
+ var isMobile = false; //boolean for whether or not the device is mobile
  var mousex = 0; 
  var mousey = 0;
  var touchobj;

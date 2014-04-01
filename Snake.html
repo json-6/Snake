@@ -492,155 +492,317 @@ function highScore(c){                  //what happens if you press highScore in
             ctx.drawImage(body_right_red, (i)*sizeOfSquare,0,sizeOfSquare-1,sizeOfSquare-1); 
         }
     }
-    $.post("getScores.php", {count: scoresToRetrieve}, function(result) {
-        var obj = $.parseJSON(result);
-        var names = [];
-        var scores = [];
-        for (var i = 0; i < obj.length; i++) { 
-            names.push(obj[i]["Name"]);
-            scores.push(obj[i]["Score"]);
-        }
-        /*
-        ____Name___|____Score_____
-          names[0] |   scores[0]
-          names[0] |   scores[1]
-            ...    |     ...
-          names[4] |   scores[4]
-        */
-        
-        ctx.fillStyle = '#00FFFF';
-        ctx.font = 'bold 30px sans-serif';
-        ctx.textBaseline = 'bottom';
-        ctx.textAlign = 'center';
-        var textNameScore = ""; 
-        ctx.fillText("TOP 10 HIGH SCORES", 200, 58);
-        ctx.fillStyle = '#FF850A';
-        ctx.font = 'bold 20px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText("NAME", 200, 0*17+80);
-        ctx.textAlign = 'right';
-        //ctx.fillStyle = '#CC33FF';
-        ctx.fillText("SCORE",360, 0*17+80);
-        ctx.textAlign = 'left';
-        ctx.fillText("PLACE",45, 0*17+80);
-        ctx.font = 'bold 15px sans-serif';
-        
-        
-        var place = new Array();
-        place[0]="1st";
-        place[1]="2nd";
-        place[2]="3rd";
-        for(i=3;i<10;i++){
-            place[i]=(i+1)+"th";
-        }
-        
-        for(i=0;i<scoresToRetrieve;i++){   
-            if(i==0){
-                ctx.fillStyle = '#EBF5FF';
+    if(binary===1){
+        $.post("getScores.php", {count: scoresToRetrieve}, function(result) {
+            var obj = $.parseJSON(result);
+            var names = [];
+            var scores = [];
+            for (var i = 0; i < obj.length; i++) { 
+                names.push(obj[i]["Name"]);
+                scores.push(obj[i]["Score"]);
             }
-            else if(i===1){
-                ctx.fillStyle = '#B8DBFF'; 
-            }
-            else if(i===2){
-                ctx.fillStyle = '#85C2FF';
-            }
-            /*else{
-                ctx.fillStyle = '#A3A3A3';
-            }
+            /*
+            ____Name___|____Score_____
+              names[0] |   scores[0]
+              names[0] |   scores[1]
+                ...    |     ...
+              names[4] |   scores[4]
             */
-            else if(i===3){
-                ctx.fillStyle = '#0582FF';
-            }
-            else if(i===4){
-                ctx.fillStyle = '#0075EB';
-            }
-            else if(i===5){
-                ctx.fillStyle = '#0069D1';
-            }
-            else if(i===6){
-                ctx.fillStyle = '#005CB8';
-            }
-            else if(i===7){
-                ctx.fillStyle = '#004F9E';
-            }
-            else if(i===8){
-                ctx.fillStyle = '#004285';
-            }
-            else if(i===9){
-                ctx.fillStyle = '#00366B';
-            }
-            ctx.fillText(place[i], 45, (i+1)*17+85);
-        }
-        ctx.textAlign = 'center';
-        for(i=0;i<scoresToRetrieve;i++){   
-            if(i==0){
-                ctx.fillStyle = '#EBF5FF';
-            }
-            else if(i===1){
-                ctx.fillStyle = '#B8DBFF'; 
-            }
-            else if(i===2){
-                ctx.fillStyle = '#85C2FF';
-            }
-            else if(i===3){
-                ctx.fillStyle = '#0582FF';
-            }
-            else if(i===4){
-                ctx.fillStyle = '#0075EB';
-            }
-            else if(i===5){
-                ctx.fillStyle = '#0069D1';
-            }
-            else if(i===6){
-                ctx.fillStyle = '#005CB8';
-            }
-            else if(i===7){
-                ctx.fillStyle = '#004F9E';
-            }
-            else if(i===8){
-                ctx.fillStyle = '#004285';
-            }
-            else if(i===9){
-                ctx.fillStyle = '#00366B';
-            }
-            ctx.fillText(names[i], 200, (i+1)*17+85);
-        }
-        //ctx.drawImage(highScoreBackground, 230,100,w-290,5*h/11);
-         for(i=0;i<scoresToRetrieve;i++){   
-            if(i==0){
-                ctx.fillStyle = '#EBF5FF';
-            }
-            else if(i===1){
-                ctx.fillStyle = '#B8DBFF'; 
-            }
-            else if(i===2){
-                ctx.fillStyle = '#85C2FF';
-            }
-            else if(i===3){
-                ctx.fillStyle = '#0582FF';
-            }
-            else if(i===4){
-                ctx.fillStyle = '#0075EB';
-            }
-            else if(i===5){
-                ctx.fillStyle = '#0069D1';
-            }
-            else if(i===6){
-                ctx.fillStyle = '#005CB8';
-            }
-            else if(i===7){
-                ctx.fillStyle = '#004F9E';
-            }
-            else if(i===8){
-                ctx.fillStyle = '#004285';
-            }
-            else if(i===9){
-                ctx.fillStyle = '#00366B';
-            }
+            
+            ctx.fillStyle = '#FF33CC';
+            ctx.font = 'bold 30px sans-serif';
+            ctx.textBaseline = 'bottom';
+            ctx.textAlign = 'center';
+            ctx.fillText("ALL TIME",w/2, 85);
+            var textNameScore = ""; 
+            ctx.fillStyle = '#00FFFF';
+            ctx.fillText("TOP 10 HIGH SCORES", 200, 58);
+            ctx.fillStyle = '#FF850A';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("NAME", 200, 0*17+100);
             ctx.textAlign = 'right';
-            ctx.fillText(scores[i],360, (i+1)*17+85)
-        }    
-    });
+            //ctx.fillStyle = '#CC33FF';
+            ctx.fillText("SCORE",360, 0*17+100);
+            ctx.textAlign = 'left';
+            ctx.fillText("PLACE",45, 0*17+100);
+            ctx.font = 'bold 15px sans-serif';
+            
+            
+            var place = new Array();
+            place[0]="1st";
+            place[1]="2nd";
+            place[2]="3rd";
+            for(i=3;i<10;i++){
+                place[i]=(i+1)+"th";
+            }
+            
+            for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                /*else{
+                    ctx.fillStyle = '#A3A3A3';
+                }
+                */
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                ctx.fillText(place[i], 45, (i+1)*17+100);
+            }
+            ctx.textAlign = 'center';
+            for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                ctx.fillText(names[i], 200, (i+1)*17+100);
+            }
+            //ctx.drawImage(highScoreBackground, 230,100,w-290,5*h/11);
+             for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                ctx.textAlign = 'right';
+                ctx.fillText(scores[i],360, (i+1)*17+100)
+            }    
+        });
+    }
+    else{
+        $.post("getScoresHour.php", {count: scoresToRetrieve}, function(result) {
+            var obj = $.parseJSON(result);
+            var names = [];
+            var scores = [];
+            for (var i = 0; i < obj.length; i++) { 
+                names.push(obj[i]["Name"]);
+                scores.push(obj[i]["Score"]);
+            }
+            /*
+            ____Name___|____Score_____
+              names[0] |   scores[0]
+              names[0] |   scores[1]
+                ...    |     ...
+              names[4] |   scores[4]
+            */
+            
+            
+            ctx.fillStyle = '#FF33CC';
+            ctx.font = 'bold 30px sans-serif';
+            ctx.textBaseline = 'bottom';
+            ctx.textAlign = 'center';
+            ctx.fillText("LAST HOUR",w/2, 85);
+            var textNameScore = ""; 
+            ctx.fillStyle = '#00FFFF';
+            ctx.fillText("TOP 10 HIGH SCORES", 200, 58);
+            ctx.fillStyle = '#FF850A';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("NAME", 200, 0*17+100);
+            ctx.textAlign = 'right';
+            //ctx.fillStyle = '#CC33FF';
+            ctx.fillText("SCORE",360, 0*17+100);
+            ctx.textAlign = 'left';
+            ctx.fillText("PLACE",45, 0*17+100);
+            ctx.font = 'bold 15px sans-serif';
+            
+            
+            var place = new Array();
+            place[0]="1st";
+            place[1]="2nd";
+            place[2]="3rd";
+            for(i=3;i<10;i++){
+                place[i]=(i+1)+"th";
+            }
+            
+            for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                /*else{
+                    ctx.fillStyle = '#A3A3A3';
+                }
+                */
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                if(names[i])
+                    ctx.fillText(place[i], 45, (i+1)*17+100);
+            }
+            ctx.textAlign = 'center';
+            for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                if(names[i])
+                    ctx.fillText(names[i], 200, (i+1)*17+100);
+            }
+            //ctx.drawImage(highScoreBackground, 230,100,w-290,5*h/11);
+             for(i=0;i<scoresToRetrieve;i++){   
+                if(i==0){
+                    ctx.fillStyle = '#EBF5FF';
+                }
+                else if(i===1){
+                    ctx.fillStyle = '#B8DBFF'; 
+                }
+                else if(i===2){
+                    ctx.fillStyle = '#85C2FF';
+                }
+                else if(i===3){
+                    ctx.fillStyle = '#0582FF';
+                }
+                else if(i===4){
+                    ctx.fillStyle = '#0075EB';
+                }
+                else if(i===5){
+                    ctx.fillStyle = '#0069D1';
+                }
+                else if(i===6){
+                    ctx.fillStyle = '#005CB8';
+                }
+                else if(i===7){
+                    ctx.fillStyle = '#004F9E';
+                }
+                else if(i===8){
+                    ctx.fillStyle = '#004285';
+                }
+                else if(i===9){
+                    ctx.fillStyle = '#00366B';
+                }
+                ctx.textAlign = 'right';
+                if(names[i])
+                    ctx.fillText(scores[i],360, (i+1)*17+100)
+            }    
+        });
+    
+    }
     var backButton = document.getElementById('back_button');
     ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
     c.addEventListener("click", highScoreClick, false); 
@@ -652,6 +814,13 @@ function highScoreClick(evt){ //called when someone clicks in the high score men
         c.removeEventListener("click", highScoreClick, false);
         img_background.src = "images/background.png";        
         Menu();                    
+    }
+    else{
+        if(binary===1)
+            binary=0;
+        else
+            binary=1;
+        highScore();
     }
 }
 function startButton(c){                //what happens if you press start in menu

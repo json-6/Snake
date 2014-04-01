@@ -62,13 +62,16 @@ var scoreMod = 1;
 
 var popupTime = 0;
 
-var GameOver=false;
+var GameOver=true;
 
 
 
 //declaring image variables
 var img_background = new Image();							//background
 img_background.src = "images/background.png";
+
+var img_background_even = new Image();							//background for even levels. should reduce lag
+img_background_even.src = "images/background.png";
 
 var head_up = new Image();									//Snake head
 var head_right = new Image();
@@ -125,8 +128,9 @@ var deathscreen = new Image();
 
 var inGame= false;
 
-window.onload = function(){      
+window.onload = function(){
     loadImages();
+	listenForFingers();
 };		//starts everything
 
 var mousePos;                                           //used for menu to tell where mouse is
@@ -137,22 +141,39 @@ var scoreReq4=3000;
 var scoreReq5=3000;
 var scoreReq6=3000;
 var scoreReq7=3000;
+var scoreReq8=10000;
 
 var popupText;
 var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
 
+
+var difficultyButton = new Array();
+difficultyButton[0] = new Image();
+difficultyButton[1] = new Image();
+difficultyButton[2] = new Image();
+difficultyButton[0].src="images/easy.png";
+difficultyButton[1].src="images/medium.png";
+difficultyButton[2].src="images/hard.png";
+difficultyButton[3] = new Image();
+difficultyButton[4] = new Image();
+difficultyButton[5] = new Image();
+difficultyButton[3].src="images/easy1.png";
+difficultyButton[4].src="images/medium1.png";
+difficultyButton[5].src="images/hard1.png";
+
 function resetLevelReqs(){
-    scoreReq2=3000;//score requirements for their perspective levels
-    scoreReq3=4000;//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
-    scoreReq4=5000;
-    scoreReq5=6000;
-    scoreReq6=7000;
-    scoreReq7=8000;
-    scoreReq8=9000;
+    scoreReq2=3000*(1+difficulty);//score requirements for their perspective levels
+    scoreReq3=4000*(1+difficulty);//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
+    scoreReq4=5000*(1+difficulty);
+    scoreReq5=6000*(1+difficulty);
+    scoreReq6=7000*(1+difficulty);
+    scoreReq7=8000*(1+difficulty);
+    scoreReq8=10000*(1+difficulty);
 }
 function loadImages(){
     img_background.src = "images/background.png";
-    head_up.src = "images/head_up.png";
+    
+	head_up.src = "images/head_up.png";
     head_right.src = "images/head_right.png";
     head_down.src = "images/head_down.png";
     head_left.src = "images/head_left.png";
@@ -179,7 +200,6 @@ function loadImages(){
     
     img_heart.src = "images/heart.png" ;
     img_movingFood.src = "images/movingFood.png";
-    highScoreBackground.src= "images/highScoresBackground.png";
     helpBackground.src="images/helpBackground.png";
     
     minion[0].src = "images/minion_up.png";
@@ -187,6 +207,7 @@ function loadImages(){
     minion[2].src = "images/minion_right.png"; 
     
 	deathscreen.src = "images/death.png";
+	highScoreBackground.src= "images/highScoresBackground.png";
 	
     Menu();     
     updateScore();
@@ -197,47 +218,24 @@ function initLevel(){
     inGame=true;
     numOfSquares = initialNumOfSquares;
     sizeOfSquare = Math.floor(w/numOfSquares);
-    img_background.src = "images/background.png";
-    head_up.src = "images/head_up.png";
-    head_right.src = "images/head_right.png";
-    head_down.src = "images/head_down.png";
-    head_left.src = "images/head_left.png";
-    
-    body_up.src = "images/body_up.png";
-    body_up_red.src = "images/body_up_red.png";
-    body_up_blue.src = "images/body_up_blue.png";
-    body_up_black.src = "images/body_up_black.png";
-    
-    body_right.src = "images/body_right.png";
-    body_right_red.src = "images/body_right_red.png";
-    body_right_blue.src = "images/body_right_blue.png";
-    body_right_black.src = "images/body_right_black.png";
-   
-    body_down.src = "images/body_down.png";
-    body_down_red.src = "images/body_down_red.png";
-    body_down_blue.src = "images/body_down_blue.png";
-    body_down_black.src = "images/body_down_black.png";
-    
-    body_left.src = "images/body_left.png";
-    body_left_red.src = "images/body_left_red.png";
-    body_left_blue.src = "images/body_left_blue.png";
-    body_left_black.src = "images/body_left_black.png";
-    
-    img_heart.src = "images/heart.png" ;
-    img_movingFood.src = "images/movingFood.png";
-    resetLevelReqs();
+    img_background.src = "images/background.png";        
+    img_heart.src = "images/heart.png";
+    resetLevelReqs();	
+    tempImage.src="images/Oz.png";
+	img_background_even.src = "images/OzColor.png";
+	binary = 1;
 }
 function initLevel2(){//theme: wizard of Oz
     level = 2;
 	scoreReq3=score+scoreReq3;
     foodBool=false;
-    img_background.src = "images/OzColor.png";    
+    img_background.src = "images/background3.png";   
     printPopup("Level 2!", "", 100);   
 
 }
 function initLevel3(){//theme: despicable me
     level = 3;
-    img_background.src = "images/background3.png";
+    img_background_even.src = "images/junior.png";
     img_movingFood.src = "images/moon.png";
     printPopup("Level 3!", "", 100);
     scoreReq4=score + scoreReq4;
@@ -246,7 +244,7 @@ function initLevel4(){//theme: high school dance marathon
     level = 4;
     numOfSquares = numOfSquares*2; 
     sizeOfSquare = Math.floor(w/numOfSquares);
-    img_background.src = "images/junior.png";
+    img_background.src = "images/background5.png";
     printPopup("Level 4!", "", 100);
     scoreReq5=score + scoreReq5;
     foodBool=false;
@@ -254,7 +252,7 @@ function initLevel4(){//theme: high school dance marathon
 }
 function initLevel5(){//theme: land before DM
     level = 5;
-    img_background.src = "images/background5.png";
+    img_background_even.src = "images/circus.png";
     numOfSquares = numOfSquares/2;
     sizeOfSquare = Math.floor(w/numOfSquares);
     SnakeArray[0].x=numOfSquares*sizeOfSquare/2;
@@ -270,16 +268,16 @@ function initLevel5(){//theme: land before DM
 }
 function initLevel6(){
     level = 6;
-    img_background.src = "images/circus.png";
+    img_background.src = "images/pirateShip.png";
     img_movingFood.src = "images/lion.png";
     img_heart.src = "images/heart.png";
-    printPopup("Lasso the Lion!", "", 100);
+    printPopup("Lasso the Lion!", "Don't let the lion leave the dance floor!", 100);
     scoreReq7=score + scoreReq7;
 }
 function initLevel7(){
 	foodBool = false;
     level = 7;
-    img_background.src = "images/pirateShip.png";
+    img_background_even.src = "images/bikiniBottom.png";
     img_heart.src = "images/booty.png";
     printPopup("Level 7!", "", 100);
     
@@ -289,7 +287,7 @@ function initLevel8(){
     level = 8;
     foodBool = false;
     img_movingFood.src = "images/bubbles.png";
-    img_background.src = "images/bikiniBottom.png";
+    //img_background.src = "images/bikiniBottom.png";
     img_heart.src = "images/crabbyPatty.png";
 	foodBool = false;
 }
@@ -305,7 +303,7 @@ function menuMove(evt){
                     ctx.drawImage(start1, 0, 0, w, h/4);
                     ctx.drawImage(img_help, 0, h/4, w, h/4);
                     ctx.drawImage(img_highScore, 0, h/2, w, h/4);
-                    ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+                    ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);
                     whichButton=1;
               }
           }
@@ -316,7 +314,7 @@ function menuMove(evt){
                 ctx.drawImage(img_start, 0, 0, w, h/4);
                 ctx.drawImage(help1, 0, h/4, w, h/4);
                 ctx.drawImage(img_highScore, 0, h/2, w, h/4);
-                ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+                ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);
                 whichButton=2;
              }
           }
@@ -327,7 +325,7 @@ function menuMove(evt){
                 ctx.drawImage(img_start, 0, 0, w, h/4);
                 ctx.drawImage(img_help, 0, h/4, w, h/4);
                 ctx.drawImage(highScore1, 0, h/2, w, h/4);
-                ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+                ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);
                 whichButton=3;
             }
           }  
@@ -337,7 +335,12 @@ function menuMove(evt){
             ctx.drawImage(img_start, 0, 0, w, h/4);
             ctx.drawImage(img_help, 0, h/4, w, h/4);
             ctx.drawImage(img_highScore, 0, h/2, w, h/4);
-            ctx.drawImage(options1, 0, 3*h/4, w,h/4);
+			if(!isMobile){
+				ctx.drawImage(difficultyButton[difficulty+3], 0, 3*h/4, w,h/4);
+			}
+			else{
+				ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);
+			}
             whichButton=4;
           }
     }
@@ -354,7 +357,7 @@ function Menu(){
   ctx.drawImage(img_start, 0, 0, w, h/4);
   ctx.drawImage(img_help, 0, h/4, w, h/4);
   ctx.drawImage(img_highScore, 0, h/2, w, h/4);
-  ctx.drawImage(img_options, 0, 3*h/4, w,h/4);
+  ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);
   c.addEventListener('mousemove', menuMove,false);  
   c.addEventListener("click", menuClick, false);  
 }
@@ -379,28 +382,27 @@ function menuClick(){
   }
   else if (mousePos.y<3*h/4){
     c.removeEventListener('click', menuClick, false);
-   // c.removeEventListener('mousemove', menuMove, false);
-
-    highScore(c);
-  
-    
+   //c.removeEventListener('mousemove', menuMove, false);
+    highScore(c);    
   }  
   else{
-    options(c);
+	menuBool = true;
+	if(difficulty < 2)
+        difficulty++;
+    else
+        difficulty = 0;
+    if(isMobile){    
+        ctx.clearRect(0, 3*h/4, w, h/4);    
+        ctx.drawImage(difficultyButton[difficulty], 0, 3*h/4, w,h/4);  
+    }
+	
+    /*options(c);
     c.removeEventListener('click', menuClick, false);
-    //c.removeEventListener('mousemove', menuMove, false);
+    //c.removeEventListener('mousemove', menuMove, false);*/
   }
 }
-var difficultyButton = new Array();
-difficultyButton[0] = new Image();
-difficultyButton[1] = new Image();
-difficultyButton[2] = new Image();
-difficultyButton[0].src="images/easy.png";
-difficultyButton[1].src="images/medium.png";
-difficultyButton[2].src="images/hard.png";
-
 function options(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, w, h);
     ctx.drawImage(difficultyButton[difficulty],0,0,w,h/4);
     c.addEventListener("click", optionsClick, false);
 }
@@ -433,23 +435,19 @@ function debug(){
 }
 function helpClick(evt){
     mousePos = getMousePos(canvas, evt);
-    if (mousePos.y>6*h/8){
-        c.removeEventListener("click", helpClick, false);
-        img_background.src = "images/background.png";        
-        Menu();                    
-    }
-    else if(mousePos.x>360 && mousePos.y <20){
+    c.removeEventListener("click", helpClick, false);
+    //img_background.src = "images/background.png";          
+    if(mousePos.x>360 && mousePos.y <20){
         debug();
     }
+	else{
+		Menu();
+	}
 
 }
 function help(){                        //what happens if you press help in menu
-                                        //currently being used for debugging
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(helpBackground,0,0,w,h);
-    var backButton = document.getElementById('back_button');
-    ctx.drawImage(backButton, 0, 6*h/8 , w, 2*h/8);
-    ctx. drawImage(img_heart, 380,0,20,20);
+    ctx. drawImage(helpBackground, 0,0,w,h);
     c.addEventListener("click", helpClick, false);
 }
 function highScore(c){                  //what happens if you press highScore in menu
@@ -674,37 +672,35 @@ function SnakeInit(){
 		addSnakeBit("body_plain");
 		nx=nx-sizeOfSquare;
 	}
-    GameOver=false;
-    if(!isMobile){
-        listenForFingers();
-    }
+    GameOver=false;    
 	makeFood();
 	paint();
 }
 var tempImage = new Image();
 function makeTwister(){
+	
     level = 1.5;
-    img_movingFood.src = "images/twister.png";    
-    twisterFlicker(1);
+    img_movingFood.src = "images/twister.png"; 
+	img_background.src="images/backgroundBlack.png";
+	makeMovingFood();
+    twisterFlicker();
 }
-function twisterFlicker(num){
+function twisterFlicker(){
 if(!GameOver){
-    if(num===1){
-        img_background = tempImage;
-        tempImage.src="images/backgroundBlack.png";
-        num = 0;
+    if(binary===1){
+		binary = 0;
+        //img_background = tempImage;
+        //tempImage.src="images/backgroundBlack.png";
+        //num = 0;
     }
-    else if(num===0){
-        img_background = tempImage;
-        tempImage.src="images/Oz.png";
-        num = 1;
+    else if(binary===0){
+        //img_background = tempImage;
+        //tempImage.src="images/Oz.png";
+        binary = 1;
     }
     if(level===1.5){
-        setTimeout(function(){twisterFlicker(num);},1000);
+        setTimeout(function(){twisterFlicker();},delay*3);
     }
-	else{
-		img_background.src= "images/OzColor.png";
-	}
 }
 }
 function updateScore(){
@@ -725,6 +721,18 @@ function updateScore(){
     }
     else if(score>scoreReq7 && level === 6){
         initLevel7();
+    }
+    if(level===8){
+        if(score>scoreReq8 && delay>30){
+            scoreReq8=score+20000;
+            if(delay>100)
+                delay=delay-10;
+            if(delay>50)
+                delay = delay - 5;
+            else
+                delay = delay - 1;
+            scoreReq8
+        }
     }
     score = score + 1; 								//update score as each second passes         
     //setTimeout(updateScore,100); 	//call again to update score
@@ -839,7 +847,16 @@ function printPopup(text, text2, p){
 }
 function paint(){        				//clears screen and repaints snake in new position	
 	ctx.clearRect(0, 0, w, h);
-	ctx.drawImage(img_background, 0, 0, w, h);
+	if(level===1.5){
+		if(binary===1)
+			ctx.drawImage(img_background, 0, 0, w, h);
+		else
+			ctx.drawImage(tempImage, 0, 0, w, h);
+	}
+	else if(level%2===1 || GameOver || menuBool)
+		ctx.drawImage(img_background, 0, 0, w, h);
+	else
+		ctx.drawImage(img_background_even, 0, 0, w, h);
     if(popupTime > 0){
         printPopup(popupText, popupText2, popupTime);
         popupTime--;
@@ -851,7 +868,7 @@ function paint(){        				//clears screen and repaints snake in new position
 }
 function foodCheck(){						//checks to see if snake hits food
 	if(food.x === SnakeArray[0].x && food.y === SnakeArray[0].y){		//checks for food
-		score=score+200*scoreMod*(1+difficulty/2);        
+		score=score+200*scoreMod*(1+difficulty*difficulty);        
         if(level !== 3 && level!==8){
             addSnakeBit("body_plain");
         }
@@ -925,7 +942,7 @@ function checkCollision(){
 		else{
             if(level === 7){
                 if(SnakeArray[0].x > (numOfSquares-3)*sizeOfSquare){
-                    printPopup("Overboard!", "", 3);
+                    printPopup("Overboard!", "", 50);
                     initLevel8();
                 }
             }
@@ -995,14 +1012,16 @@ function randomizeFoodDirection(){ //randomizes the direction of the food in a (
 		}
 	}
 }
-var binary = 1;      //for moving food every other frame
+var binary = 1;      //for moving food every other frame, also for flickering twister scene
 function moveFood(){ //changes the direction of the food if it's going the wrong way (i.e. off the screen)	    
-    if(binary===1){
-        binary = 0;
-    }
-    else{
-        binary = 1;
-    }
+    if(level>2){
+		if(binary===1){
+			binary = 0;
+		}
+		else{
+			binary = 1;
+		}
+	}
     if( foodD === "right"){		
 		if(movingFood.x > w-sizeOfSquare*4){
             if(level !== 6){
@@ -1092,7 +1111,7 @@ function changeFoodDirection(){
 }
 function checkMovingFoodCollision(){
 	if(((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare))&& level != 6){
-		score += 400*scoreMod*(1+difficulty);
+		score += 400*scoreMod*(1+difficulty*difficulty);
         if(level===1.5){
             initLevel2();           
         }

@@ -1443,16 +1443,16 @@ function printSnake(){
 	setTimeout(moveSnake,delay)
 }
 window.addEventListener("keydown", function (e) {    			//listens for key press
-	if(e.keyCode===40 && d!=="up"){
+	if((e.keyCode===40 || e.keyCode===83) && d!=="up"){
 		dn="down";
 	}
-	else if(e.keyCode===39&& d!=="left"){
+	else if((e.keyCode===39 || e.keyCode===68)&& d!=="left"){
 		dn="right";
 	}
-	else if(e.keyCode===38&& d!=="down"){
+	else if((e.keyCode===38 || e.keyCode===87)&& d!=="down"){
 		dn="up";
 	}
-	else if(e.keyCode===37&& d!=="right"){
+	else if((e.keyCode===37 || e.keyCode===65)&& d!=="right"){
 		dn="left";
 	}
     if(GameOver){

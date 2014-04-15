@@ -1463,7 +1463,6 @@ window.addEventListener("keydown", function (e) {    			//listens for key press
  var mousex = 0; 
  var mousey = 0;
  var touchobj;
- 
 function mobileClick(e){
   isMobile = true;
   touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
@@ -1503,7 +1502,6 @@ function mobileClick(e){
         goToMenu();
   }
 }
-
 function listenForFingers(){ 
  c.addEventListener('touchstart', mobileClick, false);   
 }
@@ -1522,8 +1520,7 @@ function counterClockwise(){
 	}
 
 }
-function clockwise()
-{
+function clockwise(){
 	if(d==="right"){
 		dn="down";
 	}

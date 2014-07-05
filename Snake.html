@@ -135,13 +135,7 @@ window.onload = function(){
 
 var mousePos;                                           //used for menu to tell where mouse is
 
-var scoreReq2=3000;//score requirements for their perspective levels
-var scoreReq3=3000;//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
-var scoreReq4=3000;
-var scoreReq5=3000;
-var scoreReq6=3000;
-var scoreReq7=3000;
-var scoreReq8=10000;
+var nextLevelScoreReq=3000;
 
 var popupText;
 var popupText2;//for print method to recall printPopup after background repaints. We should look for a better alternative(if there is one)
@@ -161,15 +155,8 @@ difficultyButton[3].src="images/easy1.png";
 difficultyButton[4].src="images/medium1.png";
 difficultyButton[5].src="images/hard1.png";
 
-function resetLevelReqs(){
-    scoreReq2=3000*(1+difficulty);//score requirements for their perspective levels
-    scoreReq3=4000*(1+difficulty);//score requirements will be the DIFFERENCE from the end of the last level, rather than overall score.
-    scoreReq4=5000*(1+difficulty);
-    scoreReq5=6000*(1+difficulty);
-    scoreReq6=7000*(1+difficulty);
-    scoreReq7=8000*(1+difficulty);
-    scoreReq8=10000*(1+difficulty);
-}
+var menuBool = true;
+
 function loadImages(){
     img_background.src = "images/background.png";
     
@@ -212,7 +199,7 @@ function loadImages(){
     Menu();     
     updateScore();
 }
-function initLevel(){
+function initLevel1(){
     level = 1;
     delay = 150 - 50*difficulty;
     inGame=true;
@@ -220,78 +207,71 @@ function initLevel(){
     sizeOfSquare = Math.floor(w/numOfSquares);
     img_background.src = "images/background.png";        
     img_heart.src = "images/heart.png";
-    resetLevelReqs();	
     tempImage.src="images/Oz.png";
 	img_background_even.src = "images/OzColor.png";
 	binary = 1;
 }
-function initLevel2(){//theme: wizard of Oz
-    level = 2;
-	scoreReq3=score+scoreReq3;
-    foodBool=false;
-    img_background.src = "images/background3.png";   
-    printPopup("Level 2!", "", 100);   
+function initNextLevel(){//theme: wizard of Oz
+	switch(level) {
+		case 1:
+			nextLevelScoreReq=score+3000;
+			foodBool=false;
+			img_background.src = "images/background3.png";   
+			printPopup("Level 2!", "", 100); 
+			break;
+		case 2:
+			img_background_even.src = "images/junior.png";
+			img_movingFood.src = "images/moon.png";
+			printPopup("Level 3!", "", 100);
+			nextLevelScoreReq=score+3000*level/2*difficulty;
+			break;
+		case 3:
+			numOfSquares = numOfSquares*2; 
+			sizeOfSquare = Math.floor(w/numOfSquares);
+			img_background.src = "images/background5.png";
+			printPopup("Level 4!", "", 100);
+			nextLevelScoreReq=score+3000*level/2*difficulty;
+			foodBool=false;
+		case 4:
+			img_background_even.src = "images/circus.png";
+			numOfSquares = numOfSquares/2;
+			sizeOfSquare = Math.floor(w/numOfSquares);
+			SnakeArray[0].x=numOfSquares*sizeOfSquare/2;
+			SnakeArray[0].y=numOfSquares*sizeOfSquare/2;
+			for(i=1;i<=SnakeTail;i++){
+				SnakeArray[i].x=SnakeArray[0].x;
+				SnakeArray[i].y=SnakeArray[0].y;
+			}
+			makeFood();
+			img_heart.src = "images/leaf.png";
+			printPopup("Level 5!", "", 100);
+			nextLevelScoreReq=score+3000*level/2*difficulty;
+		case 5:
+			img_background.src = "images/pirateShip.png";
+			img_movingFood.src = "images/lion.png";
+			img_heart.src = "images/heart.png";
+			printPopup("Lasso the Lion!", "Don't let the lion leave the dance floor!", 100);
+			nextLevelScoreReq=score+3000*level/2*difficulty;
+		case 6:
+			level = 7;
+			foodBool=false;
+			img_background_even.src = "images/bikiniBottom.png";
+			img_heart.src = "images/booty.png";
+			printPopup("Level 7!", "", 100);			
+			bubbleBuddy.src = "images/bubbleBuddy.png";
+			nextLevelScoreReq=score+3000*level/2*difficulty;
+		case 7:
+			foodBool = false;
+			img_movingFood.src = "images/bubbles.png";
+			//img_background.src = "images/bikiniBottom.png";
+			img_heart.src = "images/crabbyPatty.png";
+			foodBool = false;
+	}
+	level++;
+      
 
 }
-function initLevel3(){//theme: despicable me
-    level = 3;
-    img_background_even.src = "images/junior.png";
-    img_movingFood.src = "images/moon.png";
-    printPopup("Level 3!", "", 100);
-    scoreReq4=score + scoreReq4;
-}
-function initLevel4(){//theme: high school dance marathon
-    level = 4;
-    numOfSquares = numOfSquares*2; 
-    sizeOfSquare = Math.floor(w/numOfSquares);
-    img_background.src = "images/background5.png";
-    printPopup("Level 4!", "", 100);
-    scoreReq5=score + scoreReq5;
-    foodBool=false;
-    
-}
-function initLevel5(){//theme: land before DM
-    level = 5;
-    img_background_even.src = "images/circus.png";
-    numOfSquares = numOfSquares/2;
-    sizeOfSquare = Math.floor(w/numOfSquares);
-    SnakeArray[0].x=numOfSquares*sizeOfSquare/2;
-    SnakeArray[0].y=numOfSquares*sizeOfSquare/2;
-    for(i=1;i<=SnakeTail;i++){
-        SnakeArray[i].x=SnakeArray[0].x;
-        SnakeArray[i].y=SnakeArray[0].y;
-    }
-    makeFood();
-    img_heart.src = "images/leaf.png";
-    printPopup("Level 5!", "", 100);
-    scoreReq6 = score + scoreReq6;
-}
-function initLevel6(){
-    level = 6;
-    img_background.src = "images/pirateShip.png";
-    img_movingFood.src = "images/lion.png";
-    img_heart.src = "images/heart.png";
-    printPopup("Lasso the Lion!", "Don't let the lion leave the dance floor!", 100);
-    scoreReq7=score + scoreReq7;
-}
-function initLevel7(){
-	foodBool = false;
-    level = 7;
-    img_background_even.src = "images/bikiniBottom.png";
-    img_heart.src = "images/booty.png";
-    printPopup("Level 7!", "", 100);
-    
-    bubbleBuddy.src = "images/bubbleBuddy.png";
-}
-function initLevel8(){
-    level = 8;
-    foodBool = false;
-    img_movingFood.src = "images/bubbles.png";
-    //img_background.src = "images/bikiniBottom.png";
-    img_heart.src = "images/crabbyPatty.png";
-	foodBool = false;
-}
-var menuBool = true;
+
 function menuMove(evt){   
     if(menuBool){
         var whichButton;
@@ -827,7 +807,7 @@ function startButton(c){                //what happens if you press start in men
   SnakeInit();  
 }
 function SnakeInit(){
-    initLevel();
+    initLevel1();
 	score = 0; 					//reset score to 0	
     scoreMod = 1;               //reset modifier to 1
 	SnakeTail=-1;				//Most recently added SnakeBit
@@ -873,24 +853,13 @@ if(!GameOver){
 }
 }
 function updateScore(){
-    if(score>scoreReq2 && level === 1){
+    if(score>nextLevelScoreReq && level === 1){
         makeTwister();
     }
-    else if(score>scoreReq3 && level === 2){
-       initLevel3();
+    else if(score>nextLevelScoreReq){
+       initNextLevel();
     }
-    else if(score>scoreReq4 && level === 3){
-        initLevel4();
-    }
-    else if(score>scoreReq5 && level === 4){
-        initLevel5();
-    }
-    else if(score>scoreReq6 && level === 5){
-        initLevel6();
-    }
-    else if(score>scoreReq7 && level === 6){
-        initLevel7();
-    }
+    
     if(level===8){
         if(score>scoreReq8 && delay>30){
             scoreReq8=score+20000;
@@ -1282,7 +1251,8 @@ function checkMovingFoodCollision(){
 	if(((movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y) ||(movingFood.x === SnakeArray[0].x && movingFood.y === SnakeArray[0].y-sizeOfSquare)||(movingFood.x === SnakeArray[0].x-sizeOfSquare && movingFood.y === SnakeArray[0].y)||(movingFood.x === SnakeArray[0].x -sizeOfSquare && movingFood.y === SnakeArray[0].y-sizeOfSquare))&& level != 6){
 		score += 400*scoreMod*(1+difficulty*difficulty);
         if(level===1.5){
-            initLevel2();           
+			level=1;
+            initNextLevel();           
         }
         else if(level===8){
             addSnakeBit("bubbleBuddy");
@@ -1538,14 +1508,6 @@ function clockwise(){
 </script>
 <br>
 
-<!-- <img id="leftImage" onclick="counterClockwise()"			
-src="images/left.jpg" width="100" height="70"> 
-
-&nbsp;&nbsp;&nbsp;
-
-<img id="rightImage" onclick="clockwise()"
-src="images/right.jpg" width="100" height="70"></H1>
--->
 
 </body>
 </html>
